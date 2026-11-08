@@ -20,7 +20,7 @@ native sample rate, in a raw `audio/wav` request body (no multipart/temp files).
 - GET `health`: `{state:"unloaded|loading|ready|unloading|error", busy, queued}`.
 - POST `model/load` or `model/unload`: explicit lifecycle; unload returns 409
   while processing or queued; load also happens lazily on first request.
-- POST `utterances&utterance_id=<UUID>&speaker_side=top|bottom&source_lang=…&target_lang=…&tts=0|1`:
+- POST `utterances&utterance_id=<UUID>&speaker_side=top|bottom&source_lang=…&target_lang=…&tts=0|1&generation=…`:
   raw WAV → HTTP 202 `{id, status:"queued"}`.
 - GET `utterances/<UUID>` → `{id,status:"queued|processing|complete|error",
   original_text?,translated_text?,source_lang?,target_lang?,audio_available?,
@@ -29,7 +29,9 @@ native sample rate, in a raw `audio/wav` request body (no multipart/temp files).
 - DELETE `session`: drops session data and pending work.
 
 Client generates a new UUID / generation on EVERY new touch and discards stale
-responses. A previous job may finish but may not replace a newer display.
+responses. The sortable generation timestamp also prevents an older upload arriving
+after a newer one from replacing its server result. A previous job may finish but
+may not replace a newer display.
 Do not block a new recording while polling. Bound all uploads (16 MiB), recording
 duration (60 s including pre-roll), queues, session count, and result retention.
 Audio/transcripts only in RAM; no service-worker caching of APIs, no PHP disk

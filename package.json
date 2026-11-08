@@ -1,0 +1,8 @@
+{
+  "name": "kienzletranslate-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "/Applications/Codex.app/Contents/Resources/cua_node/bin/node --test tests/*.test.mjs"
+  }
+}

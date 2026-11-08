@@ -1,0 +1,482 @@
+[
+  {
+    "code": "afr",
+    "name": "Afrikaans",
+    "speech_output": false
+  },
+  {
+    "code": "amh",
+    "name": "Amharic",
+    "speech_output": false
+  },
+  {
+    "code": "arb",
+    "name": "Arabisch (Hocharabisch)",
+    "speech_output": true
+  },
+  {
+    "code": "ary",
+    "name": "Arabisch (Marokko)",
+    "speech_output": false
+  },
+  {
+    "code": "arz",
+    "name": "Arabisch (Ägypten)",
+    "speech_output": false
+  },
+  {
+    "code": "hye",
+    "name": "Armenisch",
+    "speech_output": false
+  },
+  {
+    "code": "asm",
+    "name": "Assamese",
+    "speech_output": false
+  },
+  {
+    "code": "eus",
+    "name": "Basque",
+    "speech_output": false
+  },
+  {
+    "code": "bel",
+    "name": "Belarusian",
+    "speech_output": false
+  },
+  {
+    "code": "ben",
+    "name": "Bengali",
+    "speech_output": true
+  },
+  {
+    "code": "bos",
+    "name": "Bosnisch",
+    "speech_output": false
+  },
+  {
+    "code": "bul",
+    "name": "Bulgarisch",
+    "speech_output": false
+  },
+  {
+    "code": "mya",
+    "name": "Burmese",
+    "speech_output": false
+  },
+  {
+    "code": "yue",
+    "name": "Cantonese",
+    "speech_output": false
+  },
+  {
+    "code": "cat",
+    "name": "Catalan",
+    "speech_output": true
+  },
+  {
+    "code": "ceb",
+    "name": "Cebuano",
+    "speech_output": false
+  },
+  {
+    "code": "cmn_Hant",
+    "name": "Chinesisch (traditionell)",
+    "speech_output": false
+  },
+  {
+    "code": "cmn",
+    "name": "Chinesisch (vereinfacht)",
+    "speech_output": true
+  },
+  {
+    "code": "deu",
+    "name": "Deutsch",
+    "speech_output": true
+  },
+  {
+    "code": "dan",
+    "name": "Dänisch",
+    "speech_output": true
+  },
+  {
+    "code": "eng",
+    "name": "Englisch",
+    "speech_output": true
+  },
+  {
+    "code": "est",
+    "name": "Estnisch",
+    "speech_output": true
+  },
+  {
+    "code": "fin",
+    "name": "Finnisch",
+    "speech_output": true
+  },
+  {
+    "code": "fra",
+    "name": "Französisch",
+    "speech_output": true
+  },
+  {
+    "code": "glg",
+    "name": "Galician",
+    "speech_output": false
+  },
+  {
+    "code": "lug",
+    "name": "Ganda",
+    "speech_output": false
+  },
+  {
+    "code": "kat",
+    "name": "Georgisch",
+    "speech_output": false
+  },
+  {
+    "code": "ell",
+    "name": "Griechisch",
+    "speech_output": false
+  },
+  {
+    "code": "guj",
+    "name": "Gujarati",
+    "speech_output": false
+  },
+  {
+    "code": "khk",
+    "name": "Halh Mongolian",
+    "speech_output": false
+  },
+  {
+    "code": "heb",
+    "name": "Hebräisch",
+    "speech_output": false
+  },
+  {
+    "code": "hin",
+    "name": "Hindi",
+    "speech_output": true
+  },
+  {
+    "code": "isl",
+    "name": "Icelandic",
+    "speech_output": false
+  },
+  {
+    "code": "ibo",
+    "name": "Igbo",
+    "speech_output": false
+  },
+  {
+    "code": "ind",
+    "name": "Indonesian",
+    "speech_output": true
+  },
+  {
+    "code": "gle",
+    "name": "Irish",
+    "speech_output": false
+  },
+  {
+    "code": "ita",
+    "name": "Italienisch",
+    "speech_output": true
+  },
+  {
+    "code": "jpn",
+    "name": "Japanisch",
+    "speech_output": true
+  },
+  {
+    "code": "jav",
+    "name": "Javanese",
+    "speech_output": false
+  },
+  {
+    "code": "kan",
+    "name": "Kannada",
+    "speech_output": false
+  },
+  {
+    "code": "kaz",
+    "name": "Kazakh",
+    "speech_output": false
+  },
+  {
+    "code": "khm",
+    "name": "Khmer",
+    "speech_output": false
+  },
+  {
+    "code": "kor",
+    "name": "Koreanisch",
+    "speech_output": true
+  },
+  {
+    "code": "hrv",
+    "name": "Kroatisch",
+    "speech_output": false
+  },
+  {
+    "code": "ckb",
+    "name": "Kurdisch (Sorani)",
+    "speech_output": false
+  },
+  {
+    "code": "kir",
+    "name": "Kyrgyz",
+    "speech_output": false
+  },
+  {
+    "code": "lao",
+    "name": "Lao",
+    "speech_output": false
+  },
+  {
+    "code": "lvs",
+    "name": "Lettisch",
+    "speech_output": false
+  },
+  {
+    "code": "lit",
+    "name": "Litauisch",
+    "speech_output": false
+  },
+  {
+    "code": "luo",
+    "name": "Luo",
+    "speech_output": false
+  },
+  {
+    "code": "mkd",
+    "name": "Macedonian",
+    "speech_output": false
+  },
+  {
+    "code": "mai",
+    "name": "Maithili",
+    "speech_output": false
+  },
+  {
+    "code": "mal",
+    "name": "Malayalam",
+    "speech_output": false
+  },
+  {
+    "code": "mlt",
+    "name": "Maltese",
+    "speech_output": true
+  },
+  {
+    "code": "mar",
+    "name": "Marathi",
+    "speech_output": false
+  },
+  {
+    "code": "mni",
+    "name": "Meitei",
+    "speech_output": false
+  },
+  {
+    "code": "npi",
+    "name": "Nepali",
+    "speech_output": false
+  },
+  {
+    "code": "nld",
+    "name": "Niederländisch",
+    "speech_output": true
+  },
+  {
+    "code": "fuv",
+    "name": "Nigerian Fulfulde",
+    "speech_output": false
+  },
+  {
+    "code": "azj",
+    "name": "North Azerbaijani",
+    "speech_output": false
+  },
+  {
+    "code": "uzn",
+    "name": "Northern Uzbek",
+    "speech_output": true
+  },
+  {
+    "code": "nob",
+    "name": "Norwegisch (Bokmål)",
+    "speech_output": false
+  },
+  {
+    "code": "nno",
+    "name": "Norwegisch (Nynorsk)",
+    "speech_output": false
+  },
+  {
+    "code": "nya",
+    "name": "Nyanja",
+    "speech_output": false
+  },
+  {
+    "code": "ory",
+    "name": "Odia",
+    "speech_output": false
+  },
+  {
+    "code": "pes",
+    "name": "Persisch",
+    "speech_output": true
+  },
+  {
+    "code": "pol",
+    "name": "Polnisch",
+    "speech_output": true
+  },
+  {
+    "code": "por",
+    "name": "Portugiesisch",
+    "speech_output": true
+  },
+  {
+    "code": "pan",
+    "name": "Punjabi",
+    "speech_output": false
+  },
+  {
+    "code": "ron",
+    "name": "Rumänisch",
+    "speech_output": true
+  },
+  {
+    "code": "rus",
+    "name": "Russisch",
+    "speech_output": true
+  },
+  {
+    "code": "swe",
+    "name": "Schwedisch",
+    "speech_output": true
+  },
+  {
+    "code": "srp",
+    "name": "Serbisch",
+    "speech_output": false
+  },
+  {
+    "code": "sna",
+    "name": "Shona",
+    "speech_output": false
+  },
+  {
+    "code": "snd",
+    "name": "Sindhi",
+    "speech_output": false
+  },
+  {
+    "code": "slk",
+    "name": "Slowakisch",
+    "speech_output": true
+  },
+  {
+    "code": "slv",
+    "name": "Slowenisch",
+    "speech_output": false
+  },
+  {
+    "code": "som",
+    "name": "Somali",
+    "speech_output": false
+  },
+  {
+    "code": "pbt",
+    "name": "Southern Pashto",
+    "speech_output": false
+  },
+  {
+    "code": "spa",
+    "name": "Spanisch",
+    "speech_output": true
+  },
+  {
+    "code": "swh",
+    "name": "Suaheli",
+    "speech_output": true
+  },
+  {
+    "code": "tgl",
+    "name": "Tagalog",
+    "speech_output": true
+  },
+  {
+    "code": "tgk",
+    "name": "Tajik",
+    "speech_output": false
+  },
+  {
+    "code": "tam",
+    "name": "Tamil",
+    "speech_output": false
+  },
+  {
+    "code": "tel",
+    "name": "Telugu",
+    "speech_output": true
+  },
+  {
+    "code": "tha",
+    "name": "Thailändisch",
+    "speech_output": true
+  },
+  {
+    "code": "ces",
+    "name": "Tschechisch",
+    "speech_output": true
+  },
+  {
+    "code": "tur",
+    "name": "Türkisch",
+    "speech_output": true
+  },
+  {
+    "code": "ukr",
+    "name": "Ukrainisch",
+    "speech_output": true
+  },
+  {
+    "code": "hun",
+    "name": "Ungarisch",
+    "speech_output": false
+  },
+  {
+    "code": "urd",
+    "name": "Urdu",
+    "speech_output": true
+  },
+  {
+    "code": "vie",
+    "name": "Vietnamesisch",
+    "speech_output": true
+  },
+  {
+    "code": "cym",
+    "name": "Welsh",
+    "speech_output": true
+  },
+  {
+    "code": "gaz",
+    "name": "West Central Oromo",
+    "speech_output": false
+  },
+  {
+    "code": "yor",
+    "name": "Yoruba",
+    "speech_output": false
+  },
+  {
+    "code": "zul",
+    "name": "Zulu",
+    "speech_output": false
+  }
+]
