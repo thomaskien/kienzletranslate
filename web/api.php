@@ -33,12 +33,12 @@ if ($route === 'bootstrap' && $method === 'GET') {
         $sid = bin2hex(random_bytes(16));
         set_auth_cookie($sid);
     }
-    if ($sid === null) json_response(['authenticated' => false, 'password_required' => true, 'version' => $config['version'] ?? '1.5.0']);
+    if ($sid === null) json_response(['authenticated' => false, 'password_required' => true, 'version' => $config['version'] ?? '1.6.0']);
     [$status, , $health] = backend_request('GET', '/health');
     json_response(['authenticated' => true, 'password_required' => password_required(), 'csrf' => csrf_token($sid), 'session_id' => $sid,
         'languages' => json_decode(file_get_contents(dirname(__DIR__).'/backend/languages.json'), true),
         'model' => $status === 200 ? json_decode($health, true) : ['state' => 'error', 'error' => 'Modellservice nicht erreichbar.'],
-        'version' => $config['version'] ?? '1.5.0']);
+        'version' => $config['version'] ?? '1.6.0']);
 }
 
 if ($sid === null) api_error(password_required() ? 'Bitte anmelden.' : 'Bitte App neu laden.', 401, 'authentication_required');
@@ -50,6 +50,11 @@ if ($route === 'logout' && $method === 'POST') {
     json_response(['ok' => true]);
 }
 if ($route === 'session' && $method === 'DELETE') forward_backend('DELETE', '/sessions/'.$sid);
+if ($route === 'heartbeat' && $method === 'POST') {
+    $body = file_get_contents('php://input', false, null, 0, 1025);
+    if (strlen($body) > 1024) api_error('Eingabe zu groß.', 413, 'size');
+    forward_backend('POST', '/sessions/'.$sid.'/heartbeat', $body, 'application/json');
+}
 if ($route === 'health' && $method === 'GET') forward_backend('GET', '/health');
 if (in_array($route, ['model/load', 'model/unload'], true) && $method === 'POST') forward_backend('POST', '/'.$route);
 if ($route === 'utterances' && $method === 'POST') {

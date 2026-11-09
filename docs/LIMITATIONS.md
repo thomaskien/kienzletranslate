@@ -1,9 +1,12 @@
-# Grenzen der ersten Version
+# Grenzen und Betriebsbedingungen
 
 - Kein medizinisch validiertes Produkt; keine Zusage klinisch ausreichender
   Übersetzungsqualität. Ausschließlich nichtkommerzieller technischer Prototyp.
-- Zwei manuell ausgewählte Sprachen. Automatische Sprachidentifikation ist
-  ausdrücklich zurückgestellt und wird nicht als Funktion angeboten.
+- Zwei Gesprächssprachen; optional genau ein Erkennungsversuch für die Patientenseite.
+  Automatic benötigt mindestens fünf Sekunden ab Sprachbeginn und ausreichend Sprache.
+  Kurze, unsichere oder nicht unterstützte Ergebnisse erfordern manuelle Auswahl.
+  Modell-Scores garantieren keine korrekte Sprachzuordnung; eine erkannte Sprache
+  kann über das linke Menü korrigiert werden. Nur Refresh gibt einen neuen Versuch frei.
 - GPU-Inferenz seriell. Bis zu acht wartende Aufträge; neue Äußerung ersetzt
   ältere Ergebnisse derselben Sitzung. Bereits laufende GPU-Kernel werden zu Ende
   ausgeführt. Maximal 64 RAM-Ergebnisse, Löschung nach zehn Minuten oder Abmelden.

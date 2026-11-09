@@ -209,6 +209,121 @@ export const MESSAGES = {
   ...ADDITIONAL_MESSAGES,
 };
 
+const RESOURCE_MESSAGES = {
+  "de": [
+    "Gegenüber gedrückt halten und mindestens fünf Sekunden sprechen.",
+    "Sprache nicht sicher erkannt. Bitte eine Fahne auswählen.",
+    "Grafikspeicher derzeit belegt. Bitte später erneut versuchen.",
+    "Bitte das Modell in den Einstellungen laden."
+  ],
+  "en": [
+    "Hold the opposite area and speak for at least five seconds.",
+    "Language uncertain. Please select a flag.",
+    "GPU memory is currently occupied. Please try again later.",
+    "Please load the model in settings."
+  ],
+  "fr": [
+    "Maintenez la zone en face et parlez au moins cinq secondes.",
+    "Langue incertaine. Choisissez un drapeau.",
+    "Mémoire GPU occupée. Réessayez plus tard.",
+    "Chargez le modèle dans les réglages."
+  ],
+  "es": [
+    "Mantenga pulsada la zona opuesta y hable al menos cinco segundos.",
+    "Idioma incierto. Seleccione una bandera.",
+    "Memoria de la GPU ocupada. Inténtelo más tarde.",
+    "Cargue el modelo en los ajustes."
+  ],
+  "it": [
+    "Tieni premuta l’area di fronte e parla per almeno cinque secondi.",
+    "Lingua incerta. Seleziona una bandiera.",
+    "Memoria GPU occupata. Riprova più tardi.",
+    "Carica il modello nelle impostazioni."
+  ],
+  "tr": [
+    "Karşı alana basılı tutup en az beş saniye konuşun.",
+    "Dil kesin belirlenemedi. Bir bayrak seçin.",
+    "GPU belleği şu anda dolu. Daha sonra tekrar deneyin.",
+    "Modeli ayarlardan yükleyin."
+  ],
+  "ar": [
+    "اضغط مطولًا على المنطقة المقابلة وتحدث لخمس ثوانٍ على الأقل.",
+    "تعذر تحديد اللغة بثقة. اختر علمًا.",
+    "ذاكرة معالج الرسومات مشغولة حاليًا. حاول لاحقًا.",
+    "حمّل النموذج من الإعدادات."
+  ],
+  "ru": [
+    "Удерживайте противоположную область и говорите не менее пяти секунд.",
+    "Язык не определён уверенно. Выберите флаг.",
+    "Память GPU занята. Попробуйте позже.",
+    "Загрузите модель в настройках."
+  ],
+  "uk": [
+    "Утримуйте протилежну ділянку й говоріть щонайменше п’ять секунд.",
+    "Мову не визначено впевнено. Виберіть прапор.",
+    "Пам’ять GPU зайнята. Спробуйте пізніше.",
+    "Завантажте модель у налаштуваннях."
+  ],
+  "pl": [
+    "Przytrzymaj obszar naprzeciwko i mów przez co najmniej pięć sekund.",
+    "Nie rozpoznano pewnie języka. Wybierz flagę.",
+    "Pamięć GPU jest zajęta. Spróbuj później.",
+    "Załaduj model w ustawieniach."
+  ],
+  "ro": [
+    "Țineți apăsată zona opusă și vorbiți cel puțin cinci secunde.",
+    "Limba nu a fost identificată sigur. Alegeți un steag.",
+    "Memoria GPU este ocupată. Încercați mai târziu.",
+    "Încărcați modelul din setări."
+  ],
+  "bg": [
+    "Задръжте срещуположната област и говорете поне пет секунди.",
+    "Езикът не е разпознат сигурно. Изберете флаг.",
+    "Паметта на GPU е заета. Опитайте по-късно.",
+    "Заредете модела от настройките."
+  ],
+  "hr": [
+    "Držite suprotno područje i govorite najmanje pet sekundi.",
+    "Jezik nije pouzdano prepoznat. Odaberite zastavu.",
+    "GPU memorija je zauzeta. Pokušajte kasnije.",
+    "Učitajte model u postavkama."
+  ],
+  "bs": [
+    "Držite suprotno područje i govorite najmanje pet sekundi.",
+    "Jezik nije pouzdano prepoznat. Odaberite zastavu.",
+    "GPU memorija je zauzeta. Pokušajte kasnije.",
+    "Učitajte model u postavkama."
+  ],
+  "sr": [
+    "Држите супротну област и говорите најмање пет секунди.",
+    "Језик није поуздано препознат. Изаберите заставу.",
+    "GPU меморија је заузета. Покушајте касније.",
+    "Учитајте модел у подешавањима."
+  ],
+  "ckb": [
+    "بەشی بەرامبەر ڕابگرە و لانیکەم پێنج چرکە قسە بکە.",
+    "زمان بە دڵنیایی نەناسرا. ئاڵایەک هەڵبژێرە.",
+    "بیرگەی GPU ئێستا پڕە. دواتر هەوڵ بدەرەوە.",
+    "مۆدێلەکە لە ڕێکخستنەکان بار بکە."
+  ],
+  "fa": [
+    "ناحیه روبه‌رو را نگه دارید و دست‌کم پنج ثانیه صحبت کنید.",
+    "زبان با اطمینان شناسایی نشد. یک پرچم انتخاب کنید.",
+    "حافظه پردازنده گرافیکی اشغال است. بعداً تلاش کنید.",
+    "مدل را در تنظیمات بارگذاری کنید."
+  ],
+  "el": [
+    "Κρατήστε πατημένη την απέναντι περιοχή και μιλήστε τουλάχιστον πέντε δευτερόλεπτα.",
+    "Η γλώσσα δεν αναγνωρίστηκε με βεβαιότητα. Επιλέξτε σημαία.",
+    "Η μνήμη GPU είναι κατειλημμένη. Δοκιμάστε αργότερα.",
+    "Φορτώστε το μοντέλο από τις ρυθμίσεις."
+  ]
+};
+for (const [locale, [automaticPrompt, automaticFailed, gpuMemoryBusy, modelNotReady]] of Object.entries(RESOURCE_MESSAGES)) {
+  Object.assign(MESSAGES[locale], { automaticPrompt, automaticFailed, gpuMemoryBusy, modelNotReady });
+}
+
+
 export const COMMON_IN_GERMANY = UI_LANGUAGES.map(({ code }) => code);
 
 const LANGUAGE_REGIONS = {

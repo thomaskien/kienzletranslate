@@ -10,6 +10,9 @@ iPad-Durchlauf. Wiederholungen nur bei betroffenen Fehlerkorrekturen.
 - Backend: WAV-Validierung, Sitzungsisolation, Löschung/TTL, überholte Anfragen,
   Entladen während Verarbeitung, authentifizierte API.
 - Installer: DE/EN-Lizenzannahme und Ablehnung, Namen/Ports/Pfade, Webkonfiguration.
+- v1.6: einmalige Automatic-Auswahl, manueller Rückfall, Refresh, neuer Vorlaufstandard;
+  Heartbeat mehrerer Geräte, versteckte Seiten, Inaktivität, Aufnahme-/Queue-Schutz,
+  Speichervorprüfung, Detektor-Schwellen und Uninstaller-Pfadsicherheit.
 - PHP-/Python-/JavaScript-Syntax und gezielter Diff-Review.
 
 ## Auf dem Zielserver
@@ -20,6 +23,10 @@ iPad-Durchlauf. Wiederholungen nur bei betroffenen Fehlerkorrekturen.
 - Ein Modell laden; kurze künstliche DE/EN-Aufnahmen übersetzen, Audio an/aus,
   einmal Ziel ohne Audioausgabe. Entladen und tatsächlichen VRAM prüfen,
   erneut laden/übersetzen. Testsprache aus demselben Seamless-Checkpoint erzeugt.
+- v1.6: drei öffentliche Sprachaufnahmen durch CPU-Erkennung → GPU-Übersetzung,
+  einschließlich Sprachausgabe; Stille/Kurzaufnahme zurückweisen. Echte 90-Sekunden-
+  Entladefrist, Wiederladen durch Aktivität und vollständige GPU-Prozessfreigabe.
+  Uninstaller ausschließlich im unverändernden Prüfmodus.
 - Mehrclient-/Race-Verhalten im kleinen automatisierten Test; kein Dauerlasttest.
 
 ## Auf dem echten iPad — manuell

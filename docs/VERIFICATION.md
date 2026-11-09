@@ -1,4 +1,38 @@
-# Prüfstand — v1.5, 09.11.2026
+# Prüfstand — v1.6, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.6
+
+- 16 JavaScript-Tests bestanden, einschließlich einmaliger Automatik und 250-ms-Standard.
+- 8 neue Backendprüfungen: mehrere Geräte, ausbleibender Heartbeat, Inaktivität,
+  Aufnahmeschutz, automatische Annahme/Rückfall, Sitzungstrennung und GPU-Speichermangel.
+  Die bestehenden 6 Backend-Kerntests bestanden ebenfalls.
+- UI-Fixture bei 320 × 568 und 744 × 1133: Automatic direkt unter der Überschrift,
+  volle Vier-Spalten-Breite; Erfolg setzt Französisch und zeigt das Übersetzungsergebnis.
+  Fehlschlag entfernt Automatic aus beiden Auswahlen; nur Refresh stellt es wieder her.
+  Eigene Sprache und Mikrofonfreigabe bleiben erhalten. Mikrofon/Erkennung im Browser
+  simuliert; dies ist keine erneute Hardware-Abnahme am echten iPad.
+
+- Installer: 7 Tests, Uninstaller: 7 Tests einschließlich tatsächlichem Entfernen
+  in einem isolierten temporären Verzeichnis mit simulierten Systembefehlen;
+  Konfiguration/Modelle bleiben standardmäßig erhalten, unbekannte Dateien immer.
+- Zwei API-Integrationstests auf dem Server bestanden, einschließlich Heartbeat-
+  Eingabeprüfung, Authentifizierung und Ablehnung von Entladen während Aufnahme.
+  Der vorhandene PHP-Sitzungstest und die Syntaxprüfungen bestanden ebenfalls.
+- Vollständiges Update mit dem v1.6-Installer: separates CPU-venv und gepinnter
+  Whisper-base-Download erfolgreich. Ports, Zugangseinstellungen, Geheimnisse und
+  Root-CA erhalten. Backend startet ohne GPU-Modell; kein Server-Reboot nötig.
+- Echte HTTPS-Kette mit drei zuvor nicht für LID verwendeten FLEURS-Aufnahmen:
+  Französisch nach 5-s-Präfix erkannt, gleiche vollständige Aufnahme übersetzt und
+  WAV-Sprachausgabe erzeugt (3,845 s gesamte Anfrage, einschließlich kaltem CPU-Worker).
+  Ukrainisch und Persisch in dieser kleinen Prüfung bewusst als unsicher abgelehnt.
+  Sechs Sekunden Stille und zwei Sekunden Audio führen ebenfalls zur Fahnenwahl.
+  Keine neue allgemeine Genauigkeitsmessung und kein erneutes Schwellentuning.
+- Tatsächlicher Heartbeat-Ausfall: Entladen nach 91,359 s. GPU-Gesamtbelegung
+  vor Laden 65 MiB, geladen 4792 MiB, nach Verarbeitung 5224 MiB, nach Entladen
+  wieder 65 MiB. Laden dauerte 8,051 s. Heartbeat ohne Aktivität lädt nicht wieder;
+  neue Aktivität lädt erfolgreich, anschließendes Entladen ergibt erneut 65 MiB.
+- Uninstaller auf der echten Installation ausschließlich mit `--check` geprüft;
+  dort keine Deinstallation ausgeführt. Modellservice bleibt im Leerlauf entladen.
 
 ## Gezielte Prüfung der Änderungen in v1.5
 

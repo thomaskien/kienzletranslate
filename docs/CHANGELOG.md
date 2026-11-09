@@ -1,8 +1,19 @@
 # Änderungen
 
-## Für v1.6 vorgemerkt — noch nicht umgesetzt
+## v1.6 — 09.11.2026
 
-- Einen Uninstaller zur sauberen Deinstallation von kienzletranslate ergänzen.
+- Standard-Audio-Vorlauf auf 0,25 Sekunden reduziert; bewusst gespeicherte Werte bleiben erhalten.
+- „Automatic“ belegt eine volle Vier-Fahnen-Reihe unter „Häufig in Deutschland“.
+  Genau eine patientenseitige Aufnahme wird per Whisper base auf der CPU geprüft.
+  Erfolg setzt die Sprache und übersetzt dieselbe Aufnahme; sonst manuelle Fahnenwahl.
+  Erst Refresh schaltet „Automatic“ wieder frei; Ihre Sprache und Mikrofon bleiben erhalten.
+- GPU-Modell in eigenem Prozess: Speichervorprüfung, Vorladen nach Mikrofonfreigabe,
+  Heartbeat alle 15 Sekunden, Entladen nach 90 Sekunden ohne Geräte oder fünf Minuten
+  ohne Bedienung. Aktive Aufnahmen und Warteschlange schützen das Modell.
+- Installer fragt Lade-/Entladeverhalten ab und installiert die CPU-Spracherkennung
+  separat. Modellstart beim Booten standardmäßig aus.
+- DE/EN-Uninstaller mit Vorschau, Bestätigungswort und getrennten Optionen für
+  Konfiguration/CA/Backups und Modelle; diese bleiben standardmäßig erhalten.
 
 ## v1.5 — 09.11.2026
 

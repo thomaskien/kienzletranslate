@@ -22,7 +22,9 @@ Standardpfade:
 | `/opt/kienzletranslate/releases` | Quellstände |
 | `/opt/kienzletranslate/backups` | Vorherige Konfiguration/CA, nur root |
 | `/opt/kienzletranslate/venv` | Isolierte Modell-Abhängigkeiten |
+| `/opt/kienzletranslate/lid-venv` | Isolierte CPU-Spracherkennungs-Abhängigkeiten |
 | `/var/lib/kienzletranslate/model` | Separat geladene Modellgewichte |
+| `/var/lib/kienzletranslate/lid-model` | Gepinntes CPU-Spracherkennungsmodell |
 | `/etc/kienzletranslate/config.json` | Konfiguration, Passwort-Hash, Dienstgeheimnisse |
 | `/etc/kienzletranslate/tls` | Lokale CA, private Schlüssel und Serverzertifikat |
 | `/root/kienzletranslate-access.json` | Aufrufadressen und gegebenenfalls erzeugtes Passwort |
@@ -55,13 +57,29 @@ Ein täglicher systemd-Timer erneuert das 365 Tage gültige Serverzertifikat, so
 weniger als 30 Tage verbleiben. Die CA selbst gilt zehn Jahre und erfordert dann
 einen bewussten Austausch samt erneuter Vertrauensinstallation.
 
-## Dienste und GPU
+Der Installer prüft vor Paketinstallation und Downloads den freien Platz der
+betroffenen Dateisysteme mit Reserve. Die Prüfung ist eine Mindestprüfung und
+keine Zusage, dass eine GPU mit 8 GB Speicher für das Hauptmodell ausreicht.
+Das verpflichtende CPU-Modell `Systran/faster-whisper-base` wird in Revision
+`ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66` unter MIT-Lizenz installiert. Es
+verwendet ein eigenes venv ohne GPU-Torch und setzt keine Benchmark-Umgebung
+voraus.
 
-`systemctl status kienzletranslate` zeigt den Modellservice. Er startet zunächst
-ohne geladene Gewichte, lädt bei erster Anfrage oder über die App-Einstellungen.
-Entladen wird bei aktiver Verarbeitung/Warteschlange abgewiesen. In der App
-Entladen ausführen, bevor andere speicherintensive GPU-Dienste manuell starten.
-Ein universeller automatischer Wechselbetrieb ist nicht Bestandteil von v1.
+## Dienste und GPU-Konfiguration
+
+`systemctl status kienzletranslate` zeigt den Backenddienst. GPU-Modell und
+CPU-Spracherkennung laufen in getrennten Kindprozessen des Backends. Standardmäßig
+wird das GPU-Modell nicht beim Serverstart, aber bei Nutzung der Webapp geladen.
+Ohne verbundene Geräte wird es nach 90 Sekunden entladen; trotz geöffneter App
+nach fünf Minuten Inaktivität. Der feste Heartbeat beträgt 15 Sekunden. Entladen
+wird bei aktiver Verarbeitung/Warteschlange abgewiesen.
+
+Die Werte `model_autoload`, `model_load_on_use`, `model_auto_unload`,
+`model_disconnect_seconds` (30–3600), `model_idle_seconds` (60–86400) und
+`model_min_free_mib` (mindestens 1024, Standard 8192) stehen in der Konfiguration.
+Der letzte Wert ist über `--answers` konfigurierbar, wird aber nicht zusätzlich
+interaktiv abgefragt. `lid_python` verweist auf das separate LID-venv;
+`lid_model_path` ist wie der Hauptmodellpfad über `--answers` anpassbar.
 
 Für den ersten Einsatz wurden auf Benutzerauftrag konkurrierende GPU-Dienste
 angehalten, ohne ihre Autostart-Konfiguration zu ändern. Welche Dienste das sind,
@@ -76,6 +94,24 @@ Für ausdrücklich autorisierte Administration unterstützt der Installer
 Weitere Schlüssel entsprechen `deploy/install.py`. Kennwörter nicht in
 Shellargumenten oder ungeschützten Dateien ablegen. `--check` validiert die
 Eingaben ohne Installation oder Systemänderungen.
+
+## Deinstallation
+
+`sudo bash uninstall.sh` startet den deutsch/englischen Uninstaller. Er zeigt
+vorher konkret alle verwalteten Dienste und Pfade und nimmt erst nach Eingabe von
+`DEINSTALLIEREN` beziehungsweise `UNINSTALL` Änderungen vor. Standardmäßig
+werden App, venvs und ausschließlich eigene nginx-, PHP-, tmpfiles- und
+systemd-Dateien entfernt. Konfiguration, lokale CA, Backups sowie beide
+Modellcaches bleiben erhalten. Fremde Dienste, Systempakete, GPU-Treiber und
+Benchmarkordner werden nicht entfernt.
+
+Konfiguration/CA/Backups und Modelle können in zwei getrennten Fragen explizit
+zur Entfernung ausgewählt werden. Verdächtige Pfade, Symlinks oder Dateien ohne
+kienzletranslate-Marker führen vor der ersten Änderung zum Abbruch. Für einen
+reproduzierbaren Plan unterstützt der Uninstaller `--answers DATEI` (oder `-`)
+mit `language`, `remove_data` und `remove_models`. `--check` und `--dry-run`
+validieren und zeigen den Plan ohne Änderungen; auf einem echten Server sollte
+so zunächst geprüft werden.
 
 ## Update und Rückkehr
 

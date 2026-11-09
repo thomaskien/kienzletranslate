@@ -64,12 +64,12 @@ function set_auth_cookie(?string $sid, bool $password_authenticated = false): vo
         'httponly' => true, 'samesite' => 'Strict']);
 }
 
-function backend_request(string $method, string $path, ?string $body = null): array {
+function backend_request(string $method, string $path, ?string $body = null, string $contentType = 'audio/wav'): array {
     $config = configuration();
     $curl = curl_init('http://127.0.0.1:'.(int)$config['model_port'].$path);
     curl_setopt_array($curl, [CURLOPT_CUSTOMREQUEST => $method, CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CONNECTTIMEOUT => 3, CURLOPT_TIMEOUT => 20, CURLOPT_FOLLOWLOCATION => false,
-        CURLOPT_HTTPHEADER => ['Authorization: Bearer '.$config['backend_token'], 'Content-Type: audio/wav'],
+        CURLOPT_HTTPHEADER => ['Authorization: Bearer '.$config['backend_token'], 'Content-Type: '.$contentType],
         CURLOPT_PROXY => '', CURLOPT_PROTOCOLS => CURLPROTO_HTTP]);
     if ($body !== null) curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
     $result = curl_exec($curl);
@@ -79,8 +79,8 @@ function backend_request(string $method, string $path, ?string $body = null): ar
     return [$status, $type, $result];
 }
 
-function forward_backend(string $method, string $path, ?string $body = null): never {
-    [$status, $type, $result] = backend_request($method, $path, $body);
+function forward_backend(string $method, string $path, ?string $body = null, string $contentType = 'audio/wav'): never {
+    [$status, $type, $result] = backend_request($method, $path, $body, $contentType);
     http_response_code($status);
     header('Content-Type: '.(str_starts_with($type, 'audio/wav') ? 'audio/wav' : 'application/json; charset=utf-8'));
     echo $result;

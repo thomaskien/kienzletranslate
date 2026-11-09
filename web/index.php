@@ -110,7 +110,7 @@ header('X-Content-Type-Options: nosniff');
 
     <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
     <div class="lower-tools">
-      <button id="pre-roll-button" class="utility-button" type="button" aria-label="Vorlauf einstellen" data-i18n-aria-label="preRollSetting">↺ 1,0 s</button>
+      <button id="pre-roll-button" class="utility-button" type="button" aria-label="Vorlauf einstellen" data-i18n-aria-label="preRollSetting">↺ 0,25 s</button>
       <div class="utility-group">
       <button id="restart-top-language" class="utility-button icon-button" type="button" aria-label="Sprachauswahl gegenüber neu starten" data-i18n-aria-label="restartLanguage">
         <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M50 24A20 20 0 1 0 51 39M50 10v14H36"/></svg>
@@ -125,7 +125,7 @@ header('X-Content-Type-Options: nosniff');
   <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
     <div class="welcome-heading">
       <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
-      <span class="app-version" dir="ltr">v1.5</span>
+      <span class="app-version" dir="ltr">v1.6</span>
     </div>
     <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
     <div class="locale-control">
@@ -154,9 +154,9 @@ header('X-Content-Type-Options: nosniff');
       </div>
       <div class="setting-row">
         <label for="pre-roll" data-i18n="audioPreRoll">Audio-Vorlauf</label>
-        <output id="pre-roll-value" for="pre-roll">1,0 s</output>
+        <output id="pre-roll-value" for="pre-roll">0,25 s</output>
       </div>
-      <input id="pre-roll" dir="ltr" type="range" min="0" max="3000" step="250" value="1000">
+      <input id="pre-roll" dir="ltr" type="range" min="0" max="3000" step="250" value="250">
       <div class="range-labels" dir="ltr" aria-hidden="true"><span>0 s</span><span>3 s</span></div>
       <hr>
       <div class="setting-row"><span data-i18n="model">Seamless-Modell</span><strong id="model-state">unbekannt</strong></div>

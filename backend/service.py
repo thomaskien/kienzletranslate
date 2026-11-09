@@ -8,14 +8,20 @@ LOG = logging.getLogger("kienzletranslate")
 
 
 class ServiceError(Exception):
-    def __init__(self, status, message):
-        self.status, self.message = status, message
+    def __init__(self, status, message, code="service_error"):
+        self.status, self.message, self.code = status, message, code
 
 
 class Service:
-    def __init__(self, model, ttl=600):
+    def __init__(self, model, ttl=600, config=None, detector=None, clock=time.monotonic):
         self.model = model
         self.ttl = ttl
+        self.config = config or {}
+        self.detector = detector
+        self.clock = clock
+        self.clients = {}
+        self.last_use = self.clock()
+        self.idle_reason = None
         self.jobs = {}
         self.lock = threading.RLock()
         self.queue = queue.Queue(maxsize=8)
@@ -34,16 +40,64 @@ class Service:
         with self.lock:
             self._expire()
             return {"state": self.model.state, "error": self.model.error,
-                    "busy": self.busy, "queued": self.queue.qsize()}
+                    "busy": self.busy, "queued": self.queue.qsize(),
+                    "error_code": getattr(self.model, "error_code", None),
+                    "idle_reason": self.idle_reason}
+
+    def heartbeat(self, session, client, active=True, activity=False, recording=False):
+        with self.lock:
+            now = self.clock()
+            key = (session, client)
+            for stale in list(self.clients):
+                if now - self.clients[stale]["seen"] > max(600, self.config.get("model_disconnect_seconds", 90)):
+                    del self.clients[stale]
+            if key not in self.clients and len(self.clients) >= 128:
+                raise ServiceError(429, "Zu viele aktive Geräte.")
+            presence = now if active else self.clients.get(key, {}).get("presence", self.last_use)
+            self.clients[key] = {"seen": now, "presence": presence, "active": active, "recording": recording and active}
+            if active and activity:
+                self.last_use = now
+                self.idle_reason = None
+                if (self.config.get("model_load_on_use", True) and not self.busy and self.queue.empty()
+                        and self.model.state in ("unloaded", "error")):
+                    self.lifecycle("load")
+            return self.health()
+
+    def maintenance(self):
+        with self.lock:
+            if self.busy or not self.queue.empty() or not self.config.get("model_auto_unload", True):
+                return
+            now = self.clock()
+            disconnect = self.config.get("model_disconnect_seconds", 90)
+            live = [c for c in self.clients.values() if c["active"] and now - c["seen"] < disconnect]
+            if any(c["recording"] for c in live):
+                return
+            last_seen = max([self.last_use] + [c["presence"] for c in self.clients.values()])
+            reason = None
+            if not live and now - last_seen >= disconnect:
+                reason = "disconnected"
+            elif now - self.last_use >= self.config.get("model_idle_seconds", 300):
+                reason = "inactive"
+            if reason and self.model.state == "ready":
+                self.idle_reason = reason
+                self.lifecycle("unload")
+            elif reason and self.detector:
+                self.detector.close()
 
     def lifecycle(self, action):
         with self.lock:
-            if self.busy or not self.queue.empty():
+            disconnect = self.config.get("model_disconnect_seconds", 90)
+            recording = any(c["active"] and c["recording"] and self.clock() - c["seen"] < disconnect
+                            for c in self.clients.values())
+            if self.busy or not self.queue.empty() or (action == "unload" and recording):
                 raise ServiceError(409, "Das Modell bearbeitet gerade eine Anfrage. Bitte kurz warten.")
             if action == "load" and self.model.state == "ready":
                 return self.health()
             if action == "unload" and self.model.state == "unloaded":
                 return self.health()
+            if action == "load":
+                self.last_use = self.clock()
+                self.idle_reason = None
             self.busy = True
             self.model.state = "loading" if action == "load" else "unloading"
             self.queue.put_nowait((action, None))
@@ -54,6 +108,9 @@ class Service:
             self._expire()
             if self.model.state == "unloading":
                 raise ServiceError(409, "Modell wird entladen. Bitte erneut versuchen.")
+            if self.model.state in ("unloaded", "error") and not self.config.get("model_load_on_use", True):
+                raise ServiceError(409, "Modell bitte in den Einstellungen laden.", "model_not_ready")
+            self.last_use = self.clock()
             key = (session, uid)
             if key in self.jobs:
                 raise ServiceError(409, "Diese Aufnahme wurde bereits übermittelt.")
@@ -85,6 +142,9 @@ class Service:
 
     def clear(self, session):
         with self.lock:
+            for key in list(self.clients):
+                if key[0] == session:
+                    del self.clients[key]
             for key in list(self.jobs):
                 if key[0] == session:
                     del self.jobs[key]
@@ -96,6 +156,7 @@ class Service:
             except queue.Empty:
                 with self.lock:
                     self._expire()
+                self.maintenance()
                 continue
             job = None
             try:
@@ -110,9 +171,26 @@ class Service:
                     self.model.load()
                 elif action == "unload":
                     self.model.unload()
+                    if self.detector:
+                        self.detector.close()
                 else:
                     queued_seconds = time.monotonic() - job["created"]
-                    result, audio = self.model.translate(job["input"], job["source"], job["target"], job["tts"])
+                    detection = None
+                    if job["source"] == "auto":
+                        detection = self.detector.detect(job["input"]) if self.detector else {"accepted": False, "reason": "unavailable"}
+                        with self.lock:
+                            if self.jobs.get(key) is not job:
+                                continue
+                            job["detection"] = detection
+                            if not detection.get("accepted"):
+                                job.update(status="language_required", error_code="language_required")
+                                continue
+                        source = detection["language"]
+                    else:
+                        source = job["source"]
+                    result, audio = self.model.translate(job["input"], source, job["target"], job["tts"])
+                    if detection:
+                        result["detection"] = detection
                     result.setdefault("metrics", {})["queue_seconds"] = round(queued_seconds, 3)
                     with self.lock:
                         if self.jobs.get(key) is job:
@@ -123,7 +201,7 @@ class Service:
                 LOG.error("operation=%s error_type=%s", action, type(exc).__name__)
                 with self.lock:
                     if job is not None and self.jobs.get(key) is job:
-                        job.update(status="error", error="Verarbeitung fehlgeschlagen. Modellstatus und GPU-Speicher prüfen.")
+                        job.update(status="error", error="Verarbeitung fehlgeschlagen. Modellstatus und GPU-Speicher prüfen.", error_code=getattr(exc, "code", "model_error"))
                     if action in ("load", "unload"):
                         self.model.state = "error"
                         self.model.error = "Modelloperation fehlgeschlagen. Bitte Serverstatus prüfen."
@@ -133,9 +211,15 @@ class Service:
                 job = None
                 with self.lock:
                     self.busy = False
+                    self.last_use = self.clock()
                 self.queue.task_done()
 
     def close(self):
         self.closed = True
         with self.lock:
             self.jobs.clear()
+            self.clients.clear()
+        self.thread.join(timeout=185)
+        self.model.unload()
+        if self.detector:
+            self.detector.close()

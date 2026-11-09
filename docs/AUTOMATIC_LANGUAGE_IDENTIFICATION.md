@@ -1,6 +1,23 @@
 # Automatic language identification: evidence and development handoff
 
-Status on 9 November 2026: **the experiments are complete; automatic language identification is not integrated into the application.** The app still uses manual language selection. This document consolidates the measured findings, their development implications and the remaining decisions. Proposed integration behavior below is not an already approved or implemented UI specification.
+Status on 9 November 2026: **integrated in v1.6 as a single optional patient-side attempt.**
+The Automatic tile spans four flag columns under the common-language heading. The next
+patient-side push-to-talk recording is examined once after release. Success fixes the
+language and translates the original complete recording; uncertainty, short/no speech,
+unsupported language or a detector failure restores manual flags without Automatic.
+Only operator refresh restores the offer. Your language and microphone permission persist.
+
+The CPU worker uses the measured 3/5/8-second prefix policy, plus production VAD gating:
+at least half of each inspected prefix must contain speech. This extra gate was not part
+of the original benchmark and can increase abstention. Explicit code mappings live in
+`backend/lid.py`; unsupported or ambiguous labels (including a generic Kurdish label)
+are rejected, not coerced into a supported dialect. Manual selection retains all 96 languages.
+Whisper base runs in its own CPU-only environment/process. Seamless runs in a separate
+GPU child process that exits on idle to release its CUDA context. See
+[installation settings](INSTALLATION.md) and [release checks](VERIFICATION.md).
+
+The sections below preserve the original research findings and pre-integration design notes;
+where they describe unresolved choices, the v1.6 behavior above now takes precedence.
 
 ## Evidence-based starting point
 

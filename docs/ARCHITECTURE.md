@@ -67,7 +67,7 @@ two speaking areas and control positions stay fixed. The start dialog only
 explains hold-to-talk and release-to-translate; pre-roll remains in settings.
 
 Continuous local AudioWorklet PCM ring buffer (max 3 s), pre-roll 0–3000 ms in
-250 ms steps, default 1000. No audio upload until release. Cancel/hidden stops
+250 ms steps, default 250. Previously saved preferences remain unchanged. No audio upload until release. Cancel/hidden stops
 and discards recording, clears old buffer. Multi-touch never starts another block.
 New press stops playback and excludes playback echo from pre-roll. Stop/discard
 overlong capture with explanation. Only preferences in localStorage.
@@ -99,3 +99,23 @@ lifecycle, installer inputs/confirmation/update preservation. One real GPU
 load→translate→unload→VRAM check→reload→translate cycle with a few nonpersonal
 samples, including audio on/off and text-only fallback. One desktop UI inspection
 and one short real iPad acceptance session. Repeat only affected checks after fixes.
+
+## v1.6 resources and one-shot language identification
+
+The persistent HTTP scheduler never initializes CUDA. `ProcessModel` starts a spawn-based
+GPU child, checks free VRAM first (8192 MiB default budget), and terminates that child on
+unload, including failure cleanup. The CPU detector has its own venv and masked CUDA
+environment; binary PCM and results cross anonymous pipes only. One serial queue owns
+all model and detector operations. No automatic stop of unrelated GPU services occurs.
+
+POST `/sessions/{session}/heartbeat` accepts a per-page client ID and boolean active,
+activity and recording flags through the existing authenticated, CSRF-protected PHP
+proxy. Active recording leases, processing and the queue prohibit unloading. Heartbeats
+without activity renew presence but never reload a model after idle. Default timeouts
+are 90 seconds disconnected and 300 seconds without interaction; both are configurable.
+
+Only patient-side utterances accept source_lang=auto. One bounded VAD/Whisper base
+detection attempt runs before translation. Successful detection is returned with the
+result; abstention returns status=language_required. The UI generation gate discards
+late results after manual selection or refresh. Automatic is consumed when selected,
+kept consumed across a page reload in sessionStorage, and restored only by refresh.

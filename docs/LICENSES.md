@@ -22,3 +22,11 @@ Installer acknowledgement (German):
 
 Installer acknowledgement (English):
 > I have read and accept the model licence. ACCEPT
+
+## CPU-Spracherkennung ab v1.6
+
+Whisper base (`Systran/faster-whisper-base`, Revision
+`ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66`) wird separat unter MIT-Lizenz
+installiert. Die nichtkommerzielle Beschränkung des Seamless-Modells bleibt
+unverändert. faster-whisper und die darin enthaltene Silero-VAD sind zusätzliche
+CPU-Komponenten; Paketlizenzdateien bleiben in ihrem separaten venv erhalten.

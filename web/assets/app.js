@@ -5,7 +5,7 @@ import {
   mapPerformanceTimeToFrame,
   preRollSamples,
 } from "./audio-core.js";
-import { GenerationGate, languageDirection, secureUuid } from "./frontend-core.js";
+import { AutomaticLanguageChoice, storedPreRoll, GenerationGate, languageDirection, secureUuid } from "./frontend-core.js";
 import {
   groupLanguages,
   MODEL_TO_BCP47,
@@ -22,6 +22,13 @@ const API = "/api.php?route=";
 const MAX_RECORDING_SECONDS = 60;
 const state = {
   csrf: "",
+  client: secureUuid().replaceAll("-", ""),
+  microphoneEnabled: false,
+  heartbeatTimer: null,
+  heartbeatInFlight: false,
+  heartbeatActivity: false,
+  lastActivitySent: 0,
+  automatic: new AutomaticLanguageChoice(sessionStorage.getItem("automaticConsumed") !== "1"),
   languages: [],
   model: { state: "unloaded" },
   passwordRequired: true,
@@ -73,6 +80,8 @@ const SERVER_ERROR_KEYS = {
   metadata: "invalidRecording",
   not_found: "notFound",
   https_required: "accessDenied",
+  model_not_ready: "modelNotReady",
+  gpu_memory: "gpuMemoryBusy",
 };
 
 function t(key, parameters = {}) {
@@ -270,6 +279,7 @@ class AudioCapture {
 const audioCapture = new AudioCapture();
 audioCapture.onFailure = (error) => {
   gate.next();
+  if (state.automatic.armed || state.automatic.pending) automaticFallback();
   stopPlayback();
   audioCapture.cancel();
   resetPressVisuals();
@@ -280,10 +290,7 @@ audioCapture.onFailure = (error) => {
 let playbackSource = null;
 
 function readPreRoll() {
-  const raw = localStorage.getItem("preRollMs");
-  if (raw === null) return 1000;
-  const stored = Number(raw);
-  return Number.isInteger(stored) && stored >= 0 && stored <= 3000 && stored % 250 === 0 ? stored : 1000;
+  return storedPreRoll(localStorage.getItem("preRollMs"));
 }
 
 function formatSeconds(milliseconds) {
@@ -393,7 +400,7 @@ function fillLanguages() {
 }
 
 function renderTopLanguageChoices(container, groups) {
-  const makeGroup = (label, languages) => {
+  const makeGroup = (label, languages, common = false) => {
     const section = document.createElement("section");
     section.className = "model-language-group";
     const heading = document.createElement("h3");
@@ -420,16 +427,31 @@ function renderTopLanguageChoices(container, groups) {
       button.addEventListener("click", () => selectTopLanguage(language.code));
       return button;
     }));
+    if (common && state.automatic.available) {
+      const automatic = document.createElement("button");
+      automatic.type = "button";
+      automatic.className = "model-language-choice automatic-language-choice";
+      automatic.dataset.automatic = "true";
+      automatic.textContent = "Automatic";
+      automatic.addEventListener("click", selectAutomaticLanguage);
+      grid.prepend(automatic);
+    }
     section.append(heading, grid);
     return section;
   };
   container.replaceChildren(
-    makeGroup(t("commonGermany"), groups.common),
+    makeGroup(t("commonGermany"), groups.common, true),
     makeGroup(t("otherLanguages"), groups.other),
   );
 }
 
 function updateTopLanguageSelection() {
+  if (state.automatic.armed || state.automatic.pending) {
+    ui.topLanguageFlag.textContent = "🌐";
+    ui.topLanguageCaption.textContent = "Automatic";
+    ui.topLanguageCaption.lang = "en";
+    return;
+  }
   const language = state.languages.find(({ code }) => code === ui.topLanguage.value);
   if (!language) return;
   const name = nativeLanguageName(language);
@@ -445,13 +467,15 @@ let topLanguageDialogOpener = null;
 
 function selectTopLanguage(code) {
   if (!state.languages.some((language) => language.code === code)) return;
+  const wasAutomatic = state.automatic.armed || state.automatic.pending;
+  state.automatic.finish();
   const wasPending = state.topLanguagePending;
   const changed = ui.topLanguage.value !== code;
   ui.topLanguage.value = code;
   localStorage.setItem("topLanguage", code);
   updateTopLanguageSelection();
 
-  if (!wasPending && changed) {
+  if (wasAutomatic || (!wasPending && changed)) {
     gate.next();
     stopPlayback();
     state.hasResult = false;
@@ -461,6 +485,7 @@ function selectTopLanguage(code) {
     scheduleFit();
   }
 
+  markActivity();
   state.topLanguagePending = false;
   const inlineWasOpen = !ui.topLanguagePicker.hidden;
   ui.topLanguagePicker.hidden = true;
@@ -470,6 +495,73 @@ function selectTopLanguage(code) {
     ui.topLanguageDialog.close();
   } else if (inlineWasOpen) {
     ui.restartTopLanguage.focus({ preventScroll: true });
+  }
+}
+
+function renderPatientChoices() {
+  const groups = groupLanguages(state.languages, state.uiLocale);
+  renderTopLanguageChoices(ui.topLanguageInlineGrid, groups);
+  renderTopLanguageChoices(ui.topLanguageDialogGrid, groups);
+  updateTopLanguageSelection();
+}
+
+function selectAutomaticLanguage() {
+  if (!state.automatic.select()) return;
+  sessionStorage.setItem("automaticConsumed", "1");
+  gate.next();
+  stopPlayback();
+  state.topLanguagePending = false;
+  state.hasResult = false;
+  ui.topLanguagePicker.hidden = true;
+  ui.top.classList.remove("language-picker-open");
+  if (ui.topLanguageDialog.open) ui.topLanguageDialog.close();
+  renderPatientChoices();
+  ui.topText.textContent = t("automaticPrompt");
+  ui.bottomText.textContent = t("bottomPrompt");
+  setStatus("automaticPrompt", "notice");
+  scheduleFit();
+  markActivity();
+}
+
+function automaticFallback() {
+  state.automatic.finish();
+  state.topLanguagePending = true;
+  state.hasResult = false;
+  ui.topText.textContent = t("topPrompt");
+  ui.bottomText.textContent = t("bottomPrompt");
+  scheduleFit();
+  renderPatientChoices();
+  ui.topLanguagePicker.hidden = false;
+  ui.top.classList.add("language-picker-open");
+  ui.topLanguageInlineGrid.scrollTop = 0;
+  ui.topLanguageInlineGrid.querySelector("button")?.focus({ preventScroll: true });
+  setStatus("automaticFailed", "notice");
+}
+
+function markActivity() {
+  state.heartbeatActivity = true;
+  if (state.microphoneEnabled && Date.now() - state.lastActivitySent > 2000) void sendHeartbeat();
+}
+
+async function sendHeartbeat() {
+  if (!state.csrf || !state.microphoneEnabled || state.heartbeatInFlight) return;
+  state.heartbeatInFlight = true;
+  const activity = state.heartbeatActivity;
+  state.heartbeatActivity = false;
+  if (activity) state.lastActivitySent = Date.now();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    state.model = await request("heartbeat", { method: "POST", json: {
+      client: state.client, active: !document.hidden, activity,
+      recording: state.activePointer !== null,
+    }, signal: controller.signal });
+    updateModelState();
+  } catch {
+    state.heartbeatActivity ||= activity;
+  } finally {
+    clearTimeout(timeout);
+    state.heartbeatInFlight = false;
   }
 }
 
@@ -587,10 +679,12 @@ function updateModelState() {
   ui.modelState.dataset.state = state.model.state;
   ui.loadModel.disabled = ["ready", "loading", "unloading"].includes(state.model.state);
   ui.unloadModel.disabled = state.model.state !== "ready";
-  if (state.model.state === "error") setStatus("modelError", "error");
+  if (state.model.state === "error") setStatus(state.model.error_code === "gpu_memory" ? "gpuMemoryBusy" : "modelError", "error");
+  else if (state.model.state === "loading" && state.activePointer === null
+    && !state.automatic.pending && !["uploading", "processing"].includes(state.status.key)) setStatus("modelLoading", "busy");
   else if (["ready", "unloaded"].includes(state.model.state)
     && ui.status.dataset.kind === "busy"
-    && !["modelLoading", "modelUnloading"].includes(state.status.key)) setStatus("");
+    && ["modelLoading", "modelUnloading"].includes(state.status.key)) setStatus("");
 }
 
 function stopPlayback() {
@@ -609,11 +703,17 @@ function startPress(event, side) {
   if (!ui.topLanguagePicker.hidden || ui.topLanguageDialog.open
     || ui.settings.open || state.activePointer !== null || !event.isPrimary || event.button !== 0) return;
   event.preventDefault();
+  if (!state.automatic.canRecord(side)) {
+    setStatus(state.automatic.pending ? "processing" : "automaticPrompt", "notice");
+    return;
+  }
   const interruptedPlayback = stopPlayback();
   const effectivePreRoll = interruptedPlayback ? 0 : state.preRollMs;
   const generation = gate.next();
   const utteranceId = secureUuid();
-  const direction = languageDirection(side, ui.topLanguage.value, ui.bottomLanguage.value);
+  const direction = state.automatic.armed
+    ? { source: "auto", target: ui.bottomLanguage.value }
+    : languageDirection(side, ui.topLanguage.value, ui.bottomLanguage.value);
   try {
     // Echo-tainted pre-roll is intentionally excluded when this press interrupts playback.
     audioCapture.begin(event.timeStamp, effectivePreRoll);
@@ -628,6 +728,8 @@ function startPress(event, side) {
   state.activeOrder = Math.floor((performance.timeOrigin + performance.now()) * 1000);
   state.activeDirection = direction;
   state.activeTts = state.tts;
+  markActivity();
+  void sendHeartbeat();
   event.currentTarget.setPointerCapture(event.pointerId);
   ui.app.dataset.active = side;
   setStatus("recording", "recording");
@@ -646,6 +748,8 @@ async function releasePress(event) {
   const direction = state.activeDirection;
   const tts = state.activeTts;
   resetPressVisuals();
+  const automatic = direction.source === "auto";
+  if (automatic) state.automatic.submit();
   setStatus("uploading", "busy");
   try {
     const recording = await audioCapture.end(event.timeStamp);
@@ -653,7 +757,10 @@ async function releasePress(event) {
     const wav = encodePcm16Wav(recording.samples, recording.sampleRate);
     await submitUtterance(wav, side, generation, utteranceId, direction, tts, order);
   } catch (error) {
-    if (gate.accepts(generation)) setStatus(error.i18nKey || "requestFailed", "error", error.i18nParameters || { status: "?" });
+    if (gate.accepts(generation)) {
+      if (automatic && state.automatic.pending) automaticFallback();
+      else setStatus(error.i18nKey || "requestFailed", "error", error.i18nParameters || { status: "?" });
+    }
   }
 }
 
@@ -664,8 +771,10 @@ function cancelPress(event) {
 
 function abortPress(messageKey) {
   if (state.activePointer === null) return;
+  const automatic = state.activeDirection?.source === "auto";
   audioCapture.cancel();
   resetPressVisuals();
+  if (automatic) automaticFallback();
   if (messageKey) setStatus(messageKey, "error");
 }
 
@@ -699,6 +808,16 @@ async function pollUtterance(id, side, generation) {
     if (!gate.accepts(generation)) return;
     const result = await request(`utterances/${encodeURIComponent(id)}`, { method: "GET", mutating: false });
     if (!gate.accepts(generation)) return;
+    if (result.status === "language_required") {
+      automaticFallback();
+      return;
+    }
+    if (result.detection?.accepted && state.automatic.pending) {
+      state.automatic.finish();
+      ui.topLanguage.value = result.detection.language;
+      localStorage.setItem("topLanguage", result.detection.language);
+      updateTopLanguageSelection();
+    }
     if (result.status === "complete") {
       showResult(result, side);
       if (result.text_only_reason) setStatus("textOnly", "notice");
@@ -706,7 +825,7 @@ async function pollUtterance(id, side, generation) {
       if (state.tts && result.audio_available) await playResult(id, generation);
       return;
     }
-    if (result.status === "error") throw localizedError("translationFailed");
+    if (result.status === "error") throw localizedError(result.error_code === "gpu_memory" ? "gpuMemoryBusy" : "translationFailed");
     await new Promise((resolve) => setTimeout(resolve, 750));
   }
 }
@@ -754,6 +873,7 @@ async function playResult(id, generation) {
 }
 
 async function changeModel(action) {
+  if (action === "unload") state.heartbeatActivity = false;
   setStatus(action === "load" ? "modelLoading" : "modelUnloading", "busy");
   try {
     await request(`model/${action}`, { method: "POST" });
@@ -814,6 +934,17 @@ ui.restartTopLanguage.addEventListener("click", () => {
   if (state.activePointer !== null || ui.settings.open || ui.micDialog.open) return;
   if (ui.topLanguageDialog.open) ui.topLanguageDialog.close();
   stopPlayback();
+  gate.next();
+  state.automatic.restart();
+  sessionStorage.removeItem("automaticConsumed");
+  state.topLanguagePending = true;
+  state.hasResult = false;
+  ui.topText.textContent = t("topPrompt");
+  ui.bottomText.textContent = t("bottomPrompt");
+  scheduleFit();
+  renderPatientChoices();
+  markActivity();
+  setStatus("");
   // Reopen only the opposite-side choice, retaining microphone and own preferences.
   ui.topLanguagePicker.hidden = false;
   ui.top.classList.add("language-picker-open");
@@ -830,6 +961,9 @@ ui.micEnable.addEventListener("click", async () => {
   setFormError(ui.micError);
   try {
     await audioCapture.enable();
+    state.microphoneEnabled = true;
+    if (!state.heartbeatTimer) state.heartbeatTimer = setInterval(() => { if (!document.hidden) void sendHeartbeat(); }, 15000);
+    markActivity();
     ui.micDialog.close();
     if (state.topLanguagePending) {
       ui.topLanguagePicker.hidden = false;
@@ -905,7 +1039,10 @@ ui.logout.addEventListener("click", async () => {
   try { await request("logout", { method: "POST" }); } finally { location.reload(); }
 });
 
+ui.app.addEventListener("pointerdown", () => markActivity(), { passive: true });
 document.addEventListener("visibilitychange", () => {
+  if (state.automatic.pending) automaticFallback();
+  void sendHeartbeat();
   if (document.hidden) {
     gate.next();
     if (state.activePointer !== null) abortPress("appSwitchCancelled");
@@ -919,12 +1056,18 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("pagehide", () => {
+  if (state.csrf && state.microphoneEnabled) {
+    void request("heartbeat", { method: "POST", keepalive: true, json: {
+      client: state.client, active: false, activity: false, recording: false,
+    } }).catch(() => {});
+  }
   gate.next();
   audioCapture.cancel();
   stopPlayback();
 });
 
 window.addEventListener("offline", () => {
+  if (state.automatic.pending || state.automatic.armed) automaticFallback();
   gate.next();
   abortPress("networkInterrupted");
   audioCapture.cancel();

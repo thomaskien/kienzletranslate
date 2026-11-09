@@ -25,5 +25,22 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(client.delete('/sessions/'+'a'*32).status_code,200)
             self.assertEqual(client.get(path+'/'+uid).status_code,404)
 
+    def test_heartbeat_validation_and_recording_guard(self):
+        app=create_app({'backend_token':'t'*64},FakeModel())
+        with TestClient(app) as client:
+            path='/sessions/'+'a'*32+'/heartbeat'
+            data={'client':'b'*32,'active':True,'activity':True,'recording':False}
+            self.assertEqual(client.post(path,json=data).status_code,401)
+            client.headers['Authorization']='Bearer '+'t'*64
+            self.assertEqual(client.post(path,json=dict(data,recording='yes')).status_code,400)
+            self.assertEqual(client.post(path,content=b'x'*1025).status_code,413)
+            self.assertEqual(client.post(path,json=data).status_code,200)
+            app.state.service.queue.join()
+            self.assertEqual(client.get('/health').json()['state'],'ready')
+            client.post(path,json=dict(data,activity=False,recording=True))
+            self.assertEqual(client.post('/model/unload').status_code,409)
+            params=dict(utterance_id=str(uuid.uuid4()),source_lang='auto',target_lang='eng',speaker_side='bottom')
+            self.assertEqual(client.post('/sessions/'+'a'*32+'/utterances',params=params,content=wav()).status_code,400)
+
 
 if __name__ == '__main__': unittest.main()

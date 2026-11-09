@@ -18,14 +18,32 @@ import time
 
 CONFIG = Path('/etc/kienzletranslate/config.json')
 SOURCE = Path(__file__).resolve().parents[1]
-VERSION = '1.5.0'
+VERSION = '1.6.0'
+
+GIB = 1024 ** 3
+MAIN_MODEL_BUDGET = 16 * GIB
+LID_MODEL_BUDGET = 2 * GIB
+INSTALL_BUDGET = 6 * GIB
+
+
+def bool_setting(old, answers, key, default):
+    value = answers.get(key, old.get(key, default))
+    if type(value) is not bool:
+        raise ValueError(f'{key} must be true or false')
+    return value
+
+
+def integer_setting(old, answers, key, default, minimum, maximum):
+    value = answers.get(key, old.get(key, default))
+    if type(value) is not int:
+        raise ValueError(key)
+    if not minimum <= value <= maximum:
+        raise ValueError(key)
+    return value
 
 
 def password_setting(old, answers):
-    value = answers.get('password_required', old.get('password_required', bool(old.get('password_hash'))))
-    if type(value) is not bool:
-        raise ValueError('password_required must be true or false')
-    return value
+    return bool_setting(old, answers, 'password_required', bool(old.get('password_hash')))
 
 
 def validate(values):
@@ -36,11 +54,60 @@ def validate(values):
     ports = [int(values[k]) for k in ('http_port', 'https_port', 'model_port')]
     if any(p < 1 or p > 65535 for p in ports) or len(set(ports)) != 3:
         raise ValueError('ports')
-    for key in ('install_path', 'model_path'):
+    for key in ('install_path', 'model_path', 'lid_model_path'):
         path = values[key]
         if not re.fullmatch(r'/(?:opt|srv|var/lib)/[A-Za-z0-9_/-]+', path) or '..' in Path(path).parts:
             raise ValueError(key)
+    root = Path(values['install_path'])
+    models = [Path(values[k]) for k in ('model_path', 'lid_model_path')]
+    managed = [root/name for name in ('current', 'releases', 'venv', 'lid-venv', 'backups')]
+    for model in models:
+        if model == root or model in root.parents or any(model == x or model in x.parents or x in model.parents for x in managed):
+            raise ValueError('model path overlaps managed application data')
+    if models[0] == models[1] or models[0] in models[1].parents or models[1] in models[0].parents:
+        raise ValueError('model paths overlap')
+    for key, minimum, maximum in (
+            ('model_disconnect_seconds', 30, 3600),
+            ('model_idle_seconds', 60, 86400),
+            ('model_min_free_mib', 1024, 1048576)):
+        value = values[key]
+        if type(value) is bool or not isinstance(value, int) or not minimum <= value <= maximum:
+            raise ValueError(key)
+    for key in ('model_autoload', 'model_load_on_use', 'model_auto_unload'):
+        if type(values[key]) is not bool:
+            raise ValueError(key)
     return values
+
+
+def existing_ancestor(path):
+    path = Path(path)
+    while not path.exists():
+        if path.parent == path:
+            raise ValueError(path)
+        path = path.parent
+    return path
+
+
+def preflight_space(config):
+    """Check all destination filesystems once, including download/install reserve."""
+    requirements = {}
+    model_path = Path(config['model_path'])
+    lid_path = Path(config['lid_model_path'])
+    model_complete = (model_path/'config.json').is_file() and any(model_path.glob('*.safetensors'))
+    lid_complete = all((lid_path/name).is_file() for name in
+                       ('config.json', 'model.bin', 'tokenizer.json', 'vocabulary.txt'))
+    destinations = (
+        (config['install_path'], INSTALL_BUDGET),
+        (config['model_path'], 0 if model_complete else MAIN_MODEL_BUDGET),
+        (config['lid_model_path'], 0 if lid_complete else LID_MODEL_BUDGET),
+    )
+    for destination, budget in destinations:
+        ancestor = existing_ancestor(destination)
+        device = ancestor.stat().st_dev
+        requirements[device] = (ancestor, requirements.get(device, (ancestor, 0))[1] + budget)
+    for ancestor, budget in requirements.values():
+        if shutil.disk_usage(ancestor).free < budget:
+            raise RuntimeError(f'insufficient free disk space at {ancestor} (need {budget // GIB} GiB including reserve)')
 
 
 def write(path, content, mode=0o644):
@@ -191,14 +258,10 @@ def main():
         value = old.get(key, default)
         config[key] = answers.get(key, value) if args.answers else (input(f'{labels[key]} [{value}]: ').strip() or value)
         if key.endswith('_port'):
-            config[key] = int(config[key])
-    try:
-        validate(config)
-    except (ValueError, TypeError):
-        raise SystemExit(tr('Ungültige IP, DNS-Angabe, Ports oder Pfade.', 'Invalid IP, DNS name, ports or paths.'))
-    host = config['server_name'] or config['server_ip']
-    if ':' in host: host = '['+host+']'
-    config['public_url'] = 'https://'+host+(':'+str(config['https_port']) if config['https_port'] != 443 else '')
+            try:
+                config[key] = int(config[key])
+            except (TypeError, ValueError):
+                raise SystemExit(tr('Ports müssen ganze Zahlen sein.', 'Ports must be integers.'))
     try:
         config['password_required'] = password_setting(old, answers)
     except ValueError:
@@ -210,6 +273,60 @@ def main():
             if choice not in ('ja', 'j', 'yes', 'y', 'nein', 'n', 'no'):
                 raise SystemExit(tr('Bitte ja oder nein eingeben.', 'Please enter yes or no.'))
             config['password_required'] = choice in ('ja', 'j', 'yes', 'y')
+    try:
+        config['model_autoload'] = bool_setting(old, answers, 'model_autoload', False)
+        config['model_load_on_use'] = bool_setting(old, answers, 'model_load_on_use', True)
+        config['model_auto_unload'] = bool_setting(old, answers, 'model_auto_unload', True)
+        config['model_disconnect_seconds'] = integer_setting(old, answers, 'model_disconnect_seconds', 90, 30, 3600)
+        config['model_idle_seconds'] = integer_setting(old, answers, 'model_idle_seconds', 300, 60, 86400)
+        config['model_min_free_mib'] = integer_setting(old, answers, 'model_min_free_mib', 8192, 1024, 1048576)
+    except ValueError as exc:
+        raise SystemExit(tr(f'Ungültiger Modellwert: {exc}.', f'Invalid model setting: {exc}.'))
+    if not args.answers:
+        def ask_bool(de, eng, current):
+            default = tr('ja', 'yes') if current else tr('nein', 'no')
+            answer = input(tr(f'{de} [ja/nein] ({default}): ', f'{eng} [yes/no] ({default}): ')).strip().lower()
+            if not answer:
+                return current
+            if answer not in ('ja', 'j', 'yes', 'y', 'nein', 'n', 'no'):
+                raise SystemExit(tr('Bitte ja oder nein eingeben.', 'Please enter yes or no.'))
+            return answer in ('ja', 'j', 'yes', 'y')
+
+        config['model_autoload'] = ask_bool('Modell bereits beim Serverstart laden?',
+                                            'Load the model when the server starts?', config['model_autoload'])
+        config['model_load_on_use'] = ask_bool('Modell bei Benutzung der Webapp automatisch laden?',
+                                               'Load the model automatically when the web app is used?', config['model_load_on_use'])
+        config['model_auto_unload'] = ask_bool('Automatisch bei Nichtbenutzung entladen?',
+                                               'Unload automatically when not in use?', config['model_auto_unload'])
+        disconnect = input(tr('Wartezeit ohne verbundenes Gerät in Sekunden',
+                              'Time without a connected device in seconds') +
+                           f" [{config['model_disconnect_seconds']}]: ").strip()
+        idle_minutes = config['model_idle_seconds'] // 60
+        idle = input(tr('Inaktivitätszeit trotz geöffneter App in Minuten',
+                        'Inactivity time while the app remains open in minutes') +
+                     f' [{idle_minutes}]: ').strip()
+        try:
+            if disconnect:
+                config['model_disconnect_seconds'] = int(disconnect)
+            if idle:
+                config['model_idle_seconds'] = int(idle) * 60
+        except ValueError:
+            raise SystemExit(tr('Zeitangaben müssen ganze Zahlen sein.', 'Time values must be integers.'))
+    config['lid_model_path'] = answers.get('lid_model_path', old.get('lid_model_path', '/var/lib/kienzletranslate/lid-model'))
+    config['lid_python'] = config['install_path'] + '/lid-venv/bin/python'
+    try:
+        validate(config)
+    except (ValueError, TypeError):
+        raise SystemExit(tr('Ungültige IP, DNS-Angabe, Ports, Pfade oder Modellwerte.',
+                            'Invalid IP, DNS name, ports, paths or model settings.'))
+    host = config['server_name'] or config['server_ip']
+    if ':' in host: host = '['+host+']'
+    config['public_url'] = 'https://'+host+(':'+str(config['https_port']) if config['https_port'] != 443 else '')
+    password = answers.get('password', '') if args.answers else ''
+    if not isinstance(password, str):
+        raise SystemExit(tr('Das Passwort muss Text sein.', 'The password must be text.'))
+    if password and len(password) < 12:
+        raise SystemExit(tr('Bitte mindestens 12 Zeichen verwenden.', 'Please use at least 12 characters.'))
     if args.check:
         print(tr('Eingaben gültig. Keine Systemänderungen.', 'Inputs valid. No system changes.'))
         return
@@ -220,6 +337,11 @@ def main():
     osrelease = Path('/etc/os-release').read_text()
     if not re.search(r'^ID=(?:ubuntu|debian)$', osrelease, re.M):
         raise SystemExit(tr('Ubuntu oder Debian erforderlich.', 'Ubuntu or Debian required.'))
+    try:
+        preflight_space(config)
+    except (ValueError, OSError, RuntimeError) as exc:
+        raise SystemExit(tr(f'Nicht genügend freier Speicherplatz: {exc}.',
+                            f'Insufficient free disk space: {exc}.'))
     # Confirm availability before touching services. Existing managed ports are allowed.
     existing_ports = {old.get(k) for k in ('http_port','https_port','model_port')} if old else set()
     for key in ('http_port','https_port','model_port'):
@@ -229,9 +351,8 @@ def main():
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try: sock.bind(('127.0.0.1' if key == 'model_port' else '0.0.0.0', port))
             except OSError: raise SystemExit(tr(f'Port {port} ist belegt. Bitte anderen Port wählen.', f'Port {port} is occupied. Choose a different port.'))
-    password = ''
-    if config['password_required']:
-        password = answers.get('password', '') if args.answers else getpass.getpass(tr('Zugangspasswort (leer: beibehalten oder sicher erzeugen): ', 'Access password (blank: keep existing or generate): '))
+    if config['password_required'] and not args.answers:
+        password = getpass.getpass(tr('Zugangspasswort (leer: beibehalten oder sicher erzeugen): ', 'Access password (blank: keep existing or generate): '))
     generated = False
     if config['password_required'] and not password and 'password_hash' not in old:
         password = secrets.token_urlsafe(18)
@@ -273,9 +394,16 @@ def main():
     venv = root/'venv'
     if not (venv/'bin/python').exists(): run(['python3','-m','venv',venv])
     run([venv/'bin/pip','install','-r', SOURCE/'backend/requirements.lock.txt'])
+    lid_venv = root/'lid-venv'
+    if not (lid_venv/'bin/python').exists(): run(['python3','-m','venv',lid_venv])
+    run([lid_venv/'bin/pip','install','-r', SOURCE/'backend/requirements-lid.lock.txt'])
     print(tr('Modell-Checkpoint wird geprüft/heruntergeladen …', 'Checking/downloading model checkpoint …'), flush=True)
     run([venv/'bin/python', SOURCE/'scripts/download_model.py', config['model_path']])
+    print(tr('CPU-Spracherkennungsmodell wird geprüft/heruntergeladen …',
+             'Checking/downloading CPU language detection model …'), flush=True)
+    run([lid_venv/'bin/python', SOURCE/'scripts/download_lid_model.py', config['lid_model_path']])
     run(['chown','-R','kienzletranslate:kienzletranslate',config['model_path']])
+    run(['chown','-R','kienzletranslate:kienzletranslate',config['lid_model_path']])
     certificate(config)
     write(CONFIG, json.dumps(config, ensure_ascii=False, indent=2)+'\n', 0o640)
     run(['chown','root:kienzletranslate',CONFIG])
@@ -283,12 +411,12 @@ def main():
     release.mkdir(parents=True)
     for folder in ('web','backend','deploy','scripts','docs'):
         shutil.copytree(SOURCE/folder, release/folder, ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    for name in ('README.md','LICENSE','install.sh','a_clean_modern_high_contrast_user_interface_desi.png'):
+    for name in ('README.md','LICENSE','install.sh','uninstall.sh','a_clean_modern_high_contrast_user_interface_desi.png'):
         if (SOURCE/name).exists(): shutil.copy2(SOURCE/name, release/name)
     # Worktrees/archives may use umask 077. Application source must be readable by
     # nginx and the dedicated PHP/model users; secrets live outside this tree.
     for file in release.rglob('*'):
-        os.chmod(file, 0o755 if file.is_dir() or file.name == 'install.sh' else 0o644)
+        os.chmod(file, 0o755 if file.is_dir() or file.name in ('install.sh', 'uninstall.sh') else 0o644)
     phpversion = run(['php','-r','echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;'], capture=True)
     write('/etc/tmpfiles.d/kienzletranslate.conf', 'd /run/kienzletranslate 0755 kienzletranslate kienzletranslate -\n')
     run(['systemd-tmpfiles','--create','/etc/tmpfiles.d/kienzletranslate.conf'])

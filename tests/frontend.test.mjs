@@ -34,3 +34,30 @@ test("service worker only handles its explicit immutable asset allow-list", asyn
   assert.doesNotMatch(source, /caches\.put/);
   assert.doesNotMatch(source, /api\.php/);
 });
+
+test("automatic language choice consumes one attempt until explicit refresh", async () => {
+  const { AutomaticLanguageChoice } = await import("../web/assets/frontend-core.js");
+  const choice = new AutomaticLanguageChoice();
+  assert.equal(choice.select(), true);
+  assert.equal(choice.select(), false);
+  assert.equal(choice.canRecord("bottom"), false);
+  assert.equal(choice.canRecord("top"), true);
+  assert.equal(choice.submit(), true);
+  assert.equal(choice.submit(), false);
+  assert.equal(choice.canRecord("top"), false);
+  choice.finish(); // success, manual override, or failure all consume the offer
+  assert.equal(choice.select(), false);
+  assert.equal(choice.canRecord("bottom"), true);
+  choice.restart();
+  assert.equal(choice.select(), true);
+  assert.equal(new AutomaticLanguageChoice(false).select(), false);
+});
+
+test("pre-roll defaults to 250ms and preserves explicit valid preferences", async () => {
+  const { storedPreRoll } = await import("../web/assets/frontend-core.js");
+  assert.equal(storedPreRoll(null), 250);
+  assert.equal(storedPreRoll("bad"), 250);
+  assert.equal(storedPreRoll("1000"), 1000);
+  assert.equal(storedPreRoll("0"), 0);
+  assert.equal(storedPreRoll("3001"), 250);
+});

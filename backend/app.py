@@ -9,7 +9,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, Response
 
 from .audio import MAX_BYTES, inspect_wav
-from .model import Model
+from .process_model import ProcessModel
+from .lid import LanguageDetector
 from .service import Service, ServiceError
 
 LANGUAGES = json.loads(Path(__file__).with_name("languages.json").read_text())
@@ -22,10 +23,14 @@ def create_app(config=None, model=None):
     token = config["backend_token"]
     if len(token) < 32:
         raise RuntimeError("Backend token must contain at least 32 characters")
-    service = Service(model or Model(config["model_path"]))
+    service = Service(model or ProcessModel(config["model_path"], config.get("model_min_free_mib", 8192)),
+                      config=config, detector=LanguageDetector(config.get("lid_python", "/opt/kienzletranslate/lid-venv/bin/python"),
+                      config.get("lid_model_path", "/var/lib/kienzletranslate/lid-model")))
 
     @asynccontextmanager
     async def lifespan(app):
+        if config.get("model_autoload", False):
+            service.lifecycle("load")
         yield
         service.close()
 
@@ -39,7 +44,7 @@ def create_app(config=None, model=None):
 
     @app.exception_handler(ServiceError)
     async def service_error(request, exc):
-        return JSONResponse({"error": exc.message, "code": "service_error"}, status_code=exc.status)
+        return JSONResponse({"error": exc.message, "code": exc.code}, status_code=exc.status)
 
     @app.middleware("http")
     async def no_store(request, call_next):
@@ -63,11 +68,30 @@ def create_app(config=None, model=None):
             raise HTTPException(404)
         return service.lifecycle(action)
 
+    @app.post("/sessions/{session}/heartbeat")
+    async def heartbeat(session: str, request: Request):
+        identifiers(session)
+        body = bytearray()
+        async for chunk in request.stream():
+            body.extend(chunk)
+            if len(body) > 1024:
+                raise HTTPException(413, "Too large")
+        try:
+            data = json.loads(body)
+            client = data["client"]
+            if not isinstance(client, str) or not re.fullmatch(r"[a-f0-9]{32}", client):
+                raise ValueError()
+            if any(type(data.get(k, False)) is not bool for k in ("active", "activity", "recording")):
+                raise ValueError()
+        except (ValueError, KeyError, TypeError):
+            raise HTTPException(400, "Invalid heartbeat") from None
+        return service.heartbeat(session, client, data.get("active", True), data.get("activity", False), data.get("recording", False))
+
     @app.post("/sessions/{session}/utterances", status_code=202)
     async def submit(session: str, request: Request, utterance_id: str, source_lang: str,
                      target_lang: str, speaker_side: str, tts: bool = False, generation: int = 0):
         identifiers(session, utterance_id)
-        if source_lang not in CODES or target_lang not in CODES or speaker_side not in {"top", "bottom"}:
+        if (source_lang not in CODES and not (source_lang == "auto" and speaker_side == "top")) or target_lang not in CODES or speaker_side not in {"top", "bottom"}:
             raise HTTPException(400, "Unsupported language or speaker")
         content = bytearray()
         async for chunk in request.stream():
