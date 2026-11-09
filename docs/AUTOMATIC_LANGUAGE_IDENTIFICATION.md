@@ -1,7 +1,7 @@
 # Automatic language identification: evidence and development handoff
 
 Status on 9 November 2026: **integrated in v1.6 as a single optional patient-side attempt.**
-The Automatic tile spans four flag columns under the common-language heading. The next
+Since v1.6.1, the Automatic tile spans two columns and two rows under the common-language heading; flags fill the two columns beside it. The next
 patient-side push-to-talk recording is examined once after release. Success fixes the
 language and translates the original complete recording; uncertainty, short/no speech,
 unsupported language or a detector failure restores manual flags without Automatic.

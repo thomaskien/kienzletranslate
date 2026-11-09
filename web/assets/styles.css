@@ -205,4 +205,7 @@ input[type="range"] { width: 100%; margin: 20px 0 4px; accent-color: var(--green
   .welcome-modal .ptt-hint { font-size: .875rem; }
 }
 
-.automatic-language-choice { grid-column: 1 / -1; min-height: 62px; font-size: 1.3rem; font-weight: 750; border-color: var(--green-light); background: #163c23; }
+.automatic-language-choice {
+  grid-column: span 2; grid-row: span 2; min-height: 138px; justify-content: center;
+  font-size: clamp(1rem, 4.5vw, 1.3rem); font-weight: 750; border-color: var(--green-light); background: #163c23;
+}

@@ -1,5 +1,12 @@
 # Änderungen
 
+## v1.6.1 — 10.11.2026
+
+- „Automatic“ belegt jetzt zwei Spalten und zwei Reihen statt einer ganzen Reihe;
+  die Beschriftung ist mittig, die Fahnen stehen daneben. Gilt für Patientenwahl
+  und linkes Sprachmenü. Erkennung und Refresh-Verhalten bleiben erhalten.
+- Patch-Versionsnummer v1.6.1 auf ausdrücklichen Benutzerwunsch.
+
 ## v1.6 — 09.11.2026
 
 - Standard-Audio-Vorlauf auf 0,25 Sekunden reduziert; bewusst gespeicherte Werte bleiben erhalten.

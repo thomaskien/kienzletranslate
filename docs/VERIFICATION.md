@@ -1,4 +1,17 @@
-# Prüfstand — v1.6, 09.11.2026
+# Prüfstand — v1.6.1, 10.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.6.1
+
+- Browserprüfung bei 320 × 568 und 744 × 1133: „Automatic“ belegt zwei Spalten
+  und zwei Reihen, sowohl in der gedrehten Patientenwahl als auch im linken Menü.
+  Die vier angrenzenden Fahnen verteilen sich auf die beiden übrigen Spalten.
+- Beschriftung vollständig sichtbar, kein horizontaler Überlauf; beide Auswahlen
+  bleiben scrollbar. Antippen und Wiederherstellen über Refresh geprüft.
+- PHP-/JavaScript-/Python-Syntax und Diff geprüft. Nur Layout und Versionsangaben
+  geändert; Mikrofon im Browser simuliert, kein erneuter Modell- oder Benchmarklauf.
+- v1.6.1 auf dem Zielserver aktiviert; HTTPS-Assets, sichtbare Version und API-Version
+  geprüft. PHP für den neuen Releasepfad sanft neu geladen; Modellprozess/PID,
+  Zugangseinstellungen und Root-CA bleiben erhalten.
 
 ## Gezielte Prüfung der Änderungen in v1.6
 
