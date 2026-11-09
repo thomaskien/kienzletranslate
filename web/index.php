@@ -68,6 +68,9 @@ header('X-Content-Type-Options: nosniff');
         </div>
         <p id="top-text" class="result-text" dir="auto">Oben gedrückt halten und sprechen</p>
       </div>
+      <div id="top-language-picker" class="top-language-picker" hidden>
+        <div id="top-language-inline-grid" class="model-language-scroll" role="group" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></div>
+      </div>
     </section>
 
     <section id="bottom-side" class="talk-side talk-side--bottom" aria-label="Untere Sprechfläche: zum Sprechen gedrückt halten" data-i18n-aria-label="bottomArea">
@@ -81,11 +84,16 @@ header('X-Content-Type-Options: nosniff');
     </section>
 
     <div class="control-deck" dir="ltr" aria-label="Sprachen und Sprachausgabe" data-i18n-aria-label="controls">
-      <label class="language-control">
+      <div class="language-control">
         <span class="sr-only" data-i18n="topLanguage">Sprache oben</span>
         <span aria-hidden="true">↑</span>
-        <select id="top-language" dir="auto" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></select>
-      </label>
+        <button id="top-language-button" class="language-picker-trigger" type="button" aria-label="Sprache oben" data-i18n-aria-label="topLanguage" aria-haspopup="dialog">
+          <span id="top-language-flag" class="control-language-flag" aria-hidden="true"></span>
+          <span id="top-language-caption" class="control-language-caption" dir="auto"></span>
+          <span class="language-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <select id="top-language" hidden aria-hidden="true" tabindex="-1"></select>
+      </div>
       <div class="direction-symbol" aria-label="Übersetzung in beide Richtungen" data-i18n-aria-label="direction">
         <svg viewBox="0 0 64 64"><path d="M10 22h39l-9-9m14 29H15l9 9"/></svg>
       </div>
@@ -103,16 +111,21 @@ header('X-Content-Type-Options: nosniff');
     <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
     <div class="lower-tools">
       <button id="pre-roll-button" class="utility-button" type="button" aria-label="Vorlauf einstellen" data-i18n-aria-label="preRollSetting">↺ 1,0 s</button>
+      <div class="utility-group">
+      <button id="restart-top-language" class="utility-button icon-button" type="button" aria-label="Sprachauswahl gegenüber neu starten" data-i18n-aria-label="restartLanguage">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M50 24A20 20 0 1 0 51 39M50 10v14H36"/></svg>
+      </button>
       <button id="settings-button" class="utility-button icon-button" type="button" aria-label="Einstellungen" data-i18n-aria-label="settings">
         <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0-12 4 7 8-1 2 8 7 4-4 7 4 7-7 4-2 8-8-1-4 7-4-7-8 1-2-8-7-4 4-7-4-7 7-4 2-8 8 1 4-7Z"/></svg>
       </button>
+      </div>
     </div>
   </main>
 
   <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
     <div class="welcome-heading">
       <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
-      <span class="app-version" dir="ltr">v1.3</span>
+      <span class="app-version" dir="ltr">v1.4</span>
     </div>
     <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
     <div class="locale-control">
@@ -121,6 +134,14 @@ header('X-Content-Type-Options: nosniff');
     </div>
     <button id="enable-microphone" class="primary-button" type="button" data-i18n="micEnable">Mikrofon aktivieren</button>
     <p id="microphone-error" class="form-error" role="alert"></p>
+  </dialog>
+
+  <dialog id="top-language-dialog" class="modal top-language-dialog" aria-labelledby="top-language-title">
+    <div class="language-dialog-heading">
+      <h2 id="top-language-title" data-i18n="topLanguage">Sprache oben</h2>
+      <button id="close-top-language" class="dialog-close-button" type="button" data-i18n-aria-label="close" aria-label="Schließen">×</button>
+    </div>
+    <div id="top-language-dialog-grid" class="model-language-scroll" role="group" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></div>
   </dialog>
 
   <dialog id="settings-dialog" class="modal settings-modal" aria-labelledby="settings-title">

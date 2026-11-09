@@ -67,6 +67,8 @@ export const MESSAGES = {
     logout: "Abmelden",
     resetSession: "Sitzung zurücksetzen",
     apply: "Übernehmen",
+    close: "Schließen",
+    restartLanguage: "Sprachauswahl gegenüber neu starten",
     orientation: "Für mehr Platz das Gerät bitte hochkant drehen.",
     commonGermany: "Häufig in Deutschland",
     otherLanguages: "Weitere Sprachen",
@@ -155,6 +157,8 @@ export const MESSAGES = {
     logout: "Sign out",
     resetSession: "Reset session",
     apply: "Apply",
+    close: "Close",
+    restartLanguage: "Restart opposite-side language selection",
     orientation: "For more space, rotate your device to portrait.",
     commonGermany: "Common in Germany",
     otherLanguages: "Other languages",
@@ -288,6 +292,21 @@ export function languageDisplayName(language, locale) {
     }
   }
   return UI_LANGUAGES.find((item) => item.code === language.code)?.name || language.name || language.code;
+}
+
+export function nativeLanguageName(language) {
+  const common = UI_LANGUAGES.find((item) => item.code === language.code);
+  if (common) return common.name;
+  const languageTag = MODEL_TO_BCP47[language.code];
+  if (languageTag && typeof Intl.DisplayNames === "function") {
+    try {
+      const name = new Intl.DisplayNames([languageTag], { type: "language", fallback: "none" }).of(languageTag);
+      if (name) return name;
+    } catch {
+      // Fall through to the readable server-supplied name.
+    }
+  }
+  return language.name || language.code;
 }
 
 export function groupLanguages(languages, locale) {

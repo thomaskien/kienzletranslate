@@ -43,7 +43,7 @@ sessions, no payload logs. API and auth responses use Cache-Control: no-store.
 ## UI
 
 Reference PNG is style only. Top TEXT rotates 180 degrees; all controls remain
-upright. Two selects (top default Ukrainian, bottom German), center speaker toggle
+upright. Top language menu (default Ukrainian), bottom select (default German), center speaker toggle
 and translation arrows, small pre-roll/settings controls on the bottom side. PTT green
 only while holding; ~45% active / 55% opposite, neutral 50/50. Black immediately
 on release. Visible busy/error state without permanent footer. Existing results
@@ -53,8 +53,14 @@ large touch controls; no external fonts/CDNs/framework builds.
 Since v1.2, flag buttons select one of 18 common interface languages and also
 set your bottom translation language; the top selection is retained.
 The same flag grid appears at startup and in settings. Native language names
-accompany all flags. Native translation selects keep iOS picker behavior and
-show flag pictograms. RTL locales affect dialog reading direction, while the
+accompany all flags. The bottom translation select keeps iOS picker behavior and shows flags.
+Since v1.4, a rotated four-column scrollable flag grid in the upper half is the
+first step on each opening, before the microphone/own-language dialog. The left
+language capsule reopens identical choices in an upright dialog. A refresh button
+on the bottom side restarts the opposite-facing grid without changing own-language
+preferences. Both forms share all 96 choices, common languages first, native names
+when available. Picker taps and scrolling cannot start recording; top-side
+touch-action allows vertical pan while the inline picker is visible. RTL locales affect dialog reading direction, while the
 two speaking areas and control positions stay fixed. The start dialog only
 explains hold-to-talk and release-to-translate; pre-roll remains in settings.
 

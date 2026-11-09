@@ -1,5 +1,14 @@
 # Änderungen
 
+## v1.4 — 09.11.2026
+
+- Zuerst Sprachauswahl auf der gegenüberliegenden Hälfte: gedrehte, scrollbare
+  Fahnen mit Sprachname, immer vier nebeneinander. Alle 96 Sprachen bleiben
+  verfügbar, häufige Sprachen zuerst.
+- Das linke Sprachmenü öffnet dieselbe Auswahl für Änderungen im Gespräch.
+- Refresh-Knopf auf der eigenen Seite startet die gegenüberliegende Sprachwahl
+  erneut; eigene Sprache und Einstellungen bleiben erhalten.
+
 ## v1.3 — 09.11.2026
 
 - Neutrale Bezeichnung „Ihre Sprache“ statt „Arzt-Sprache“ in allen

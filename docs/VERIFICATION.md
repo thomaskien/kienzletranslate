@@ -1,4 +1,27 @@
-# Prüfstand — v1.3, 09.11.2026
+# Prüfstand — v1.4, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.4
+
+- 14 JavaScript-Tests bestanden; PHP-/JavaScript-Syntax und Diff geprüft.
+- Browserprüfung bei 320 × 568 und 744 × 1133 Pixeln: beide Sprachkataloge
+  enthalten dieselben 96 Optionen in derselben Reihenfolge, immer vier Spalten.
+  Das Start-Raster ist um 180° gedreht, der Dialog vom linken Menü bleibt aufrecht.
+- Scrollen im Raster verändert die Scrollposition, ohne Aufnahme oder Fehlermeldung
+  auszulösen. Vertikales Touch-Panning ist auf Scrollfläche und Sprechflächen-Vorfahren
+  erlaubt. Sprachkacheln bleiben auch auf 320 Pixeln mindestens 44 Pixel breit.
+- Erste Auswahl öffnet anschließend den Mikrofon-/Eigene-Sprache-Dialog. Spätere
+  Änderungen über das linke Menü und den Refresh-Knopf öffnen ihn nicht erneut.
+  Geprüft mit Französisch, Polnisch und Japanisch, einschließlich seltenerer Sprachen.
+- Refresh öffnet das obere Raster am Listenanfang. Eigene Sprache Deutsch,
+  Oberfläche Deutsch und Vorlauf 1000 ms bleiben erhalten. Schließen ohne Auswahl
+  behält die Sprache und gibt den Fokus zurück; erneutes Öffnen der App zeigt
+  die erste Sprachwahl erneut mit gespeicherter Vorauswahl.
+- Der Browserdurchlauf nutzt eine lokale UI-Fixture ohne tatsächliche Audioaufnahme;
+  das Durchlaufen des Mikrofonknopfs ist darin simuliert. Audio-Core und Modellcode
+  unverändert, kein erneuter vollständiger GPU-Test.
+- v1.4 auf dem Zielserver aktiviert und über HTTPS geprüft. Alle Frontend-Dateien
+  stimmen mit dem Release überein; Modellprozess unverändert mit PID 178770 und
+  Status `ready`. Konfiguration und CA bleiben erhalten.
 
 ## Gezielte Prüfung der Änderungen in v1.3
 

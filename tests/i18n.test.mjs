@@ -12,6 +12,7 @@ import {
   interfaceChoice,
   isRtlLocale,
   languageFlag,
+  nativeLanguageName,
 } from "../web/assets/i18n.js";
 
 const languages = JSON.parse(await readFile(new URL("../backend/languages.json", import.meta.url), "utf8"));
@@ -55,4 +56,10 @@ test("each interface flag selects one supported user language", () => {
   assert.equal(interfaceChoice("unsupported").code, "deu");
   assert.deepEqual(UI_LOCALES.filter(isRtlLocale), ["ar", "ckb", "fa"]);
   for (const language of languages) assert.notEqual(languageFlag(language.code), "🌐", language.code);
+});
+
+test("patient language labels prefer native names with a readable fallback", () => {
+  assert.equal(nativeLanguageName({ code: "deu", name: "German" }), "Deutsch");
+  assert.equal(nativeLanguageName({ code: "unknown", name: "Readable name" }), "Readable name");
+  for (const language of languages) assert.ok(nativeLanguageName(language).trim(), language.code);
 });

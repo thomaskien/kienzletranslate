@@ -8,10 +8,12 @@ import {
 import { GenerationGate, languageDirection, secureUuid } from "./frontend-core.js";
 import {
   groupLanguages,
+  MODEL_TO_BCP47,
   UI_LANGUAGES,
   interfaceChoice,
   isRtlLocale,
   languageFlag,
+  nativeLanguageName,
   normalizeUiLocale,
   translate,
 } from "./i18n.js";
@@ -34,6 +36,7 @@ const state = {
   activeDirection: null,
   activeTts: false,
   holdTimer: null,
+  topLanguagePending: true,
   hasResult: false,
   status: { key: "", kind: "", parameters: {} },
 };
@@ -46,6 +49,11 @@ const ui = {
   offlineMessage: $("#offline-message"),
   top: $("#top-side"), bottom: $("#bottom-side"), topText: $("#top-text"),
   bottomText: $("#bottom-text"), topLanguage: $("#top-language"),
+  topLanguageButton: $("#top-language-button"), topLanguageFlag: $("#top-language-flag"),
+  topLanguageCaption: $("#top-language-caption"), topLanguagePicker: $("#top-language-picker"),
+  topLanguageInlineGrid: $("#top-language-inline-grid"), topLanguageDialog: $("#top-language-dialog"),
+  topLanguageDialogGrid: $("#top-language-dialog-grid"), closeTopLanguage: $("#close-top-language"),
+  restartTopLanguage: $("#restart-top-language"),
   bottomLanguage: $("#bottom-language"), tts: $("#tts-toggle"),
   status: $("#status-message"), preRollButton: $("#pre-roll-button"),
   settingsButton: $("#settings-button"), settings: $("#settings-dialog"),
@@ -334,6 +342,9 @@ function showView(name) {
 function showApplication() {
   showView("app");
   fillLanguages();
+  state.topLanguagePending = true;
+  ui.topLanguagePicker.hidden = false;
+  ui.top.classList.add("language-picker-open");
   ui.tts.setAttribute("aria-pressed", String(state.tts));
   ui.tts.classList.toggle("enabled", state.tts);
   updateTtsLabel();
@@ -342,7 +353,6 @@ function showApplication() {
   updateLogoutLabel();
   scheduleFit();
   if (["loading", "unloading"].includes(state.model.state)) setTimeout(refreshHealth, 1200);
-  ui.micDialog.showModal();
 }
 
 function fillLanguages() {
@@ -375,6 +385,94 @@ function fillLanguages() {
   const bottomFallback = codes.has("deu") ? "deu" : first;
   ui.topLanguage.value = codes.has(previousTop) ? previousTop : topFallback;
   ui.bottomLanguage.value = codes.has(previousBottom) ? previousBottom : bottomFallback;
+  renderTopLanguageChoices(ui.topLanguageInlineGrid, groups);
+  renderTopLanguageChoices(ui.topLanguageDialogGrid, groups);
+  updateTopLanguageSelection();
+}
+
+function renderTopLanguageChoices(container, groups) {
+  const makeGroup = (label, languages) => {
+    const section = document.createElement("section");
+    section.className = "model-language-group";
+    const heading = document.createElement("h3");
+    heading.textContent = label;
+    const grid = document.createElement("div");
+    grid.className = "model-language-grid";
+    grid.replaceChildren(...languages.map((language) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "model-language-choice";
+      button.dataset.topLanguage = language.code;
+      button.setAttribute("aria-label", nativeLanguageName(language));
+      button.setAttribute("aria-pressed", String(language.code === ui.topLanguage.value));
+      const flag = document.createElement("span");
+      flag.className = "model-language-flag";
+      flag.setAttribute("aria-hidden", "true");
+      flag.textContent = languageFlag(language.code);
+      const name = document.createElement("span");
+      name.className = "model-language-name";
+      name.dir = "auto";
+      name.lang = MODEL_TO_BCP47[language.code] || "";
+      name.textContent = nativeLanguageName(language);
+      button.append(flag, name);
+      button.addEventListener("click", () => selectTopLanguage(language.code));
+      return button;
+    }));
+    section.append(heading, grid);
+    return section;
+  };
+  container.replaceChildren(
+    makeGroup(t("commonGermany"), groups.common),
+    makeGroup(t("otherLanguages"), groups.other),
+  );
+}
+
+function updateTopLanguageSelection() {
+  const language = state.languages.find(({ code }) => code === ui.topLanguage.value);
+  if (!language) return;
+  const name = nativeLanguageName(language);
+  ui.topLanguageFlag.textContent = languageFlag(language.code);
+  ui.topLanguageCaption.textContent = name;
+  ui.topLanguageCaption.lang = MODEL_TO_BCP47[language.code] || "";
+  for (const button of document.querySelectorAll("[data-top-language]")) {
+    button.setAttribute("aria-pressed", String(button.dataset.topLanguage === language.code));
+  }
+}
+
+let topLanguageDialogOpener = null;
+let openMicrophoneAfterLanguageDialog = false;
+
+function selectTopLanguage(code) {
+  if (!state.languages.some((language) => language.code === code)) return;
+  const wasPending = state.topLanguagePending;
+  const changed = ui.topLanguage.value !== code;
+  ui.topLanguage.value = code;
+  localStorage.setItem("topLanguage", code);
+  updateTopLanguageSelection();
+
+  if (!wasPending && changed) {
+    gate.next();
+    stopPlayback();
+    state.hasResult = false;
+    ui.topText.textContent = t("topPrompt");
+    ui.bottomText.textContent = t("bottomPrompt");
+    setStatus("");
+    scheduleFit();
+  }
+
+  state.topLanguagePending = false;
+  const inlineWasOpen = !ui.topLanguagePicker.hidden;
+  ui.topLanguagePicker.hidden = true;
+  ui.top.classList.remove("language-picker-open");
+
+  if (ui.topLanguageDialog.open) {
+    openMicrophoneAfterLanguageDialog = wasPending;
+    ui.topLanguageDialog.close();
+  } else if (wasPending && !ui.micDialog.open) {
+    ui.micDialog.showModal();
+  } else if (inlineWasOpen) {
+    ui.restartTopLanguage.focus({ preventScroll: true });
+  }
 }
 
 function setStatus(key = "", kind = "", parameters = {}) {
@@ -510,7 +608,8 @@ function stopPlayback() {
 }
 
 function startPress(event, side) {
-  if (ui.settings.open || state.activePointer !== null || !event.isPrimary || event.button !== 0) return;
+  if (!ui.topLanguagePicker.hidden || ui.topLanguageDialog.open
+    || ui.settings.open || state.activePointer !== null || !event.isPrimary || event.button !== 0) return;
   event.preventDefault();
   const interruptedPlayback = stopPlayback();
   const effectivePreRoll = interruptedPlayback ? 0 : state.preRollMs;
@@ -702,8 +801,36 @@ for (const [element, side] of [[ui.top, "top"], [ui.bottom, "bottom"]]) {
   element.addEventListener("lostpointercapture", (event) => {
     if (state.activePointer === event.pointerId) cancelPress(event);
   });
-  element.addEventListener("contextmenu", (event) => event.preventDefault());
+  element.addEventListener("contextmenu", (event) => {
+    if (ui.topLanguagePicker.hidden && !ui.topLanguageDialog.open) event.preventDefault();
+  });
 }
+
+ui.topLanguageButton.addEventListener("click", () => {
+  if (state.activePointer !== null || ui.topLanguageDialog.open) return;
+  topLanguageDialogOpener = ui.topLanguageButton;
+  ui.topLanguageDialog.showModal();
+});
+ui.closeTopLanguage.addEventListener("click", () => ui.topLanguageDialog.close());
+ui.restartTopLanguage.addEventListener("click", () => {
+  if (state.activePointer !== null || ui.settings.open || ui.micDialog.open) return;
+  if (ui.topLanguageDialog.open) ui.topLanguageDialog.close();
+  stopPlayback();
+  // Reopen only the opposite-side choice, retaining microphone and own preferences.
+  ui.topLanguagePicker.hidden = false;
+  ui.top.classList.add("language-picker-open");
+  ui.topLanguageInlineGrid.scrollTop = 0;
+  ui.topLanguageInlineGrid.querySelector("button")?.focus({ preventScroll: true });
+});
+ui.topLanguageDialog.addEventListener("close", () => {
+  if (openMicrophoneAfterLanguageDialog) {
+    openMicrophoneAfterLanguageDialog = false;
+    if (!ui.micDialog.open) ui.micDialog.showModal();
+  } else {
+    topLanguageDialogOpener?.focus();
+  }
+  topLanguageDialogOpener = null;
+});
 
 ui.micEnable.addEventListener("click", async () => {
   ui.micEnable.disabled = true;
@@ -728,11 +855,9 @@ ui.tts.addEventListener("click", () => {
   if (!state.tts) stopPlayback();
 });
 
-for (const select of [ui.topLanguage, ui.bottomLanguage]) {
-  select.addEventListener("change", () => {
-    localStorage.setItem(select === ui.topLanguage ? "topLanguage" : "bottomLanguage", select.value);
-  });
-}
+ui.bottomLanguage.addEventListener("change", () => {
+  localStorage.setItem("bottomLanguage", ui.bottomLanguage.value);
+});
 
 for (const container of document.querySelectorAll("[data-interface-choices]")) {
   for (const language of UI_LANGUAGES) {
