@@ -1,5 +1,9 @@
 # Änderungen
 
+## Für v1.6 vorgemerkt — noch nicht umgesetzt
+
+- Einen Uninstaller zur sauberen Deinstallation von kienzletranslate ergänzen.
+
 ## v1.5 — 09.11.2026
 
 - Startreihenfolge korrigiert: zuerst „Ihre Sprache“ und Mikrofonfreigabe,
