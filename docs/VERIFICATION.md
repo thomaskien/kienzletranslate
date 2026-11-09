@@ -1,4 +1,13 @@
-# Prüfstand — v1.2, 09.11.2026
+# Prüfstand — v1.3, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.3
+
+- Bezeichnung „Ihre Sprache“ in Startdialog, Einstellungen und unterem
+  Sprachmenü, in allen 18 Oberflächensprachen neutral übersetzt.
+- Drei i18n-Tests bestanden; PHP-Syntax und Diff geprüft.
+- Kurzer Browsercheck bei 390 × 844 und 744 × 1133 Pixeln: neue Beschriftung,
+  18 Fahnen und erreichbarer Mikrofonknopf, kein horizontaler Überlauf.
+- Keine Änderungen an Sprachzuordnung, Layout oder Audio-/Modellverarbeitung.
 
 ## Gezielte Prüfung der Änderungen in v1.2
 

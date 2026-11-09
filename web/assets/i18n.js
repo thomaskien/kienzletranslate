@@ -28,7 +28,7 @@ export const isRtlLocale = (locale) => ["ar", "ckb", "fa"].includes(locale);
 export const MESSAGES = {
   de: {
     uiLanguage: "Oberflächensprache",
-    doctorLanguage: "Arzt-Sprache & Oberfläche",
+    yourLanguage: "Ihre Sprache",
     german: "Deutsch",
     english: "English",
     authEyebrow: "Lokaler Gesprächsübersetzer",
@@ -46,7 +46,7 @@ export const MESSAGES = {
     bottomArea: "Untere Sprechfläche: zum Sprechen gedrückt halten",
     controls: "Sprachen und Sprachausgabe",
     topLanguage: "Sprache oben",
-    bottomLanguage: "Arzt-Sprache (unten)",
+    bottomLanguage: "Ihre Sprache",
     direction: "Übersetzung in beide Richtungen",
     ttsToggle: "Sprachausgabe umschalten",
     ttsOn: "Sprachausgabe ausschalten",
@@ -116,7 +116,7 @@ export const MESSAGES = {
   },
   en: {
     uiLanguage: "Interface language",
-    doctorLanguage: "Doctor’s language & interface",
+    yourLanguage: "Your language",
     german: "Deutsch",
     english: "English",
     authEyebrow: "Local conversation translator",
@@ -134,7 +134,7 @@ export const MESSAGES = {
     bottomArea: "Bottom speaking area: hold to speak",
     controls: "Languages and speech output",
     topLanguage: "Top language",
-    bottomLanguage: "Doctor’s language (bottom)",
+    bottomLanguage: "Your language",
     direction: "Translation in both directions",
     ttsToggle: "Toggle speech output",
     ttsOn: "Turn off speech output",

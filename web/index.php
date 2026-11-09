@@ -33,8 +33,8 @@ header('X-Content-Type-Options: nosniff');
       <h1 id="login-title">kienzletranslate</h1>
       <p data-i18n="authIntro">Mit dem Server-Passwort anmelden. Bei einer neuen Installation zuerst die Einrichtung am Server abschließen.</p>
       <div class="locale-control">
-        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
-        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+        <p data-i18n="yourLanguage">Ihre Sprache</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Ihre Sprache" data-i18n-aria-label="yourLanguage" dir="ltr"></div>
       </div>
       <form id="login-form">
         <label for="password" data-i18n="password">Passwort</label>
@@ -52,8 +52,8 @@ header('X-Content-Type-Options: nosniff');
       <h1 id="offline-title" data-i18n="offlineTitle">Lokaler Server nicht erreichbar</h1>
       <p id="offline-message" data-i18n="offlineBody">Bitte WLAN und Serveradresse prüfen. Gesprächsdaten werden nicht offline gespeichert.</p>
       <div class="locale-control">
-        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
-        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+        <p data-i18n="yourLanguage">Ihre Sprache</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Ihre Sprache" data-i18n-aria-label="yourLanguage" dir="ltr"></div>
       </div>
       <button id="retry-bootstrap" class="primary-button" type="button" data-i18n="retry">Erneut versuchen</button>
     </section>
@@ -94,8 +94,8 @@ header('X-Content-Type-Options: nosniff');
         <span class="mute-slash" aria-hidden="true"></span>
       </button>
       <label class="language-control">
-        <span class="sr-only" data-i18n="bottomLanguage">Sprache unten</span>
-        <select id="bottom-language" dir="auto" aria-label="Sprache unten" data-i18n-aria-label="bottomLanguage"></select>
+        <span class="sr-only" data-i18n="bottomLanguage">Ihre Sprache</span>
+        <select id="bottom-language" dir="auto" aria-label="Ihre Sprache" data-i18n-aria-label="bottomLanguage"></select>
         <span aria-hidden="true">↓</span>
       </label>
     </div>
@@ -112,12 +112,12 @@ header('X-Content-Type-Options: nosniff');
   <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
     <div class="welcome-heading">
       <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
-      <span class="app-version" dir="ltr">v1.2</span>
+      <span class="app-version" dir="ltr">v1.3</span>
     </div>
     <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
     <div class="locale-control">
-      <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
-      <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+      <p data-i18n="yourLanguage">Ihre Sprache</p>
+      <div class="language-grid" data-interface-choices role="group" aria-label="Ihre Sprache" data-i18n-aria-label="yourLanguage" dir="ltr"></div>
     </div>
     <button id="enable-microphone" class="primary-button" type="button" data-i18n="micEnable">Mikrofon aktivieren</button>
     <p id="microphone-error" class="form-error" role="alert"></p>
@@ -128,8 +128,8 @@ header('X-Content-Type-Options: nosniff');
       <p class="eyebrow" data-i18n="settingsEyebrow">Lokale Einstellungen</p>
       <h2 id="settings-title" data-i18n="settingsTitle">Gespräch</h2>
       <div class="locale-control">
-        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
-        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+        <p data-i18n="yourLanguage">Ihre Sprache</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Ihre Sprache" data-i18n-aria-label="yourLanguage" dir="ltr"></div>
       </div>
       <div class="setting-row">
         <label for="pre-roll" data-i18n="audioPreRoll">Audio-Vorlauf</label>

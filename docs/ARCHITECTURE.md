@@ -44,14 +44,14 @@ sessions, no payload logs. API and auth responses use Cache-Control: no-store.
 
 Reference PNG is style only. Top TEXT rotates 180 degrees; all controls remain
 upright. Two selects (top default Ukrainian, bottom German), center speaker toggle
-and translation arrows, small pre-roll/settings controls on doctor side. PTT green
+and translation arrows, small pre-roll/settings controls on the bottom side. PTT green
 only while holding; ~45% active / 55% opposite, neutral 50/50. Black immediately
 on release. Visible busy/error state without permanent footer. Existing results
 stay until a valid complete newer pair replaces them. Accessible contrast and
 large touch controls; no external fonts/CDNs/framework builds.
 
 Since v1.2, flag buttons select one of 18 common interface languages and also
-set the doctor's bottom translation language; the top selection is retained.
+set your bottom translation language; the top selection is retained.
 The same flag grid appears at startup and in settings. Native language names
 accompany all flags. Native translation selects keep iOS picker behavior and
 show flag pictograms. RTL locales affect dialog reading direction, while the

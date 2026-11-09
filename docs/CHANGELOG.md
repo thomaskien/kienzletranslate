@@ -1,5 +1,11 @@
 # Änderungen
 
+## v1.3 — 09.11.2026
+
+- Neutrale Bezeichnung „Ihre Sprache“ statt „Arzt-Sprache“ in allen
+  18 Oberflächensprachen, Sprachmenüs und der aktuellen Dokumentation.
+- Fahnenwahl, Sprachzuordnung und Audioverarbeitung unverändert.
+
 ## v1.2 — 09.11.2026
 
 - Fahnenauswahl für alle 18 häufigen Oberflächensprachen; ein Tipp setzt zugleich

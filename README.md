@@ -1,4 +1,4 @@
-# kienzletranslate v1.2
+# kienzletranslate v1.3
 
 <table>
 <tr><th width="50%">English</th><th width="50%">Deutsch</th></tr>
@@ -33,10 +33,10 @@
 </table>
 
 <table>
-<tr><th width="50%">New in v1.2</th><th width="50%">Neu in v1.2</th></tr>
+<tr><th width="50%">Language selection</th><th width="50%">Sprachauswahl</th></tr>
 <tr>
-<td>Tap a flag to select both the interface language and the doctor's language (bottom speaking area). All 18 frequently used languages are available, with native language names. The compact start dialog explains push-to-talk in one sentence. Flags also appear in the language menus.</td>
-<td>Ein Tipp auf die Fahne stellt gleichzeitig die Oberfläche und die Arzt-Sprache (untere Sprechfläche) ein. Alle 18 häufigen Sprachen sind mit ihren Eigennamen verfügbar. Der kompakte Startdialog erklärt Push-to-Talk in einem Satz. Fahnen erscheinen auch in den Sprachmenüs.</td>
+<td>Tap a flag to select both the interface language and your language (bottom speaking area). All 18 frequently used languages are available, with native language names. The compact start dialog explains push-to-talk in one sentence. Flags also appear in the language menus.</td>
+<td>Ein Tipp auf die Fahne stellt gleichzeitig die Oberfläche und Ihre Sprache (untere Sprechfläche) ein. Alle 18 häufigen Sprachen sind mit ihren Eigennamen verfügbar. Der kompakte Startdialog erklärt Push-to-Talk in einem Satz. Fahnen erscheinen auch in den Sprachmenüs.</td>
 </tr>
 <tr>
 <td>German, English, Turkish, Arabic, Russian, Ukrainian, Polish, Romanian, Italian, Bulgarian, Croatian, Bosnian, Serbian, Kurdish (Sorani), Persian, Greek, French and Spanish. Flags are visual shortcuts; the language name identifies the choice.</td>
@@ -80,13 +80,13 @@ sudo bash install.sh</code></pre></td>
 <tr><th width="50%">How to use</th><th width="50%">Bedienung</th></tr>
 <tr>
 <td><ol>
-<li>Tap your flag: this sets the interface and the doctor's language at the bottom. The top language remains separate; the defaults are Ukrainian at the top and German at the bottom.</li>
+<li>Tap your flag: this sets the interface and your language at the bottom. The top language remains separate; the defaults are Ukrainian at the top and German at the bottom.</li>
 <li>Enable the microphone. Hold your speaking area, speak, then release to translate. Green means recording; processing starts on release.</li>
 <li>The original text appears on the speaker's side and the translation opposite. The upper conversation text is rotated; controls stay upright. Text shrinks to fit the available area.</li>
 <li>Toggle translated speech with the speaker button. A new recording interrupts playback.</li>
 </ol></td>
 <td><ol>
-<li>Eigene Fahne antippen: Das setzt die Oberfläche und die Arzt-Sprache unten. Die obere Sprache bleibt separat; voreingestellt sind Ukrainisch oben und Deutsch unten.</li>
+<li>Eigene Fahne antippen: Das setzt die Oberfläche und Ihre Sprache unten. Die obere Sprache bleibt separat; voreingestellt sind Ukrainisch oben und Deutsch unten.</li>
 <li>Mikrofon aktivieren. Eigene Sprechfläche gedrückt halten, sprechen und zum Übersetzen loslassen. Grün bedeutet Aufnahme; die Verarbeitung beginnt beim Loslassen.</li>
 <li>Der Originaltext erscheint auf der Sprecherseite, die Übersetzung gegenüber. Der obere Gesprächstext ist gedreht, Bedienelemente bleiben aufrecht. Text wird passend zur verfügbaren Fläche verkleinert.</li>
 <li>Übersetzte Sprachausgabe über den Lautsprecher umschalten. Eine neue Aufnahme unterbricht die Wiedergabe.</li>

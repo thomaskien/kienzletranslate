@@ -44,7 +44,7 @@ test("localized language groups retain every supplied model code exactly once", 
   }
 });
 
-test("each interface flag selects one supported doctor's language", () => {
+test("each interface flag selects one supported user language", () => {
   assert.deepEqual(UI_LANGUAGES.map(({ code }) => code).sort(), [...COMMON_IN_GERMANY].sort());
   for (const language of UI_LANGUAGES) {
     assert.ok(languages.some(({ code }) => code === language.code));
