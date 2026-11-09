@@ -1,0 +1,32 @@
+{
+  "dataset": "google/fleurs",
+  "revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "url": "https://huggingface.co/datasets/google/fleurs",
+  "paper": "https://arxiv.org/abs/2205.12446",
+  "attribution": "FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech, Conneau et al., Google, 2022.",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "split": "test",
+  "recordings": 240,
+  "languages": [
+    "de_de",
+    "en_us",
+    "fr_fr",
+    "es_419",
+    "it_it",
+    "pl_pl",
+    "ro_ro",
+    "tr_tr",
+    "ar_eg",
+    "ru_ru",
+    "uk_ua",
+    "fa_ir"
+  ],
+  "selection": "First 20 eligible archive members per language; distinct sentence IDs; duration >= 8s. Not a random or representative population sample.",
+  "audio_changes": "Original WAV files retained unchanged. For inference, full mono 16 kHz float audio clipped to [-1,1] and converted in memory to PCM16 WAV. Both hashes retained in records.jsonl.",
+  "benchmark_subset": "All 240 selected recordings, full duration; no VAD trimming or further filtering.",
+  "vad": "Not used for this GPU benchmark.",
+  "parallel_reference_note": "reference_translations joins original FLEURS test transcriptions across languages by sentence ID. Selected audio need not contain every sentence in every language; reference text availability is explicit per entry.",
+  "text_changes": "Original source/reference/hypothesis texts retained; NFC and whitespace-normalized scoring derivatives exported. Case, punctuation and numeric differences retained, followed by the declared metric tokenization.",
+  "evaluation": "All 240 saved direct speech translations: 220 to English, 20 to German. One target reference joined by source sentence ID. No additional inference."
+}

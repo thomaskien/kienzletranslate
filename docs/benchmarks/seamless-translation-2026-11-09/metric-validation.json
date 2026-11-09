@@ -1,0 +1,49 @@
+{
+  "method": "SacreBLEU 2.5.1 CLI versus Python API on exported reference and hypothesis files; shared library, not an independent metric implementation.",
+  "input_sha256": "3a0a50287d34f3eb8a18887b4c46e741063a599ca40c274afd9c6cfd94c752dd",
+  "checks": [
+    {
+      "target": "eng",
+      "metric": "bleu",
+      "python_api": 31.801812164723092,
+      "cli": 31.801812164723,
+      "matched": true
+    },
+    {
+      "target": "eng",
+      "metric": "chrfpp",
+      "python_api": 57.94906382348988,
+      "cli": 57.94906382349,
+      "matched": true
+    },
+    {
+      "target": "eng",
+      "metric": "ter",
+      "python_api": 56.08610567514677,
+      "cli": 56.086105675147,
+      "matched": true
+    },
+    {
+      "target": "deu",
+      "metric": "bleu",
+      "python_api": 33.636681595112194,
+      "cli": 33.636681595112,
+      "matched": true
+    },
+    {
+      "target": "deu",
+      "metric": "chrfpp",
+      "python_api": 58.43117740018903,
+      "cli": 58.431177400189,
+      "matched": true
+    },
+    {
+      "target": "deu",
+      "metric": "ter",
+      "python_api": 53.17286652078774,
+      "cli": 53.172866520788,
+      "matched": true
+    }
+  ],
+  "mismatches": 0
+}

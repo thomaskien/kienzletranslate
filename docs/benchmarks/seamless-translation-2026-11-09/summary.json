@@ -1,0 +1,316 @@
+{
+  "title": "SeamlessM4T saved translation quality evaluation",
+  "samples": 240,
+  "failed_requests": 0,
+  "input_sha256": "3a0a50287d34f3eb8a18887b4c46e741063a599ca40c274afd9c6cfd94c752dd",
+  "evaluator_sha256": "a97eac007ab4f897889ae4117594ed283dcf6dabc7b690c6a042a78b6d565e8e",
+  "sacrebleu_version": "2.5.1",
+  "python_version": "3.14.6",
+  "normalization": "Symmetric NFC and whitespace collapse. Preserve case, punctuation and numbers; metric-specific tokenization follows each signature.",
+  "scope": "Existing direct speech-to-text translation outputs; no new model inference. Single reference per sample. Metric scores are not semantic accuracy percentages.",
+  "by_pair": {
+    "ar->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 33.80250675209641,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 59.35773317051007,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 52.54582484725051,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6835
+    },
+    "de->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 38.67265651694098,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 62.33894721109861,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 48.109243697478995,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.639
+    },
+    "en->deu": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 33.636681595112194,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 58.43117740018903,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 53.17286652078774,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.7215
+    },
+    "es->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 25.557274086893486,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 53.24541776689259,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 63.718820861678005,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.623
+    },
+    "fa->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 29.529148347239513,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 55.60747839624707,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 54.15778251599147,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6185
+    },
+    "fr->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 31.847401351383425,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 59.943154524775444,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 56.13305613305614,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.643
+    },
+    "it->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 23.226570306096637,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 52.92722126461307,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 70.76566125290023,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6495
+    },
+    "pl->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 22.29599082564507,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 48.11371247778452,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 66.39676113360325,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.667
+    },
+    "ro->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 42.43394587370265,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 67.56614622168532,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 42.637362637362635,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6665000000000001
+    },
+    "ru->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 35.484463089060384,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 60.754972082724,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 53.24384787472036,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6285000000000001
+    },
+    "tr->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 30.094320231942813,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 56.18760695723215,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 55.87044534412956,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.613
+    },
+    "uk->eng": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 34.33839372126636,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 61.198727009659784,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 54.060324825986086,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.6234999999999999
+    }
+  },
+  "by_target": {
+    "deu": {
+      "samples": 20,
+      "completed": 20,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 33.636681595112194,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 58.43117740018903,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 53.17286652078774,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.7215
+    },
+    "eng": {
+      "samples": 220,
+      "completed": 220,
+      "empty_outputs": 0,
+      "metrics": {
+        "bleu": {
+          "score": 31.801812164723092,
+          "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+        },
+        "chrfpp": {
+          "score": 57.94906382348988,
+          "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+        },
+        "ter": {
+          "score": 56.08610567514677,
+          "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+        }
+      },
+      "translation_seconds_median": 0.642
+    }
+  },
+  "mixed_targets_descriptive_only": {
+    "samples": 240,
+    "completed": 240,
+    "empty_outputs": 0,
+    "metrics": {
+      "bleu": {
+        "score": 31.96293613245507,
+        "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.5.1"
+      },
+      "chrfpp": {
+        "score": 57.99163403387365,
+        "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.5.1"
+      },
+      "ter": {
+        "score": 55.8469552721394,
+        "signature": "nrefs:1|case:lc|tok:tercom|norm:no|punct:yes|asian:no|version:2.5.1"
+      }
+    },
+    "translation_seconds_median": 0.65
+  },
+  "elapsed_scoring_seconds": 1.51724162499886
+}

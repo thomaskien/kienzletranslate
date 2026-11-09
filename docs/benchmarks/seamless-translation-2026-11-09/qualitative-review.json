@@ -1,0 +1,914 @@
+{
+  "method": "AI-assisted text-only diagnostic review by separate Sol worker, checked and amended by lead; not human bilingual certification or audio listening.",
+  "selection": "Four per language: first two in archive order and the lowest two sentence chrF++ scores among the remaining samples. Deliberately non-random and difficult-case-enriched.",
+  "rubric": {
+    "preserved": "Core meaning maintained; acceptable paraphrase.",
+    "minor": "Local wording or detail issue without clear material distortion of the main claim.",
+    "material": "Clear substantive omission or changed meaning, number, relation, entity, or term.",
+    "uncertain": "Source/reference divergence or ambiguity prevents a reliable attribution."
+  },
+  "samples_reviewed": 48,
+  "population_samples": 240,
+  "warning": "Categories are diagnostic judgments, not ground-truth labels or an estimate of population accuracy.",
+  "input_sha256": "37a4553105243372177feac8d9f19a95f076e1a647eeb367edf4bcee072a1ab9",
+  "lead_category_amendments": [
+    "es_419/10084850086754329587.wav",
+    "fa_ir/10039392309700583023.wav",
+    "fa_ir/10051486205118679596.wav",
+    "fr_fr/10043298898524273336.wav",
+    "ro_ro/10046906474723268578.wav",
+    "uk_ua/10479653954828478799.wav"
+  ],
+  "reviews": [
+    {
+      "sample_id": "ar_eg/10019390257075855641.wav",
+      "language": "ar",
+      "target_lang": "eng",
+      "reference": "تشكلت في المحيط الأطلسي اليوم عاشر عاصفة مُسماة لموسم الأعاصير الأطلسية، العاصفة شبه الاستوائية جيري.",
+      "hypothesis": "تشكلت في المحيط الأطلسي اليوم عشر عاصفة مسماة لموسم الأعاصير الأطلسي العاصفة شبه الاستوائية جيري.",
+      "translation_reference": "The tenth named storm of the Atlantic Hurricane season, Subtropical Storm Jerry, formed in the Atlantic Ocean today.",
+      "translated_text": "The Atlantic Ocean today formed the tenth storm of the Atlantic hurricane season, Tropical Storm Jerry.",
+      "sentence_chrfpp": 69.311819529676,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "relation",
+        "omission"
+      ],
+      "explanation": "The output makes the Atlantic Ocean the grammatical agent that formed the storm and changes the storm from subtropical to tropical.",
+      "evidence_reference": "Subtropical Storm Jerry, formed in the Atlantic Ocean",
+      "evidence_output": "The Atlantic Ocean today formed the tenth storm of the Atlantic hurricane season, Tropical Storm Jerry."
+    },
+    {
+      "sample_id": "ar_eg/10035416633083120372.wav",
+      "language": "ar",
+      "target_lang": "eng",
+      "reference": "تغادر الحافلات المحطة الداخلية بين المناطق (عبر النهر) في خلال اليوم على الرغم من أن معظمها وخاصة المتجهة منها إلى الشرق وجاكار/بومثانج تغادر بين 06:30 و 07:30.",
+      "hypothesis": "تغادر الحافلات المحطة الداخلية بين المناطق عبر النهر في خلال اليوم على الرغم من أن معظمها وخاصة المتجه منها إلى الشرق وجكارابومثانغ تغادر بين ستة وتلاتين وسبعة وتلاتين.",
+      "translation_reference": "Buses depart the inter-district bus station (across the river) throughout the day, though most, especially those heading to the east and Jakar/Bumthang leave between 06:30 and 07:30.",
+      "translated_text": "Domestic buses leave the areas across the river during the day, although most of them, especially those heading east, and Jakarta Puthang leave between 6 and 7.",
+      "sentence_chrfpp": 49.18810383885482,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "number",
+        "name",
+        "relation"
+      ],
+      "explanation": "The station becomes vague areas, Jakar/Bumthang is corrupted, and the precise 06:30–07:30 interval is reduced to 6–7.",
+      "evidence_reference": "Buses depart the inter-district bus station (across the river) throughout the day, though most, especially those heading to the east and Jakar/Bumthang leave between 06:30 and 07:30.",
+      "evidence_output": "Domestic buses leave the areas across the river during the day, although most of them, especially those heading east, and Jakarta Puthang leave between 6 and 7."
+    },
+    {
+      "sample_id": "ar_eg/10080665469720750912.wav",
+      "language": "ar",
+      "target_lang": "eng",
+      "reference": "يتمُّ دعْم التعلُّم التفاعليّ في البرنامج داخليًا ويهدف إلى طرح الأسئلة والتحفيز وشرح الإجراءاتِ التي قد يكون من الصعب على الطالب التعامل معها بمفرده.",
+      "hypothesis": "يتم دعم التعلم التفاعلي في البرنامج داخليا ويهدف إلى طرح الأسئلة والتحفيز وشرح الإجراءات التي قد يكون من الصعب على الطالب التعامل معها بمفرده.",
+      "translation_reference": "Virtual Scaffolds are internalized in the software and are meant to question, prompt, and explain procedures that may have been to challenging for the student to handle alone.",
+      "translated_text": "Interactive learning is supported internally in the program, aimed at asking questions, motivating and explaining procedures that may be difficult for the student to handle on his own.",
+      "sentence_chrfpp": 44.040606414689925,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity"
+      ],
+      "explanation": "The reference calls the feature virtual scaffolds, while the output calls it internally supported interactive learning; the Arabic source itself uses wording corresponding to interactive learning, so a text-only comparison cannot reliably penalize the output.",
+      "evidence_reference": "Virtual Scaffolds are internalized in the software",
+      "evidence_output": "Interactive learning is supported internally in the program"
+    },
+    {
+      "sample_id": "ar_eg/10427622000895658817.wav",
+      "language": "ar",
+      "target_lang": "eng",
+      "reference": "بصفة عامة، يمكن أن يظهر سلوكان عندما يبدأ المديرون في قيادة أقرانهم السابقين أحدهما هو محاولة البقاء \"مثل الآخرين\" (أو الأخريات).",
+      "hypothesis": "بصفة عامة يمكن أن يظهر سلوكان عندما يبدأ المديرون في قيادة أقرانهم السابقين، أحدهما هو محاولة البقاء مثل الآخرين أو الأخريات.",
+      "translation_reference": "Generally speaking, two behaviors can emerge as managers begin to lead their former peers. One end of the spectrum is trying to remain “one of the guys” (or gals).",
+      "translated_text": "In general, two behaviors can emerge when managers start leading their former peers, one of which is trying to survive like the others or the others.",
+      "sentence_chrfpp": 45.428817172732124,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "idiom",
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The idiom about remaining socially one of the group is mistranslated as trying to survive like others, changing the behavior being described.",
+      "evidence_reference": "trying to remain “one of the guys”",
+      "evidence_output": "trying to survive like the others"
+    },
+    {
+      "sample_id": "de_de/10004059102127011984.wav",
+      "language": "de",
+      "target_lang": "eng",
+      "reference": "Für die besten Aussichten auf Hongkong sollten Sie die Insel verlassen und zum gegenüberliegenden Ufer von Kowloon fahren.",
+      "hypothesis": "Für die besten Aussichten auf Hongkong sollten sie die Insel verlassen und zum gegenüberliegenden Ufer von Kowloon fahren.",
+      "translation_reference": "To get the best views of Hong Kong, leave the island and head for the Kowloon waterfront opposite.",
+      "translated_text": "For the best views of Hong Kong, you should leave the island and drive to the opposite shore of Kowloon.",
+      "sentence_chrfpp": 61.75590132380564,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The recommendation to leave Hong Kong Island for the opposite Kowloon shore to obtain the best views is preserved in a natural paraphrase.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "de_de/10009182821551087671.wav",
+      "language": "de",
+      "target_lang": "eng",
+      "reference": "Er griff auch alles an, was ins Wasser kam; selbst ein großer Dinosaurier wie der T. Rex war ihm nicht gewachsen.",
+      "hypothesis": "Er griff auch alles an, was ins Wasser kam. Selbst ein großer Dinosaurier wie der T-Rex war ihm nicht gewachsen.",
+      "translation_reference": "It also attacked anything that entered the water; even a giant dinosaur such as T. rex would be no match for it.",
+      "translated_text": "He also attacked everything that came into the water. Even a big dinosaur like the T-Rex hadn't grown on him.",
+      "sentence_chrfpp": 36.83501184695881,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "idiom",
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The statement that even T. rex would be no match is replaced by the unrelated and ungrammatical claim that it had not grown on him.",
+      "evidence_reference": "T. rex would be no match for it",
+      "evidence_output": "the T-Rex hadn't grown on him"
+    },
+    {
+      "sample_id": "de_de/103625751236710165.wav",
+      "language": "de",
+      "target_lang": "eng",
+      "reference": "Lakkha Singh präsentierte den Chhappan Bhog Bhajan ebenfalls. Der Sänger Raju Khandelwal begleitete ihn.",
+      "hypothesis": "Laka Singh präsentierte den Japan-Bog Bayern ebenfalls, der Sänger Raju Kandelwal begleitete ihn.",
+      "translation_reference": "Lakkha Singh presented the chhappan bhog bhajan as well. Singer, Raju Khandelwal was accompanying him.",
+      "translated_text": "Laker Singh also presented the Japan-Borg-Bavarian, the singer Raju Kandelwal accompanied him.",
+      "sentence_chrfpp": 37.122729743162346,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "name"
+      ],
+      "explanation": "Both Lakkha Singh and Raju Khandelwal are misspelled, and the named devotional work is transformed into the unrelated phrase “Japan-Borg-Bavarian.”",
+      "evidence_reference": "Lakkha Singh presented the chhappan bhog bhajan as well. Singer, Raju Khandelwal was accompanying him.",
+      "evidence_output": "Laker Singh also presented the Japan-Borg-Bavarian, the singer Raju Kandelwal accompanied him."
+    },
+    {
+      "sample_id": "de_de/10371526464884803925.wav",
+      "language": "de",
+      "target_lang": "eng",
+      "reference": "Der Scotturb-Bus 403 fährt regelmäßig über Cabo da Roca nach Sintra.",
+      "hypothesis": "Der Scotabus vierhundertdrei fährt regelmäßig über Cabo da Roca nach Sintra.",
+      "translation_reference": "Scotturb Bus 403 travels regularly to Sintra, stopping at Cabo da Roca.",
+      "translated_text": "The Scotabus four hundred and three regularly runs over Cabo da Roca to Sintra.",
+      "sentence_chrfpp": 39.92795018792228,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "name",
+        "fluency"
+      ],
+      "explanation": "The operator name Scotturb is changed to Scotabus, while “runs over Cabo da Roca” is an awkward rendering of stopping there en route.",
+      "evidence_reference": "Scotturb Bus 403 travels regularly to Sintra, stopping at Cabo da Roca.",
+      "evidence_output": "The Scotabus four hundred and three regularly runs over Cabo da Roca to Sintra."
+    },
+    {
+      "sample_id": "en_us/1003119935936341070.wav",
+      "language": "en",
+      "target_lang": "deu",
+      "reference": "However, due to the slow communication channels, styles in the west could lag behind by 25 to 30 year.",
+      "hypothesis": "However, due to the slow communication channels, styles in the West could lag behind by twenty-five to thirty years.",
+      "translation_reference": "Allerdings hängen die Stile im Westen aufgrund der langsamen Kommunikationskanäle 25 bis 30 Jahre hinterher.",
+      "translated_text": "Aufgrund der langsamen Kommunikationskanäle könnten die Stile im Westen jedoch um 25 bis 30 Jahre zurückbleiben.",
+      "sentence_chrfpp": 68.2467943490663,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The possible 25-to-30-year lag in Western styles due to slow communication is fully preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "en_us/10052240106321793346.wav",
+      "language": "en",
+      "target_lang": "deu",
+      "reference": "All nouns, alongside the word Sie for you, always begin with a capital letter, even in the middle of a sentence.",
+      "hypothesis": "All nouns alongside the word say for you always start with a capital letter, even in the middle of a sentence",
+      "translation_reference": "\"Alle Substantive beginnen neben dem Wort Sie für \"\"you\"\" immer mit einem Großbuchstaben, auch in der Mitte eines Satzes.\"",
+      "translated_text": "Alle Substantiven neben dem Wort \"sagen für Sie\" beginnen immer mit einem Großbuchstaben, selbst in der Mitte eines Satzes.",
+      "sentence_chrfpp": 71.19485151533361,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The German pronoun Sie as the word meaning “you” becomes the incoherent phrase “sagen für Sie,” so the capitalization rule's key example is lost.",
+      "evidence_reference": "\"Alle Substantive beginnen neben dem Wort Sie für \"\"you\"\" immer mit einem Großbuchstaben, auch in der Mitte eines Satzes.\"",
+      "evidence_output": "dem Wort \"sagen für Sie\""
+    },
+    {
+      "sample_id": "en_us/10731896540541531669.wav",
+      "language": "en",
+      "target_lang": "deu",
+      "reference": "His work is of such recognized quality and detail that he is one of the very few \"household names\" among philatelists. Some specialize in collecting his work alone.",
+      "hypothesis": "His work is of such recognized quality and detail that he is one of the very few household names among philatelists, some specializing in collecting his work alone.",
+      "translation_reference": "Die Qualität und Präzision seiner Arbeit werden so hoch geschätzt, dass sein Name zu den sehr wenigen allgemein bekannten Namen im Bereich der Philatelie zählt. Manche Sammler sind ausschließlich auf seine Arbeit spezialisiert.",
+      "translated_text": "Seine Arbeit ist so anerkannt für ihre Qualität und Details, dass er einer der wenigen bekannten Namen unter den Philatelisten ist, von denen einige sich darauf spezialisieren, seine Arbeiten allein zu sammeln.",
+      "sentence_chrfpp": 39.80082632087773,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "minor",
+      "tags": [
+        "fluency"
+      ],
+      "explanation": "The reputation for quality and detail and the existence of collectors specializing exclusively in his work remain, but the German phrasing is awkward and “allein” is less precise than “ausschließlich.”",
+      "evidence_reference": "Manche Sammler sind ausschließlich auf seine Arbeit spezialisiert",
+      "evidence_output": "einige sich darauf spezialisieren, seine Arbeiten allein zu sammeln"
+    },
+    {
+      "sample_id": "en_us/10405958125670257178.wav",
+      "language": "en",
+      "target_lang": "deu",
+      "reference": "Lion prides act much like packs of wolves or dogs, animals surprisingly similar to lions (but not other big cats) in behavior, and also very deadly to their prey.",
+      "hypothesis": "Lion Pride acts much like packs of wolves or dogs, animals surprisingly similar to lions but not other big cats in behavior and also very deadly to their prey.",
+      "translation_reference": "Löwenrudel agieren ähnlich wie Wolfs- oder Hunderudel, Tiere, die den Löwen (aber nicht anderen Großkatzen) im Verhalten überraschend ähneln und ebenso tödlich gegenüber ihrer Beute sind.",
+      "translated_text": "Lion Pride verhält sich wie ein Haufen Wölfe oder Hunde, Tiere, die überraschend ähnlich wie Löwen sind, aber nicht wie andere große Katzen und auch sehr tödlich für ihre Beute.",
+      "sentence_chrfpp": 41.52565316074078,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "minor",
+      "tags": [
+        "fluency"
+      ],
+      "explanation": "The comparison among lion, wolf, and dog packs and their danger to prey is retained, but “Lion Pride” is left in English and “ein Haufen” is an awkward substitute for a pack.",
+      "evidence_reference": "Löwenrudel agieren ähnlich wie Wolfs- oder Hunderudel",
+      "evidence_output": "Lion Pride verhält sich wie ein Haufen Wölfe oder Hunde"
+    },
+    {
+      "sample_id": "es_419/1001146817223348054.wav",
+      "language": "es",
+      "target_lang": "eng",
+      "reference": "Se recomienda enfáticamente a los viajeros que se informen sobre cualquier riesgo de clima extremo en el área que visitan, dado que ello puede afectar sus planes de viaje.",
+      "hypothesis": "se recomienda enfáticamente a los viajeros que se informen sobre cualquier riesgo del clima extremo en el área que visitan dado que ello puede afectar sus planes de viaje",
+      "translation_reference": "Travellers are strongly advised to be aware of any risk of severe weather affecting their area as they may affect any travel plans.",
+      "translated_text": "It is strongly recommended that travellers be informed of any extreme weather hazards in the area they are visiting, as this may affect their travel plans.",
+      "sentence_chrfpp": 45.184220162603175,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The strong advice to learn about severe-weather risks because they may affect travel plans is preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "es_419/10050510856477907332.wav",
+      "language": "es",
+      "target_lang": "eng",
+      "reference": "El uso adecuado de los blogs «puede empoderar a los alumnos para que sean más analíticos y críticos, a través de la respuesta activa a los contenidos de internet, pueden definir sus posturas en el contexto de los escritos de otros, además de establecer sus perspectivas sobre temas específicos» (Oravec, 2002).",
+      "hypothesis": "el uso adecuado de los blogs puede empoderar a los alumnos para que sean más analíticos y críticos a través de la respuesta activa a los contenidos de internet pueden definir sus posturas en el contexto de los escritos de otros además de establecer sus perspectivas sobre temas específicos",
+      "translation_reference": "Appropriate use of blogs \"can empower students to become more analytical and critical; through actively responding to Internet materials, students can define their positions in the context of others' writings as well as outline their own perspectives on particular issues (Oravec, 2002).",
+      "translated_text": "The proper use of blogs can empower students to be more analytical and critical through active response to Internet content. They can define their positions in the context of other people's writings as well as establish their perspectives on specific topics.",
+      "sentence_chrfpp": 60.48056379964608,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "omission",
+        "name"
+      ],
+      "explanation": "The substantive description of how blogs support critical engagement is retained, but the explicit attribution to Oravec (2002) is completely omitted.",
+      "evidence_reference": "(Oravec, 2002)",
+      "evidence_output": "establish their perspectives on specific topics"
+    },
+    {
+      "sample_id": "es_419/10084850086754329587.wav",
+      "language": "es",
+      "target_lang": "eng",
+      "reference": "Esto parece tener sentido, ya que en la Tierra no se percibe su movimiento, ¿cierto?",
+      "hypothesis": "Esto parece tener sentido, ya que en la Tierra no se percibe su movimiento, ¿cierto?",
+      "translation_reference": "This seems sensible, because the Earth doesn't feel as if it's moving, does it?",
+      "translated_text": "This seems to make sense, since on Earth you don't see their movement, right?",
+      "sentence_chrfpp": 28.091236583368534,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "minor",
+      "tags": [
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The general claim that Earth’s movement is not perceptible remains. The output’s “see their movement” has an ambiguous referent; the Spanish source uses a general perception verb, so a strong feel-versus-see error claim is unwarranted.",
+      "evidence_reference": "the Earth doesn't feel as if it's moving",
+      "evidence_output": "on Earth you don't see their movement"
+    },
+    {
+      "sample_id": "es_419/1008205615316519958.wav",
+      "language": "es",
+      "target_lang": "eng",
+      "reference": "Fue tanta la cantidad de gente que se concentró, que no todos pudieron acceder al funeral en la Plaza de San Pedro.",
+      "hypothesis": "fue tanta la cantidad de gente que se concentró que no todos pudieron acceder al funeral en la plaza de san pedro",
+      "translation_reference": "The number of people present was so large that it was not possible for everybody to gain access to the funeral in St. Peter's Square.",
+      "translated_text": "It was so many people that gathered that not everyone could attend the funeral in St. Peter's Square.",
+      "sentence_chrfpp": 42.98188033394176,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The crowd being too large for everyone to attend the funeral in St. Peter's Square is preserved despite mildly awkward wording.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "fa_ir/10039392309700583023.wav",
+      "language": "fa",
+      "target_lang": "eng",
+      "reference": "این سند بر اساس این درز اطلاعاتی است و به اختلاف مرزی مربوط می‌شود، که در آن فلسطین خواستار مرزبندی طبق شرایط قبل از جنگ شش‌روزه 1967 است.",
+      "hypothesis": "این سند بر اساس این درز اطلاعاتی است و به اختلاف مرزی مربوط می شود که در آن فلسطین خواستار مرزبندی طبق شرایط قبل از جنگ شش روزه هزار و نهصد و شصت و هفت است.",
+      "translation_reference": "The document, according to the leak, will refer to the borders dispute, which Palestine wants based on the borders before the 1967 Mideast War.",
+      "translated_text": "The document is based on this information and relates to the border dispute, in which Palestine demanded a border demarcation under the conditions before the Six-Day War of 1967.",
+      "sentence_chrfpp": 48.19387199919211,
+      "selection": "first two in archive order",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity",
+        "omission"
+      ],
+      "explanation": "The Persian source uses a document-based-on-leaked-information construction closer to the output than to the target reference. The leak detail and tense remain imperfect, but reference divergence prevents a clean material-error attribution.",
+      "evidence_reference": "The document, according to the leak, will refer to the borders dispute, which Palestine wants based on the borders before the 1967 Mideast War.",
+      "evidence_output": "The document is based on this information and relates to the border dispute, in which Palestine demanded a border demarcation under the conditions before the Six-Day War of 1967."
+    },
+    {
+      "sample_id": "fa_ir/10051486205118679596.wav",
+      "language": "fa",
+      "target_lang": "eng",
+      "reference": "این کمیسیون پاسخ مارتلی بود به اعتراضات گسترده ضدحکومتی که در ماه اکتبر آغاز شد.",
+      "hypothesis": "این کمیسیون پاسخ مارتلی بود به اعتراضات گسترده زند حکومتی که در ماه اکتبر آغاز شد.",
+      "translation_reference": "The commission was Martelly's response to widespread anti-regime protests that started in October.",
+      "translated_text": "The commission was Martley's response to widespread protests against the government that began in October.",
+      "sentence_chrfpp": 64.67935446880921,
+      "selection": "first two in archive order",
+      "category": "minor",
+      "tags": [
+        "name"
+      ],
+      "explanation": "The protest description, October timing and commission relationship are preserved. Martley differs from the conventional spelling Martelly; this is a local name-rendering issue without clear evidence that a different person is intended.",
+      "evidence_reference": "Martelly's response",
+      "evidence_output": "Martley's response"
+    },
+    {
+      "sample_id": "fa_ir/10393579599779364314.wav",
+      "language": "fa",
+      "target_lang": "eng",
+      "reference": "اتو زدن لباس‌های مرطوب می‌تواند به خشک کردن آنها کمک کند. در بسیاری از هتل‌ها، امکان قرض گرفتن اتو و میز اتو وجود دارد، حتی اگر در اتاق نباشد.",
+      "hypothesis": "اتو زدن لباس های مرطوب می تواند به خشک کردن آنها کمک کند، در بسیاری از هتل ها امکان قرض گرفتن اتو و میز اتو وجود دارد حتی اگر در اتاق نباشد.",
+      "translation_reference": "Ironing damp clothes can help them dry. Many hotels have an iron and ironing board available for loan, even if one is not present in the room.",
+      "translated_text": "Wetting wet clothes can help dry them, and in many hotels, it's possible to borrow a towel and a towel table, even if you're not in the room.",
+      "sentence_chrfpp": 38.992676031781556,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "idiom",
+        "relation"
+      ],
+      "explanation": "Ironing damp clothes becomes wetting wet clothes, and an iron and ironing board become a towel and “towel table”; the room condition is also reversed into the guest not being in the room.",
+      "evidence_reference": "Ironing damp clothes can help them dry. Many hotels have an iron and ironing board available for loan, even if one is not present in the room.",
+      "evidence_output": "Wetting wet clothes can help dry them, and in many hotels, it's possible to borrow a towel and a towel table, even if you're not in the room."
+    },
+    {
+      "sample_id": "fa_ir/10130894543333251273.wav",
+      "language": "fa",
+      "target_lang": "eng",
+      "reference": "بعضی اتم‌ها هسته‌های ناپایداری دارند یعنی بدون اشاره یا با اشاره‌ای کوچک تمایل به فروپاشی دارند.",
+      "hypothesis": "بعضی اتمها حصه های ناپایدار دارند، یعنی بدون اشاره یا با اشاره کوچک تمایل به فروپاشی دارند.",
+      "translation_reference": "Some atoms have unstable nuclei which means that they tend to break apart with little or no nudging.",
+      "translated_text": "Some atoms have unstable atoms, that is, they tend to decay without a signal or with a small signal.",
+      "sentence_chrfpp": 42.67997715986252,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "relation"
+      ],
+      "explanation": "The scientific subject is changed from unstable atomic nuclei to unstable atoms, and physical nudging is recast as a signal.",
+      "evidence_reference": "Some atoms have unstable nuclei which means that they tend to break apart with little or no nudging.",
+      "evidence_output": "Some atoms have unstable atoms, that is, they tend to decay without a signal or with a small signal."
+    },
+    {
+      "sample_id": "fr_fr/10043298898524273336.wav",
+      "language": "fr",
+      "target_lang": "eng",
+      "reference": "L’accident a eu lieu en terrain montagneux, et il semblerait que cela ait été causé par un incendie malveillant.",
+      "hypothesis": "L'accident a eu lieu en terrain montagneux, et il semblerait que cela ait été causé par un incendie malveillant.",
+      "translation_reference": "The crash occurred high up in mountainous terrain, and is believed to have been the result of hostile fire.",
+      "translated_text": "The accident occurred in mountainous terrain, and it appears to have been caused by a malicious fire.",
+      "sentence_chrfpp": 49.59440344905307,
+      "selection": "first two in archive order",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity"
+      ],
+      "explanation": "The French source explicitly says “incendie malveillant”, which the output renders as “malicious fire”. The target reference instead says “hostile fire”; this discrepancy originates in the source/reference pair and cannot be assigned to this model on text evidence alone.",
+      "evidence_reference": "the result of hostile fire",
+      "evidence_output": "caused by a malicious fire"
+    },
+    {
+      "sample_id": "fr_fr/10097171356371990207.wav",
+      "language": "fr",
+      "target_lang": "eng",
+      "reference": "Nous sommes d'accord avec la déclaration de l'USOC (Comité olympique des États-Unis) selon laquelle les intérêts de nos athlètes et de nos clubs, ainsi que de leur sport, pourraient être mieux servis. Cela peut être fait en allant de l'avant et en procédant plutôt à des changements significatifs au sein de notre organisation, qu'à la révocation d'accréditation.",
+      "hypothesis": "nous sommes d'accord avec la déclaration de l'usock comité olympique des états-unis selon laquelle les intérêts de nos athlètes et de nos clubs ainsi que de leurs sports pourraient être mieux servis cela peut être fait en allant de l'avant et en procédant plutôt à des changements significatifs au sein de notre organisation qu'à la révocation d'accréditations",
+      "translation_reference": "We agree with the USOC's statement that the interests of our athletes and clubs, and their sport, may be better served by moving forward with meaningful change within our organization, rather than decertification.",
+      "translated_text": "We agree with the statement of the United States Olympic Committee that the interests of our athletes and our clubs as well as their sports can be better served by moving forward and making significant changes within our organization rather than by revoking accreditation.",
+      "sentence_chrfpp": 64.94002968806225,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The preference for meaningful internal changes over decertification, in the interests of athletes, clubs, and the sport, is preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "fr_fr/10221277978969763776.wav",
+      "language": "fr",
+      "target_lang": "eng",
+      "reference": "Malgré le net avantage de Del Potro pendant le deuxième set, il a fallu passer par un tie-break une fois que le score a atteint 6-6.",
+      "hypothesis": "Malgré le net avantage de Del Potro pendant le deuxième set, il a fallu passer par un tie-break une fois que le score atteint six-six.",
+      "translation_reference": "Del Potro had the early advantage in the second set, but this too required a tie break after reaching 6-6.",
+      "translated_text": "Despite Del Potro's clear advantage during the second set, he had to go through a tie-break once the score reached six-six.",
+      "sentence_chrfpp": 40.28848452947542,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity"
+      ],
+      "explanation": "The reference describes an early advantage, while the output describes a clear advantage during the set; the French source supports the latter wording, so the difference cannot be reliably judged against the target reference alone.",
+      "evidence_reference": "the early advantage in the second set",
+      "evidence_output": "clear advantage during the second set"
+    },
+    {
+      "sample_id": "fr_fr/10166091086920486572.wav",
+      "language": "fr",
+      "target_lang": "eng",
+      "reference": "Le même mois, un autre avion de ligne a fait une sortie de piste à Mashhad et a heurté un mur, tuant ainsi dix-sept personnes.",
+      "hypothesis": "le même mois un autre avion de ligne a fait une sortie de piste à machade et heurté un mur tuant ainsi dix-sept personnes",
+      "translation_reference": "The same month saw another airliner overrun a runway at Mashhad and strike a wall, killing seventeen.",
+      "translated_text": "In the same month another airline made a runway exit in Machade and hit a wall killing 17 people",
+      "sentence_chrfpp": 41.644446738990354,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "name"
+      ],
+      "explanation": "The runway excursion, wall strike, and 17 deaths are preserved, but the city name Mashhad is changed to Machade.",
+      "evidence_reference": "at Mashhad",
+      "evidence_output": "in Machade"
+    },
+    {
+      "sample_id": "it_it/10000151032537989529.wav",
+      "language": "it",
+      "target_lang": "eng",
+      "reference": "Il blog è uno strumento che si prefigge di incoraggiare la collaborazione e sviluppare l'apprendimento degli studenti ben oltre la giornata scolastica normale.",
+      "hypothesis": "Il blog è uno strumento che si prefigge di incoraggiare la collaborazione e sviluppare l'apprendimento degli studenti ben oltre la giornata scolastica normale.",
+      "translation_reference": "Blogging is a tool that inspires collaboration, and encourages students to extend learning well beyond the traditional school day.",
+      "translated_text": "Blogging is a tool that aims to encourage collaboration and develop students' learning beyond the normal school day.",
+      "sentence_chrfpp": 59.450781481763734,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The blog's purpose of encouraging collaboration and extending student learning beyond the normal school day is preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "it_it/10011138801715101183.wav",
+      "language": "it",
+      "target_lang": "eng",
+      "reference": "Sotto il ponte lo spazio in verticale libero è di 15 metri. La costruzione è terminata nell'agosto del 2011, ma l'apertura al traffico è avvenuta solo nel marzo 2017.",
+      "hypothesis": "Sotto il ponte lo spazio in verticale libero è di quindici metri la costruzione è terminata nell'agosto del duemila undici ma l'apertura al traffico è avvenuta solo nel marzo duemila diciassette",
+      "translation_reference": "The vertical clearance under the bridge is 15 meters. Construction was completed in August 2011, it didn't open to traffic until March 2017.",
+      "translated_text": "Under the bridge, the vertical free space is fifteen meters, the construction was completed in August of two thousand and eleven, but the opening to traffic occurred only in March of two thousand and seventeen.",
+      "sentence_chrfpp": 47.57706717921584,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The 15-meter clearance and the August 2011 completion followed by a March 2017 opening are all preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "it_it/10421376619578532077.wav",
+      "language": "it",
+      "target_lang": "eng",
+      "reference": "I parigini hanno fama di essere egocentrici, scortesi e presuntuosi.",
+      "hypothesis": "I parigini hanno fama di essere egocentrici, scortesi e presuntuosi.",
+      "translation_reference": "Parisians have a reputation for being egocentric, rude and arrogant.",
+      "translated_text": "Parisians are known to be self-centered, rude and presumptuous.",
+      "sentence_chrfpp": 31.221748669833556,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The three traits in Parisians' reputation are conveyed by close English synonyms without changing the claim.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "it_it/10275928643200034491.wav",
+      "language": "it",
+      "target_lang": "eng",
+      "reference": "Si tratta di spiagge adatte alle famiglie a volte un po' affollate, circondate da un'ampia scelta di negozi. Si può fare il bagno in modo sicuro.",
+      "hypothesis": "si tratta di spiagge adatte alle famiglie a volte un po affollate circondate da un'ampia scelta di negozi si può fare il bagno in modo sicuro",
+      "translation_reference": "These are sometimes-crowded family beaches with a good range of shops lining the shore. Swimming is safe.",
+      "translated_text": "These are beaches suitable for families sometimes a little crowded surrounded by a wide selection of shops you can take a bath safely",
+      "sentence_chrfpp": 34.389316982649014,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "minor",
+      "tags": [
+        "idiom",
+        "fluency"
+      ],
+      "explanation": "The family beaches, occasional crowding, nearby shops, and safety in the water remain, but “take a bath safely” is an awkward rendering of swimming safely.",
+      "evidence_reference": "Swimming is safe",
+      "evidence_output": "you can take a bath safely"
+    },
+    {
+      "sample_id": "pl_pl/10003602174340488201.wav",
+      "language": "pl",
+      "target_lang": "eng",
+      "reference": "Podróżni zwiedzający państwa obłożone szczególnie wysokimi podatkami mogą czasem zaoszczędzić sporo pieniędzy, szczególnie na takich towarach jak alkohol i tytoń.",
+      "hypothesis": "Podróżni zwiedzający państwa obłożone szczególnie wysokimi podatkami mogą czasem zaoszczędzić sporo pieniędzy, szczególnie na takich towarach jak alkohol i tytoń.",
+      "translation_reference": "Travellers bound for countries with heavy taxation can sometimes save a considerable amount of money, especially on products such as alcoholic beverages and tobacco.",
+      "translated_text": "Travelers visiting countries with particularly high taxes can sometimes save a lot of money, especially on such commodities as alcohol and tobacco.",
+      "sentence_chrfpp": 52.91487188750328,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "The opportunity to save money on alcohol and tobacco in highly taxed countries is preserved; “visiting” is consistent with the source wording.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "pl_pl/10111380715278909641.wav",
+      "language": "pl",
+      "target_lang": "eng",
+      "reference": "Jednym z najbardziej popularnych sposobów obrazujących wagę socjalizacji jest oparcie się na nielicznych nieszczęśliwych przypadkach dzieci, które nie zostały uspołecznione przez dorosłych w okresie dorastania – czy to z powodu zaniedbania, nieszczęścia czy umyślnego wykorzystywania.",
+      "hypothesis": "jednym z najbardziej popularnych sposobów obrażających wagę socjalizacji jest oparte się na nielicznych nieszczęśliwych przypadkach dzieci które nie zostały uspołeczone przez dorosłych w okresie dorastania czy to z powodu zaniedbania nieszczęścia czy umyślnego wykorzystywania",
+      "translation_reference": "One of the most common methods used to illustrate the importance of socialization is to draw upon the few unfortunate cases of children who were, through neglect, misfortune, or wilful abuse, not socialized by adults while they were growing up.",
+      "translated_text": "One of the most popular ways of expressing the importance of socialization is to rely on the few unhappy cases of children who have not been socialized by adults in their adulthood, whether because of neglect, misfortune or deliberate exploitation.",
+      "sentence_chrfpp": 53.587413807291504,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "relation"
+      ],
+      "explanation": "Children not socialized while growing up are changed into children not socialized in adulthood, reversing the relevant life stage; abuse is also weakened to exploitation.",
+      "evidence_reference": "One of the most common methods used to illustrate the importance of socialization is to draw upon the few unfortunate cases of children who were, through neglect, misfortune, or wilful abuse, not socialized by adults while they were growing up.",
+      "evidence_output": "One of the most popular ways of expressing the importance of socialization is to rely on the few unhappy cases of children who have not been socialized by adults in their adulthood, whether because of neglect, misfortune or deliberate exploitation."
+    },
+    {
+      "sample_id": "pl_pl/10577070186203717497.wav",
+      "language": "pl",
+      "target_lang": "eng",
+      "reference": "Można dostrzec pewne podobieństwa do narciarstwa alpejskiego i wspinaczki, jednak w odróżnieniu od nich trasa nie przebiega przez stromy teren i nie są potrzebne solidniejsze narty i buty.",
+      "hypothesis": "można dostrzec pewne podobieństwo do rodzicielstwa alpejskiego i spinaczki jednak w odróżnieniu od nich trasa nie przebiega przez stromy teren i nie są potrzebne solidniejsze narty i buty",
+      "translation_reference": "It is related to but usually not involving alpine style ski touring or mountaineering, the latter ones done in steep terrain and requiring much stiffer skis and boots.",
+      "translated_text": "You can see some similarities to the Alpine and the Spinach, but unlike them, the route doesn't run through steep terrain and you don't need more solid slopes and boots.",
+      "sentence_chrfpp": 30.539910054622784,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "idiom",
+        "omission",
+        "relation"
+      ],
+      "explanation": "Alpine ski touring and mountaineering become “the Alpine and the Spinach,” and stiffer skis become more solid slopes, obscuring the activities and equipment comparison.",
+      "evidence_reference": "It is related to but usually not involving alpine style ski touring or mountaineering, the latter ones done in steep terrain and requiring much stiffer skis and boots.",
+      "evidence_output": "You can see some similarities to the Alpine and the Spinach, but unlike them, the route doesn't run through steep terrain and you don't need more solid slopes and boots."
+    },
+    {
+      "sample_id": "pl_pl/10166331184477401711.wav",
+      "language": "pl",
+      "target_lang": "eng",
+      "reference": "Jeżeli schodzisz na brzeg wyłącznie podczas wycieczek statkiem, nie musisz mieć oddzielnej wizy (sytuacja na 2009 r.).",
+      "hypothesis": "Jeżeli schodzisz na brzeg wyłącznie podczas wycieczek statkiem nie musisz mieć oddzielnej wizy sytuacja na dwa tysiące dziewiąty rok.",
+      "translation_reference": "If you only go ashore using shipboard excursions you will not need a separate visa (as of 2009).",
+      "translated_text": "If you go ashore exclusively on a boat trip, you don't have to have a separate visa.",
+      "sentence_chrfpp": 34.61126068625957,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "omission",
+        "number"
+      ],
+      "explanation": "The visa advice is retained, but the time-sensitive qualifier that it applied as of 2009 is omitted.",
+      "evidence_reference": "(as of 2009)",
+      "evidence_output": "you don't have to have a separate visa"
+    },
+    {
+      "sample_id": "ro_ro/10046615478389309711.wav",
+      "language": "ro",
+      "target_lang": "eng",
+      "reference": "Pe tot parcursul anilor 1960, Brzezinski a lucrat pentru John F. Kennedy în calitate de consilier al acestuia, iar apoi pentru administrația Lyndon B. Johnson.",
+      "hypothesis": "Pe tot parcursul anilor o mie nouă sute șaizeci, Brezinski a lucrat pentru John F. Kennedy în calitate de consilier al acestuia, iar apoi pentru administrația Lyndon B. Johnson.",
+      "translation_reference": "Throughout 1960s, Brzezinski worked for John F. Kennedy as his advisor and then the Lyndon B. Johnson administration.",
+      "translated_text": "Throughout the 1960s, Brezinski worked for John F. Kennedy as his advisor and then for the Lyndon B. Johnson administration.",
+      "sentence_chrfpp": 89.34942981535592,
+      "selection": "first two in archive order",
+      "category": "minor",
+      "tags": [
+        "name"
+      ],
+      "explanation": "The employment history and named administrations are preserved, but Brzezinski's surname loses a letter.",
+      "evidence_reference": "Brzezinski",
+      "evidence_output": "Brezinski"
+    },
+    {
+      "sample_id": "ro_ro/10046906474723268578.wav",
+      "language": "ro",
+      "target_lang": "eng",
+      "reference": "Compoziția acestor cristale se potrivește cu a celor întâlnite în urina animalelor de companie afectate, atunci când sunt comparate printr-o spectroscopie în infraroșu (spectroscopie în IR).",
+      "hypothesis": "Compoziția acestor cristale se potrivește cu cele întâlnite în urina animalelor de companie afectate atunci când sunt comparate printr-o spectroscopie în infraroșu, spectroscopie în IR.",
+      "translation_reference": "The composition of these crystals matches those found in the urine of affected pets when compared by infrared spectroscopy (FTIR).",
+      "translated_text": "The composition of these crystals matches those found in the urine of affected pets when compared by infrared spectroscopy, IR spectroscopy.",
+      "sentence_chrfpp": 92.17134238136049,
+      "selection": "first two in archive order",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity"
+      ],
+      "explanation": "The core crystal-composition comparison is preserved, but the target reference specifies FTIR while the Romanian source only specifies infrared/IR spectroscopy. The output follows the source; the difference in method specificity is not evidence of a model omission.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "ro_ro/10078905333670677530.wav",
+      "language": "ro",
+      "target_lang": "eng",
+      "reference": "Celelalte nominalizări includ cel mai bun film, regizor, imagine, design de costume, montaj de film, coloană sonoră, design de producție, regie de sunet, mixaj sonor și scenariu original.",
+      "hypothesis": "Celelalte noi realizări includ cel mai bun film, regizor, imagini, design de costume, montaj de film, coloană sonoră, design de producție, regie de sunet, mixaj nou și scenariu original.",
+      "translation_reference": "The other nominations include Best Picture, Director, Cinematography, Costume Design, Film-editing, Original Score, Production Design, Sound Editing, Sound Mixing and Original Screenplay.",
+      "translated_text": "The other new millennials include the best film, director, images, costume design, film editing, sound coloring, production design, sound direction, new mixing and original script.",
+      "sentence_chrfpp": 36.662219341834735,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "idiom",
+        "relation"
+      ],
+      "explanation": "The list of award nominations is extensively corrupted: nominations become “new millennials,” cinematography becomes images, original score becomes sound coloring, and sound mixing becomes new mixing.",
+      "evidence_reference": "The other nominations include Best Picture, Director, Cinematography, Costume Design, Film-editing, Original Score, Production Design, Sound Editing, Sound Mixing and Original Screenplay.",
+      "evidence_output": "The other new millennials include the best film, director, images, costume design, film editing, sound coloring, production design, sound direction, new mixing and original script."
+    },
+    {
+      "sample_id": "ro_ro/10419554223481201989.wav",
+      "language": "ro",
+      "target_lang": "eng",
+      "reference": "La nord, ușor accesibil, se află romanticul și fascinantul oraș Sintra, care a devenit în afara granițelor țării în urma unei treceri revistă entuziaste a splendorilor sale, făcută de Lordul Byron.",
+      "hypothesis": "La nord, ușor accesibil, se află romanticul și fascinantul oraș Sintra, care a devenit în afara granițelor țării în urma unei treceri revistă entuziaste a splendorilor sale făcută de Lordul Byron.",
+      "translation_reference": "To the north and within easy reach is the romantic and fascinating town of Sintra and which was made famous to foreigners after a glowing account of its splendours recorded by Lord Byron.",
+      "translated_text": "To the north, easily accessible, is the romantic and fascinating city of Sintra, which has become outside the country's borders after an enthusiastic review of its splendors by Lord Byron.",
+      "sentence_chrfpp": 49.69757443046435,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "relation",
+        "fluency"
+      ],
+      "explanation": "Lord Byron's account making Sintra famous abroad becomes the incoherent claim that Sintra “has become outside the country's borders,” losing the fame relation.",
+      "evidence_reference": "made famous to foreigners after a glowing account",
+      "evidence_output": "has become outside the country's borders after an enthusiastic review"
+    },
+    {
+      "sample_id": "ru_ru/10000611681338527501.wav",
+      "language": "ru",
+      "target_lang": "eng",
+      "reference": "В древнем Китае использовали уникальный способ обозначения периодов времени; каждый этап Китая или каждая семья, находившаяся у власти, были особой династией.",
+      "hypothesis": "В древнем Китае использовали уникальный способ обозначения периодов времени. Каждый этап Китая или каждая семья, находившаяся у власти, были особой династией.",
+      "translation_reference": "Ancient China had a unique way of showing different time periods; each stage of China or each family that was in power was a distinctive dynasty.",
+      "translated_text": "In ancient China, a unique way of describing time periods was used: each stage of China, or each family in power, was a special dynasty.",
+      "sentence_chrfpp": 57.07184093311414,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "Ancient China's distinctive system of periods associated with stages or ruling families is preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "ru_ru/10002861505982796062.wav",
+      "language": "ru",
+      "target_lang": "eng",
+      "reference": "Мадагаскар намного больше других и  является самобытным континентом в том, что касается дикой природы.",
+      "hypothesis": "Мадагаскар гораздо больше других и является самобытным континентом в том, что касается дикой природы.",
+      "translation_reference": "Madagascar is by far the biggest, and a continent on its own when it comes to wildlife.",
+      "translated_text": "Madagascar is much larger than others and is a unique continent in terms of wildlife.",
+      "sentence_chrfpp": 38.15970901011599,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "Madagascar's much greater size and continent-like distinctiveness in wildlife are preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "ru_ru/10270509144878549012.wav",
+      "language": "ru",
+      "target_lang": "eng",
+      "reference": "Лаккха Сингх исполнил чхаппан бхог бхаджан.  Певец Раджу Кханделвал пел вместе с ним.",
+      "hypothesis": "Лакха Сингх исполнил чхапан пхо пхаджан, певец Раджу Кханделвал пел вместе с ним.",
+      "translation_reference": "Lakkha Singh presented the chhappan bhog bhajan as well. Singer, Raju Khandelwal was accompanying him.",
+      "translated_text": "Lakha Singh performed Chhappan Phok Phajan, the singer Raju Khandewal sang along with him.",
+      "sentence_chrfpp": 34.08547439567834,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "name"
+      ],
+      "explanation": "The people remain identifiable despite spelling variation, but the named devotional work “chhappan bhog bhajan” is materially corrupted to “Chhappan Phok Phajan.”",
+      "evidence_reference": "Lakkha Singh presented the chhappan bhog bhajan as well. Singer, Raju Khandelwal was accompanying him.",
+      "evidence_output": "Lakha Singh performed Chhappan Phok Phajan, the singer Raju Khandewal sang along with him."
+    },
+    {
+      "sample_id": "ru_ru/1027147027471254370.wav",
+      "language": "ru",
+      "target_lang": "eng",
+      "reference": "Показатель pH определяется степенью насыщенности ионами водорода (H в pH) исследуемого химического соединения.",
+      "hypothesis": "Показатель ПНГ определяется степенью насыщенности ионами водорода АЖ в ПНГ исследуемого химического соединения.",
+      "translation_reference": "The pH level is indicated by the amount of Hydrogen (the H in pH) ions in the tested chemical.",
+      "translated_text": "The pH index is determined by the degree of hydrogen ion saturation in the pH of the chemical compound being studied.",
+      "sentence_chrfpp": 37.531203221915106,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The amount of hydrogen ions indicating pH is changed into a degree of saturation “in the pH,” obscuring the scientific relationship.",
+      "evidence_reference": "The pH level is indicated by the amount of Hydrogen (the H in pH) ions in the tested chemical.",
+      "evidence_output": "degree of hydrogen ion saturation in the pH"
+    },
+    {
+      "sample_id": "tr_tr/10000377651956138413.wav",
+      "language": "tr",
+      "target_lang": "eng",
+      "reference": "Aynı ay, başka bir yolcu uçağı Meşhed'deki bir pisti aşarak bir duvara çarptı ve on yedi kişinin ölümüne neden oldu.",
+      "hypothesis": "aynı ay başka bir yolcu uçağı Meşet'teki bir pisti aşarak bir duvara çarptı ve on yedi kişinin ölümüne neden oldu",
+      "translation_reference": "The same month saw another airliner overrun a runway at Mashhad and strike a wall, killing seventeen.",
+      "translated_text": "In the same month, another passenger plane crashed into a wall across a runway in Mashhad, killing 17 people.",
+      "sentence_chrfpp": 42.089296912858046,
+      "selection": "first two in archive order",
+      "category": "minor",
+      "tags": [
+        "relation",
+        "fluency"
+      ],
+      "explanation": "The month, aircraft, Mashhad, wall impact, and 17 deaths are preserved, but “across a runway” renders the runway overrun imprecisely.",
+      "evidence_reference": "The same month saw another airliner overrun a runway at Mashhad and strike a wall, killing seventeen.",
+      "evidence_output": "crashed into a wall across a runway"
+    },
+    {
+      "sample_id": "tr_tr/10002518854052673247.wav",
+      "language": "tr",
+      "target_lang": "eng",
+      "reference": "Romantizm; Goethe, Fichte ve Schlegel gibi yazarlardan geçen geniş bir kültürel determinizm özelliği taşıyordu.",
+      "hypothesis": "Romantikizm Goethe, Pichte ve Schlegel gibi yazarlardan geçen geniş bir kültürel determinizm özelliği taşıyordu",
+      "translation_reference": "Romanticism had a large element of cultural determinism, drawn from writers such as Goethe, Fichte, and Schlegel.",
+      "translated_text": "Romanticism had a broad cultural determinism, passed down from writers such as Goethe, Pichte and Schlegel.",
+      "sentence_chrfpp": 69.33539237447037,
+      "selection": "first two in archive order",
+      "category": "material",
+      "tags": [
+        "name",
+        "relation"
+      ],
+      "explanation": "Fichte's name is changed to Pichte, and “drawn from” is rendered more strongly as cultural determinism being passed down from the writers.",
+      "evidence_reference": "drawn from writers such as Goethe, Fichte, and Schlegel",
+      "evidence_output": "passed down from writers such as Goethe, Pichte and Schlegel"
+    },
+    {
+      "sample_id": "tr_tr/10553789323222308394.wav",
+      "language": "tr",
+      "target_lang": "eng",
+      "reference": "Sonrasında fotoğrafçılar tuvalete gitmesi gereken yaşlı bir kadının yerine geçti. Mendoza vuruldu.",
+      "hypothesis": "sonrasında fotoğrafçılar tuvalete gitmesi gereken yaşlı bir kadının yerine geçti Mendoza vuruldu",
+      "translation_reference": "The photographers later took the place of an aged lady as she needed the lavatory. Mendoza was gunned down.",
+      "translated_text": "Then the photographers replaced an elderly woman who had to go to the bathroom.",
+      "sentence_chrfpp": 26.836340553699284,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "omission",
+        "name"
+      ],
+      "explanation": "The complete second statement that Mendoza was gunned down is omitted.",
+      "evidence_reference": "Mendoza was gunned down",
+      "evidence_output": "who had to go to the bathroom"
+    },
+    {
+      "sample_id": "tr_tr/10535511649972840884.wav",
+      "language": "tr",
+      "target_lang": "eng",
+      "reference": "Bir gözlemci, sokaklarında çetelerinin dolaşarak mağazaları yağmalamasıyla Bişkek'in bir \"anarşi\" durumuna saplandığını söyledi.",
+      "hypothesis": "Bir gözlemci sokaklarında çetelerinin dolaşarak mağazaları yağmalamasıyla Bişkek'in bir anarşi durumuna saplandığını söyledi.",
+      "translation_reference": "Bishkek was described as sinking into a state of \"anarchy\" by one observer, as gangs of people roamed the streets and plundered stores of consumer goods.",
+      "translated_text": "An observer said that Bishkek was plunged into a state of anarchy as its streets were flooded with shops.",
+      "sentence_chrfpp": 32.96274053166343,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "material",
+      "tags": [
+        "omission",
+        "relation"
+      ],
+      "explanation": "The gangs roaming streets and looting stores are replaced by streets being flooded with shops, removing the actions that explain the reported anarchy.",
+      "evidence_reference": "gangs of people roamed the streets and plundered stores",
+      "evidence_output": "its streets were flooded with shops"
+    },
+    {
+      "sample_id": "uk_ua/10095052411990461296.wav",
+      "language": "uk",
+      "target_lang": "eng",
+      "reference": "Місячна кора становить приблизно 70 км у товщину на ближній стороні та 100 км у товщину на дальній стороні.",
+      "hypothesis": "Місячна кора становить приблизно Сімдесят кілометрів у товщину На ближній стороні та Сто кілометрів у товщину На дальній стороні.",
+      "translation_reference": "The crust is about 70 km thick on the near side and 100 km thick on the far side.",
+      "translated_text": "The lunar crust is about seventy kilometers thick on the near side and one hundred kilometers thick on the far side.",
+      "sentence_chrfpp": 68.13592812061937,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "Both lunar-crust measurements, 70 km on the near side and 100 km on the far side, are exactly preserved.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "uk_ua/10108055665962923730.wav",
+      "language": "uk",
+      "target_lang": "eng",
+      "reference": "Рослини продукують кисень, яким дихає людина, і поглинають вуглекислий газ, який людина виводить з організму (тобто видихає).",
+      "hypothesis": "рослини виробляють кисень, Яким дихає Людина І поглинають вуглекислий газ, який Людина виводить з організму, тобто видихає.",
+      "translation_reference": "Plants make oxygen which humans breathe, and they take in carbon-dioxide which humans exhale (that is, breathe out).",
+      "translated_text": "Plants produce oxygen, which a person breathes, and absorb carbon dioxide, which a person exhales from the body.",
+      "sentence_chrfpp": 32.41741671949454,
+      "selection": "first two in archive order",
+      "category": "preserved",
+      "tags": [
+        "paraphrase"
+      ],
+      "explanation": "Plants producing inhaled oxygen and absorbing exhaled carbon dioxide is preserved in a close paraphrase.",
+      "evidence_reference": "",
+      "evidence_output": ""
+    },
+    {
+      "sample_id": "uk_ua/10759810327805382472.wav",
+      "language": "uk",
+      "target_lang": "eng",
+      "reference": "Він не встановив показник скорочень, сказавши, що це буде залежати від економічного обсягу виробництва Китаю.",
+      "hypothesis": "він не встановив показник скорочень, Сказавши, що це буде Залежити Від економічного обсягу виробництва Китаю.",
+      "translation_reference": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+      "translated_text": "He didn't set a reduction index, saying it would depend on the economic size of China's production.",
+      "sentence_chrfpp": 33.959789472862546,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "minor",
+      "tags": [
+        "fluency",
+        "paraphrase"
+      ],
+      "explanation": "The absence of a fixed cuts figure and its dependence on China's economic output remain, but “reduction index” and “economic size of production” are less idiomatic and precise.",
+      "evidence_reference": "He did not set a figure for the cuts, saying they will be made based on China's economic output.",
+      "evidence_output": "He didn't set a reduction index, saying it would depend on the economic size of China's production."
+    },
+    {
+      "sample_id": "uk_ua/10479653954828478799.wav",
+      "language": "uk",
+      "target_lang": "eng",
+      "reference": "Вчора Мартеллі дав присягу в новій Тимчасовій виборчій раді (ТВР), що складається з дев'яти членів.",
+      "hypothesis": "Вчора Мартелін Дав присягу В новій тимчасовій виборчій Раді ТВР, що складається з дев'яти членів.",
+      "translation_reference": "Martelly swore in a new Provisional Electoral Council (CEP) of nine members yesterday.",
+      "translated_text": "Yesterday, Martelin took the oath of office in the new interim electoral council of the TVR, which consists of nine members.",
+      "sentence_chrfpp": 37.715958768021764,
+      "selection": "lowest two chrF++ among the remaining samples",
+      "category": "uncertain",
+      "tags": [
+        "reference_ambiguity",
+        "name"
+      ],
+      "explanation": "The Ukrainian source describes Martelly taking an oath in the council and uses the Ukrainian abbreviation TVR, which the output follows. The English reference instead has Martelly swear in the council and uses CEP; that relation/acronym disagreement is not independently attributable to the model, although the name rendering Martelin remains imperfect.",
+      "evidence_reference": "Martelly swore in a new Provisional Electoral Council (CEP)",
+      "evidence_output": "Martelin took the oath of office in the new interim electoral council of the TVR"
+    }
+  ]
+}
