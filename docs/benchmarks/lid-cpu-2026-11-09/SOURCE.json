@@ -1,0 +1,30 @@
+{
+  "dataset": "google/fleurs",
+  "revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "url": "https://huggingface.co/datasets/google/fleurs",
+  "paper": "https://arxiv.org/abs/2205.12446",
+  "attribution": "FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech, Conneau et al., Google, 2022.",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "split": "test",
+  "recordings": 240,
+  "languages": [
+    "de_de",
+    "en_us",
+    "fr_fr",
+    "es_419",
+    "it_it",
+    "pl_pl",
+    "ro_ro",
+    "tr_tr",
+    "ar_eg",
+    "ru_ru",
+    "uk_ua",
+    "fa_ir"
+  ],
+  "selection": "First 20 eligible archive members per language; distinct sentence IDs; duration >= 8s. Not a random or representative population sample.",
+  "audio_changes": "None: original WAV bytes retained; SHA-256 recorded.",
+  "benchmark_subset": "First 10 eligible rows per language from manifest-speech.jsonl (>=8 s remaining after VAD onset); other recordings unused in the initial benchmark.",
+  "vad": "faster-whisper bundled Silero VAD on CPU, min_speech_duration_ms=250, min_silence_duration_ms=300, speech_pad_ms=0. Offline onset annotation; no internal pauses removed. Detection timings exclude this separately recorded preprocessing cost.",
+  "parallel_reference_note": "reference_translations joins original FLEURS test transcriptions across languages by sentence ID. Selected audio need not contain every sentence in every language; reference text availability is explicit per entry."
+}
