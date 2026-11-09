@@ -1,5 +1,19 @@
 # kienzletranslate v1.5
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=YIOPyuph8j8">
+    <img src="https://img.youtube.com/vi/YIOPyuph8j8/maxresdefault.jpg" width="900" alt="Watch the kienzletranslate demo video on YouTube">
+  </a>
+</p>
+
+<table>
+<tr><th width="50%">▶ Demo video</th><th width="50%">▶ Demo-Video</th></tr>
+<tr>
+<td><a href="https://www.youtube.com/watch?v=YIOPyuph8j8"><strong>Watch kienzletranslate in action on YouTube</strong></a> — local translation with SeamlessM4T on an NVIDIA RTX 3090. Click the preview above to play.</td>
+<td><a href="https://www.youtube.com/watch?v=YIOPyuph8j8"><strong>kienzletranslate auf YouTube in Aktion ansehen</strong></a> — lokale Übersetzung mit SeamlessM4T auf einer NVIDIA RTX 3090. Zum Abspielen auf das Vorschaubild klicken.</td>
+</tr>
+</table>
+
 <table>
 <tr><th width="50%">English</th><th width="50%">Deutsch</th></tr>
 <tr>
@@ -30,6 +44,22 @@
 
 <table>
 <tr><td width="50%"><em>Local GPU operation · Snapshot on an NVIDIA GeForce RTX 3090 with 24 GB VRAM.</em></td><td width="50%"><em>Lokaler GPU-Betrieb · Momentaufnahme auf einer NVIDIA GeForce RTX 3090 mit 24 GB Grafikspeicher.</em></td></tr>
+</table>
+
+<table>
+<tr><th width="50%">Completed tests and benchmarks · 9 November 2026</th><th width="50%">Durchgeführte Tests und Benchmarks · 09.11.2026</th></tr>
+<tr>
+<td><strong>Application checks:</strong> v1.5 passed 14 JavaScript tests, syntax checks and targeted browser checks at iPhone/iPad sizes for startup, language selection and refresh. Earlier checks cover installation/update, HTTPS, session isolation, translation and GPU model loading/unloading. The UI checks simulate microphone activation; practical iPhone/iPad operation has also been confirmed by the user. <a href="docs/VERIFICATION.md">Results and test scope</a> · <a href="docs/TESTPLAN.md">Test plan</a>.</td>
+<td><strong>App-Prüfungen:</strong> Für v1.5 bestanden 14 JavaScript-Tests, Syntaxprüfungen und gezielte Browserprüfungen in iPhone-/iPad-Größen für Start, Sprachwahl und Refresh. Frühere Prüfungen umfassen Installation/Update, HTTPS, Sitzungstrennung, Übersetzung und das Laden/Entladen des GPU-Modells. Die UI-Prüfungen simulieren die Mikrofonaktivierung; den praktischen iPhone-/iPad-Betrieb hat der Nutzer ebenfalls bestätigt. <a href="docs/VERIFICATION.md">Ergebnisse und Prüfumfang</a> · <a href="docs/TESTPLAN.md">Testplan</a>.</td>
+</tr>
+<tr>
+<td><strong>GPU transcription:</strong> all <strong>240 FLEURS recordings in 12 languages</strong> completed successfully (51 min 42 s of audio). Normalized word error rate: <strong>8.16%</strong>; character error rate: <strong>4.35%</strong>. Median ASR computation: <strong>0.77 s per recording</strong> on the RTX 3090 with the model already loaded. Source languages were supplied; translation quality was not scored. <a href="docs/GPU_TRANSCRIPTION_BENCHMARK.md">Method, per-language results and limitations</a> · <a href="docs/benchmarks/seamless-asr-2026-11-09/per-sample.csv">Per-recording measurements</a>.</td>
+<td><strong>GPU-Transkription:</strong> alle <strong>240 FLEURS-Aufnahmen in zwölf Sprachen</strong> erfolgreich verarbeitet (51 min 42 s Audio). Normalisierte Wortfehlerrate: <strong>8,16 %</strong>; Zeichenfehlerrate: <strong>4,35 %</strong>. Mediane ASR-Berechnung: <strong>0,77 s je Aufnahme</strong> auf der RTX 3090 bei bereits geladenem Modell. Die Ausgangssprachen waren vorgegeben; die Übersetzungsqualität wurde nicht bewertet. <a href="docs/GPU_TRANSCRIPTION_BENCHMARK.md">Methode, Ergebnisse je Sprache und Grenzen</a> · <a href="docs/benchmarks/seamless-asr-2026-11-09/per-sample.csv">Einzelmessungen</a>.</td>
+</tr>
+<tr>
+<td><strong>CPU language identification — separate experiment:</strong> Whisper tiny/base were compared on 120 recordings in 12 languages. With a more conservative rule, base correctly accepted <strong>53 of 60 new recordings</strong>; seven remained undecided. Earliest acceptance after five seconds of speech; median accumulated detection computation <strong>0.422 s</strong> on a Ryzen 9 5900X. No additional GPU memory. <strong>Not integrated into the app:</strong> language selection remains manual. <a href="docs/CPU_LANGUAGE_IDENTIFICATION.md">Protocol, timings and limitations</a> · <a href="docs/benchmarks/lid-cpu-2026-11-09/base-holdout.summary.json">Follow-up results</a>.</td>
+<td><strong>CPU-Sprachidentifizierung — separater Versuch:</strong> Whisper tiny/base wurden an 120 Aufnahmen in zwölf Sprachen verglichen. Mit vorsichtigerer Regel akzeptierte base <strong>53 von 60 neuen Aufnahmen korrekt</strong>; sieben blieben unentschieden. Früheste Annahme nach fünf Sekunden Sprache; aufsummierte Erkennungsberechnung im Median <strong>0,422 s</strong> auf einem Ryzen 9 5900X. Kein zusätzlicher Grafikspeicher. <strong>Nicht in die App integriert:</strong> Die Sprachwahl bleibt manuell. <a href="docs/CPU_LANGUAGE_IDENTIFICATION.md">Vorgehen, Laufzeiten und Grenzen</a> · <a href="docs/benchmarks/lid-cpu-2026-11-09/base-holdout.summary.json">Ergebnisse der Nachprüfung</a>.</td>
+</tr>
 </table>
 
 <table>
