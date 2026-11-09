@@ -1,4 +1,35 @@
-# Prüfstand — v1.1, 09.11.2026
+# Prüfstand — v1.2, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.2
+
+- 13 JavaScript-Tests bestanden, darunter vollständige Wörterbücher für alle
+  18 Oberflächensprachen mit je 86 Einträgen und unveränderten Platzhaltern,
+  96 erhaltene Sprachoptionen sowie die Zuordnung Fahne → Arzt-Sprache.
+  Die 5 Python-/PHP-Grenztests bestanden ebenfalls.
+- Browserprüfung mit lokaler API-Fixture bei 320 × 568, 390 × 844 und
+  744 × 1133 Pixeln. Startdialog mit 18 Fahnen, Mikrofonknopf erreichbar,
+  vier bzw. sechs Spalten, kein horizontaler Überlauf.
+- Französisch, Arabisch, Sorani, Deutsch und Englisch über Fahnen gewechselt.
+  Untere Arzt-Sprache passt sich an, obere Sprache bleibt erhalten; Auswahl
+  bleibt nach erneutem Öffnen bestehen. Dasselbe Verhalten im Einstellungsmenü.
+- RTL-Dialoge und weiterhin feste Gesprächsflächen geprüft. Beide nativen
+  Sprachfelder enthalten 96 Optionen mit Fahnen. Vollständige Textdarstellung
+  auch auf kleinster Breite ohne Rundungsbeschnitt bestätigt.
+- README: acht zweispaltige Text-/Beschriftungsbereiche, Englisch links und
+  Deutsch rechts; beide Bilder laden außerhalb der Tabellen über die volle Breite.
+- Audio-Pipeline und Modellcode unverändert. Kein erneuter vollständiger GPU-Test.
+  Die neuen Oberflächentexte sind technisch geprüft, aber nicht muttersprachlich
+  lektoriert; insbesondere bei Sorani können stilistische Korrekturen folgen.
+- v1.2 auf dem Zielserver aktiviert, HTTPS und alle neuen Frontend-Dateien
+  geprüft. Modellservice blieb ohne Neustart im Status `ready` (PID 178770).
+  CA und sämtliche Konfiguration außer der Versionsnummer unverändert;
+  Passwortschutz bleibt ausgeschaltet.
+
+## Rückmeldung aus dem Betrieb
+
+Der Nutzer bestätigt am 09.11.2026, dass die App auf iPad und iPhone sehr gut
+läuft. Die früher offene praktische Rückmeldung zum Gerätebetrieb liegt damit
+vor; sie ist keine Einzelabnahme aller unten aufgeführten Audio-Randfälle.
 
 ## Gezielte Prüfung der Änderungen in v1.1
 

@@ -1,5 +1,17 @@
 # Änderungen
 
+## v1.2 — 09.11.2026
+
+- Fahnenauswahl für alle 18 häufigen Oberflächensprachen; ein Tipp setzt zugleich
+  die Arzt-Sprache unten. Die obere Gesprächssprache bleibt erhalten.
+- Kompakter Startdialog mit kurzer Push-to-Talk-Erklärung, Fahnen und
+  Mikrofonfreigabe. Vorlauf bleibt in den Einstellungen.
+- Fahnenpiktogramme auch in den nativen Sprachmenüs; Layout für iPhone/iPad
+  angepasst, Schreibrichtung arabischer, persischer und kurdischer Dialoge beachtet.
+- README einschließlich Bildunterschriften zweispaltig: Englisch links,
+  Deutsch rechts. Bilder bleiben über die volle Breite.
+- Versionsfolge künftig in Schritten von 0,1.
+
 ## v1.1 — 09.11.2026
 
 - Passwortschutz optional und bei Neuinstallation standardmäßig ausgeschaltet.

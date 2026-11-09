@@ -8,6 +8,10 @@ import {
 import { GenerationGate, languageDirection, secureUuid } from "./frontend-core.js";
 import {
   groupLanguages,
+  UI_LANGUAGES,
+  interfaceChoice,
+  isRtlLocale,
+  languageFlag,
   normalizeUiLocale,
   translate,
 } from "./i18n.js";
@@ -275,7 +279,7 @@ function readPreRoll() {
 }
 
 function formatSeconds(milliseconds) {
-  return `${(milliseconds / 1000).toLocaleString(state.uiLocale === "de" ? "de-DE" : "en-US", { minimumFractionDigits: 1, maximumFractionDigits: 2 })} s`;
+  return `${(milliseconds / 1000).toLocaleString(state.uiLocale, { minimumFractionDigits: 1, maximumFractionDigits: 2 })} s`;
 }
 
 async function request(route, options = {}) {
@@ -352,7 +356,7 @@ function fillLanguages() {
       group.replaceChildren(...languages.map((language) => {
         const option = document.createElement("option");
         option.value = language.code;
-        option.textContent = language.displayName;
+        option.textContent = `${languageFlag(language.code)} ${language.displayName}`;
         option.dataset.speechOutput = String(Boolean(language.speech_output));
         return option;
       }));
@@ -391,13 +395,19 @@ function applyLocale(locale) {
   state.uiLocale = normalizeUiLocale(locale);
   localStorage.setItem("uiLanguage", state.uiLocale);
   document.documentElement.lang = state.uiLocale;
+  // Keep conversation geometry stable; only dialogs and text follow RTL reading.
+  for (const element of document.querySelectorAll(".modal, .entry-card")) {
+    element.dir = isRtlLocale(state.uiLocale) ? "rtl" : "ltr";
+  }
   for (const element of document.querySelectorAll("[data-i18n]")) {
     element.textContent = t(element.dataset.i18n);
   }
   for (const element of document.querySelectorAll("[data-i18n-aria-label]")) {
     element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
   }
-  for (const select of document.querySelectorAll("[data-ui-locale]")) select.value = state.uiLocale;
+  for (const button of document.querySelectorAll("[data-interface-locale]")) {
+    button.setAttribute("aria-pressed", String(button.dataset.interfaceLocale === state.uiLocale));
+  }
   if (!state.hasResult) {
     ui.topText.textContent = t("topPrompt");
     ui.bottomText.textContent = t("bottomPrompt");
@@ -440,7 +450,7 @@ function fitConversationText(element) {
 
   const fits = (fontSize) => {
     element.style.fontSize = `${fontSize}px`;
-    return element.scrollWidth <= availableWidth + 0.5 && element.scrollHeight <= availableHeight + 0.5;
+    return element.scrollWidth <= element.clientWidth && element.scrollHeight <= element.clientHeight;
   };
   if (fits(maximumFontSize)) return;
   let lower = 0;
@@ -724,8 +734,32 @@ for (const select of [ui.topLanguage, ui.bottomLanguage]) {
   });
 }
 
-for (const select of document.querySelectorAll("[data-ui-locale]")) {
-  select.addEventListener("change", () => applyLocale(select.value));
+for (const container of document.querySelectorAll("[data-interface-choices]")) {
+  for (const language of UI_LANGUAGES) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "language-choice";
+    button.dataset.interfaceLocale = language.locale;
+    button.setAttribute("aria-label", language.name);
+    button.lang = language.locale;
+    const flag = document.createElement("span");
+    flag.className = "language-flag";
+    flag.setAttribute("aria-hidden", "true");
+    flag.textContent = language.flag;
+    const name = document.createElement("span");
+    name.className = "language-name";
+    name.dir = "auto";
+    name.textContent = language.name;
+    button.append(flag, name);
+    container.append(button);
+    button.addEventListener("click", () => {
+      const choice = interfaceChoice(language.locale);
+      // Persist before bootstrap too (password/offline screen); never change the top language.
+      localStorage.setItem("bottomLanguage", choice.code);
+      if (state.languages.some(({ code }) => code === choice.code)) ui.bottomLanguage.value = choice.code;
+      applyLocale(choice.locale);
+    });
+  }
 }
 
 function openSettings() { ui.settings.showModal(); refreshHealth(); }

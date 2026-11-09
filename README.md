@@ -1,117 +1,135 @@
-# kienzletranslate v1.1
+# kienzletranslate v1.2
 
-Lokaler Gesprächsübersetzer für zwei gegenüber sitzende Personen mit einem
-iPad im Hochformat. PHP-Webapp und ein zentraler SeamlessM4T-v2-Large-Modellservice
-laufen auf einem Linux-Rechner mit NVIDIA-GPU. Native Installation ohne Docker.
-
-<p align="center">
-  <img src="a_clean_modern_high_contrast_user_interface_desi.png" width="640" alt="kienzletranslate auf dem iPad: zwei gegenüberliegende Sprechflächen, Sprachauswahl Deutsch/Ukrainisch und grüne Aufnahmefläche">
-  <br>
-  <em>Oberflächenentwurf · Gegenübersitzen, gedrückt halten, sprechen und übersetzen.</em>
-</p>
-
-**Modelllizenz: CC BY-NC 4.0 — nur nichtkommerzielle Nutzung.** Die Lizenz der
-Anwendung (MIT) erlaubt keine darüber hinausgehende Nutzung der Modellgewichte.
-Der Installer und die iPad-Zertifikatsseite verlangen eine ausdrückliche
-Bestätigung durch `AKZEPTIEREN` oder `ACCEPT`. [Lizenzdetails](docs/LICENSES.md).
-Technischer Prototyp; keine medizinische Validierung. Testdaten verwenden.
+<table>
+<tr><th width="50%">English</th><th width="50%">Deutsch</th></tr>
+<tr>
+<td>A local conversation translator for two people facing each other, operated on an <strong>iPad or iPhone</strong>. The PHP web app and a central SeamlessM4T v2 Large service run on a Linux computer with an NVIDIA GPU. Native installation, no Docker.</td>
+<td>Lokaler Gesprächsübersetzer für zwei gegenüber sitzende Personen, bedient auf einem <strong>iPad oder iPhone</strong>. PHP-Webapp und ein zentraler SeamlessM4T-v2-Large-Modellservice laufen auf einem Linux-Rechner mit NVIDIA-GPU. Native Installation ohne Docker.</td>
+</tr>
+</table>
 
 <p align="center">
-  <img src="docs/images/kienzletranslate-rtx-3090.png" width="900" alt="GPU-Monitor mit kienzletranslate auf einer NVIDIA GeForce RTX 3090: Auslastungsverlauf und Grafikspeicherbelegung">
-  <br>
-  <em>Lokaler GPU-Betrieb · Momentaufnahme auf einer NVIDIA GeForce RTX 3090 mit 24 GB Grafikspeicher.</em>
+  <img src="a_clean_modern_high_contrast_user_interface_desi.png" width="640" alt="kienzletranslate interface concept: two opposing speaking areas, language selection and a green recording area">
 </p>
 
-## Installation / Update
+<table>
+<tr><td width="50%"><em>Interface concept · Face each other, hold, speak and translate.</em></td><td width="50%"><em>Oberflächenentwurf · Gegenübersitzen, gedrückt halten, sprechen und übersetzen.</em></td></tr>
+</table>
 
-Getestetes Ziel: Ubuntu 24.04, Python 3.12, NVIDIA RTX 3090 (24 GB), vorhandener
-funktionsfähiger NVIDIA-Treiber. Rund 25 GB freier Speicher für Modell und
-Python/CUDA-Abhängigkeiten vorsehen. Debian wird vom Installer ebenfalls
-unterstützt, wurde aber nicht als zweite Plattform abgenommen.
+<table>
+<tr><th width="50%">Model licence</th><th width="50%">Modelllizenz</th></tr>
+<tr>
+<td><strong>CC BY-NC 4.0 — noncommercial use only.</strong> The application's MIT licence does not grant additional rights to the model weights. The installer and certificate setup page require explicit confirmation with <code>ACCEPT</code> or <code>AKZEPTIEREN</code>. <a href="docs/LICENSES.md">Licence details</a>.<br>Technical prototype; no medical validation. Use test data.</td>
+<td><strong>CC BY-NC 4.0 — nur nichtkommerzielle Nutzung.</strong> Die MIT-Lizenz der Anwendung erlaubt keine darüber hinausgehende Nutzung der Modellgewichte. Installer und Zertifikatsseite verlangen eine ausdrückliche Bestätigung durch <code>AKZEPTIEREN</code> oder <code>ACCEPT</code>. <a href="docs/LICENSES.md">Lizenzdetails</a>.<br>Technischer Prototyp; keine medizinische Validierung. Testdaten verwenden.</td>
+</tr>
+</table>
 
-```sh
-git clone https://github.com/thomaskien/kienzletranslate.git
+<p align="center">
+  <img src="docs/images/kienzletranslate-rtx-3090.png" width="900" alt="GPU monitor showing kienzletranslate load and memory use on an NVIDIA GeForce RTX 3090">
+</p>
+
+<table>
+<tr><td width="50%"><em>Local GPU operation · Snapshot on an NVIDIA GeForce RTX 3090 with 24 GB VRAM.</em></td><td width="50%"><em>Lokaler GPU-Betrieb · Momentaufnahme auf einer NVIDIA GeForce RTX 3090 mit 24 GB Grafikspeicher.</em></td></tr>
+</table>
+
+<table>
+<tr><th width="50%">New in v1.2</th><th width="50%">Neu in v1.2</th></tr>
+<tr>
+<td>Tap a flag to select both the interface language and the doctor's language (bottom speaking area). All 18 frequently used languages are available, with native language names. The compact start dialog explains push-to-talk in one sentence. Flags also appear in the language menus.</td>
+<td>Ein Tipp auf die Fahne stellt gleichzeitig die Oberfläche und die Arzt-Sprache (untere Sprechfläche) ein. Alle 18 häufigen Sprachen sind mit ihren Eigennamen verfügbar. Der kompakte Startdialog erklärt Push-to-Talk in einem Satz. Fahnen erscheinen auch in den Sprachmenüs.</td>
+</tr>
+<tr>
+<td>German, English, Turkish, Arabic, Russian, Ukrainian, Polish, Romanian, Italian, Bulgarian, Croatian, Bosnian, Serbian, Kurdish (Sorani), Persian, Greek, French and Spanish. Flags are visual shortcuts; the language name identifies the choice.</td>
+<td>Deutsch, Englisch, Türkisch, Arabisch, Russisch, Ukrainisch, Polnisch, Rumänisch, Italienisch, Bulgarisch, Kroatisch, Bosnisch, Serbisch, Kurdisch (Sorani), Persisch, Griechisch, Französisch und Spanisch. Fahnen dienen als Orientierung; der Sprachname bezeichnet die Auswahl.</td>
+</tr>
+</table>
+
+<table>
+<tr><th width="50%">Installation / Update</th><th width="50%">Installation / Update</th></tr>
+<tr>
+<td>Tested server: Ubuntu 24.04, Python 3.12, NVIDIA RTX 3090 (24 GB), working NVIDIA driver. Allow about 25 GB of free disk space for the model and Python/CUDA dependencies. The installer also supports Debian, which has not been separately validated.</td>
+<td>Getesteter Server: Ubuntu 24.04, Python 3.12, NVIDIA RTX 3090 (24 GB), funktionsfähiger NVIDIA-Treiber. Rund 25 GB freien Speicher für Modell und Python/CUDA-Abhängigkeiten vorsehen. Debian wird vom Installer ebenfalls unterstützt, wurde aber nicht separat abgenommen.</td>
+</tr>
+<tr>
+<td><pre><code>git clone \
+  https://github.com/\
+thomaskien/kienzletranslate.git
 cd kienzletranslate
-sudo bash install.sh
-```
+sudo bash install.sh</code></pre></td>
+<td><pre><code>git clone \
+  https://github.com/\
+thomaskien/kienzletranslate.git
+cd kienzletranslate
+sudo bash install.sh</code></pre></td>
+</tr>
+<tr>
+<td>First choose German or English, then confirm the model licence. The installer asks for the server IP, optional DNS name, HTTP/HTTPS/model ports, directories and optional password protection (<strong>off by default</strong>). With protection enabled, an empty password entry retains the existing password or generates a secure one. Access details are stored in <code>/root/kienzletranslate-access.json</code>, readable only by root.</td>
+<td>Zuerst Deutsch oder Englisch wählen, danach die Modelllizenz bestätigen. Der Installer fragt Server-IP, optionalen DNS-Namen, HTTP-/HTTPS-/Modellport, Pfade und optionalen Passwortschutz ab (<strong>standardmäßig aus</strong>). Bei aktiviertem Schutz erhält eine leere Passworteingabe das vorhandene Passwort oder erzeugt ein sicheres. Die Zugangsdaten liegen in <code>/root/kienzletranslate-access.json</code>, nur für root lesbar.</td>
+</tr>
+<tr>
+<td>For updates, obtain the new source and run the same installer. Configuration, password setting and local CA are retained; the previous release is backed up. If the final health check fails, the installer attempts to restore the previous release. System packages and Python dependencies are not automatically downgraded.</td>
+<td>Für Updates den neuen Quellstand holen und denselben Installer aufrufen. Konfiguration, Passwortwahl und lokale CA bleiben erhalten; der vorherige Stand wird gesichert. Scheitert der abschließende Gesundheitscheck, versucht der Installer die vorherige Version wiederherzustellen. Systempakete und Python-Abhängigkeiten werden nicht automatisch zurückgestuft.</td>
+</tr>
+<tr>
+<td>Open the HTTP setup page on the iPad/iPhone, confirm the licence again, install the CA profile and enable full certificate trust. Then open the HTTPS app and optionally add it to the Home Screen. Model weights are downloaded separately. After setup, inference works without external services. <a href="docs/INSTALLATION.md">Detailed setup</a>.</td>
+<td>Auf dem iPad/iPhone die HTTP-Einrichtungsseite öffnen, die Lizenz erneut bestätigen, das CA-Profil installieren und volles Zertifikatsvertrauen aktivieren. Danach die HTTPS-App öffnen und bei Bedarf zum Home-Bildschirm hinzufügen. Modellgewichte werden separat heruntergeladen. Nach Einrichtung läuft die Inferenz ohne externe Dienste. <a href="docs/INSTALLATION.md">Ausführliche Einrichtung</a>.</td>
+</tr>
+</table>
 
-Erste Abfrage: Deutsch/English. Anschließend Lizenzbestätigung, Server-IP,
-optionaler DNS-Name, HTTP-/HTTPS-/Modellport, Installations- und Modellpfad sowie
-optionalen Passwortschutz (standardmäßig aus). Ohne Passwortschutz öffnet sich
-die App direkt. Wird der Schutz eingeschaltet, lässt sich ein Passwort festlegen;
-eine leere Eingabe erhält das bestehende oder erzeugt ein sicheres Passwort.
-Aufrufadressen und gegebenenfalls das erzeugte Passwort liegen auf dem Server in
-`/root/kienzletranslate-access.json` (nur für root lesbar). Updates erhalten die
-ausdrücklich gewählte Einstellung.
+<table>
+<tr><th width="50%">How to use</th><th width="50%">Bedienung</th></tr>
+<tr>
+<td><ol>
+<li>Tap your flag: this sets the interface and the doctor's language at the bottom. The top language remains separate; the defaults are Ukrainian at the top and German at the bottom.</li>
+<li>Enable the microphone. Hold your speaking area, speak, then release to translate. Green means recording; processing starts on release.</li>
+<li>The original text appears on the speaker's side and the translation opposite. The upper conversation text is rotated; controls stay upright. Text shrinks to fit the available area.</li>
+<li>Toggle translated speech with the speaker button. A new recording interrupts playback.</li>
+</ol></td>
+<td><ol>
+<li>Eigene Fahne antippen: Das setzt die Oberfläche und die Arzt-Sprache unten. Die obere Sprache bleibt separat; voreingestellt sind Ukrainisch oben und Deutsch unten.</li>
+<li>Mikrofon aktivieren. Eigene Sprechfläche gedrückt halten, sprechen und zum Übersetzen loslassen. Grün bedeutet Aufnahme; die Verarbeitung beginnt beim Loslassen.</li>
+<li>Der Originaltext erscheint auf der Sprecherseite, die Übersetzung gegenüber. Der obere Gesprächstext ist gedreht, Bedienelemente bleiben aufrecht. Text wird passend zur verfügbaren Fläche verkleinert.</li>
+<li>Übersetzte Sprachausgabe über den Lautsprecher umschalten. Eine neue Aufnahme unterbricht die Wiedergabe.</li>
+</ol></td>
+</tr>
+<tr>
+<td>Frequently used languages in Germany appear first, followed by other languages; both groups are alphabetically sorted. Settings include the same flags, audio pre-roll (0–3 seconds in 250 ms steps, default 1 second), and model loading/unloading. Preferences are saved locally.</td>
+<td>Häufig in Deutschland verwendete Sprachen stehen zuerst, weitere darunter; beide Gruppen sind alphabetisch sortiert. Die Einstellungen enthalten dieselben Fahnen, den Audio-Vorlauf (0–3 Sekunden in 250-ms-Schritten, Standard 1 Sekunde) und das Laden/Entladen des Modells. Einstellungen werden lokal gespeichert.</td>
+</tr>
+<tr>
+<td>The microphone stays active in the foreground for the temporary local pre-roll buffer. No audio is transmitted while idle. Recordings are limited to 60 seconds including pre-roll. Language selection is manual; there is no live transcription or automatic speaker/language detection. Targets without speech synthesis receive text only.</td>
+<td>Das Mikrofon bleibt im Vordergrund für den flüchtigen lokalen Vorlaufpuffer geöffnet. Im Leerlauf werden keine Audiodaten übertragen. Aufnahmen sind einschließlich Vorlauf auf 60 Sekunden begrenzt. Die Sprachwahl erfolgt manuell; keine Live-Transkription oder automatische Sprecher-/Spracherkennung. Ziele ohne Sprachsynthese erhalten nur Text.</td>
+</tr>
+<tr>
+<td>One shared model instance processes requests in a serial queue. Audio and results remain briefly in RAM, without conversation files. Each browser receives an isolated session, including when password protection is off.</td>
+<td>Eine gemeinsame Modellinstanz verarbeitet Aufträge in einer seriellen Queue. Audio und Ergebnisse liegen kurzzeitig im RAM, ohne Gesprächsdateien. Jeder Browser erhält eine getrennte Sitzung, auch bei ausgeschaltetem Passwortschutz.</td>
+</tr>
+</table>
 
-Für Updates den neuen Quellstand holen und denselben Installer aufrufen.
-Konfiguration und lokale CA bleiben erhalten; vorheriger Stand wird gesichert.
-Nach einem fehlgeschlagenen abschließenden Gesundheitscheck versucht der Installer,
-auf die vorherige Veröffentlichung zurückzuwechseln. Systempakete und bereits
-installierte Python-Abhängigkeiten werden dabei nicht automatisch zurückgestuft.
-
-Ausführliche Einrichtung: [INSTALLATION.md](docs/INSTALLATION.md).
-
-## Bedienung
-
-- Zwei Sprachen auswählen, unten standardmäßig Deutsch, oben Ukrainisch.
-- Häufig in Deutschland verwendete Sprachen stehen in einer ersten alphabetischen
-  Gruppe, alle übrigen in einer zweiten alphabetischen Gruppe.
-- Die Oberfläche ist in den Einstellungen zwischen Deutsch und Englisch umschaltbar;
-  diese Wahl verändert die Übersetzungssprachen nicht und wird lokal gespeichert.
-- Mikrofon einmal aktivieren. Es bleibt im Vordergrund für den lokalen Vorlauf
-  geöffnet. Im Leerlauf werden keine Audiodaten übertragen.
-- Eigene Hälfte gedrückt halten, sprechen, loslassen. Grün bedeutet Aufnahme;
-  die Verarbeitung beginnt nach dem Loslassen.
-- Originaltext erscheint auf der Sprecherseite, Übersetzung gegenüber. Nur der
-  obere Gesprächstext ist gedreht, alle Bedienelemente bleiben aufrecht.
-- Die Schriftgröße passt sich automatisch so an, dass der gesamte Text in die
-  jeweilige Hälfte passt. Lange Texte werden entsprechend kleiner dargestellt.
-- Lautsprecher schaltet die übersetzte Sprachausgabe ein/aus. Eine neue Aufnahme
-  unterbricht laufende Wiedergabe.
-- Vorlauf: 0–3 s in 250-ms-Schritten, standardmäßig 1 s. Einstellungen ermöglichen
-  außerdem das Laden/Entladen des Modells.
-
-Maximal 60 Sekunden einschließlich Vorlauf pro Aufnahme. Sprache wird in v1
-manuell ausgewählt. Für Ziele ohne Sprachsynthese erfolgt ein Text-Fallback.
-Der Server lädt nur eine Modellinstanz; mehrere Clients teilen eine serielle Queue.
-Audiodaten und Ergebnisse liegen nur kurzzeitig im RAM, nicht in Gesprächsdateien.
-
-## Betrieb und kompakte Tests
-
-```sh
-sudo systemctl status kienzletranslate
+<table>
+<tr><th width="50%">Operation and compact tests</th><th width="50%">Betrieb und kompakte Tests</th></tr>
+<tr>
+<td><pre><code>sudo systemctl status kienzletranslate
 sudo systemctl restart kienzletranslate
 sudo journalctl -u kienzletranslate --since today
-python3 -m unittest discover -s tests -p 'test_*.py'
+python3 -m unittest discover \
+  -s tests -p 'test_*.py'
+python3 -m unittest backend.tests.test_core
+node --test tests/*.test.mjs
+# With Python dependencies installed:
+python3 -m unittest backend.tests.test_api</code></pre></td>
+<td><pre><code>sudo systemctl status kienzletranslate
+sudo systemctl restart kienzletranslate
+sudo journalctl -u kienzletranslate --since today
+python3 -m unittest discover \
+  -s tests -p 'test_*.py'
 python3 -m unittest backend.tests.test_core
 node --test tests/*.test.mjs
 # Mit installierten Python-Abhängigkeiten:
-python3 -m unittest backend.tests.test_api
-```
-
-[Testplan und Nachweise](docs/TESTPLAN.md) · [Grenzen](docs/LIMITATIONS.md) ·
-[Architektur](docs/ARCHITECTURE.md)
-
-## English
-
-kienzletranslate is a local, two-person push-to-talk conversation translator.
-PHP serves the iPad PWA; a separate local TCP service runs one SeamlessM4T v2 Large
-checkpoint on the NVIDIA GPU. Run `sudo bash install.sh` and choose **English**.
-The installer supports both fresh installs and updates. It asks for your server
-address, optional DNS name, HTTP/HTTPS/model ports, directories and optional password
-protection (**off by default**). With protection off, the app opens directly and
-each browser still receives its own isolated session. The DE/EN interface language
-can be changed independently of translation languages. Text automatically shrinks
-to fit its display half; common languages in Germany appear in the first of two
-alphabetical groups.
-
-Model weights are licensed under **CC BY-NC 4.0, noncommercial use only**, separately
-from the MIT-licensed application. Explicitly enter **ACCEPT** in the installer
-and again on the certificate setup page. Model weights are downloaded separately
-and are never included in this repository. After setup, inference works offline.
-
-Open the HTTP setup URL, install the CA profile on your iPad, enable full root
-certificate trust, then open the HTTPS app and add it to the Home Screen.
-Choose both languages manually, enable the microphone and hold your half while
-speaking. Release to translate. No live transcription or automatic speaker/LID.
+python3 -m unittest backend.tests.test_api</code></pre></td>
+</tr>
+<tr>
+<td><a href="docs/TESTPLAN.md">Test plan</a> · <a href="docs/VERIFICATION.md">Verification</a> · <a href="docs/LIMITATIONS.md">Limitations</a> · <a href="docs/ARCHITECTURE.md">Architecture</a> · <a href="docs/CHANGELOG.md">Changes</a></td>
+<td><a href="docs/TESTPLAN.md">Testplan</a> · <a href="docs/VERIFICATION.md">Prüfnachweise</a> · <a href="docs/LIMITATIONS.md">Grenzen</a> · <a href="docs/ARCHITECTURE.md">Architektur</a> · <a href="docs/CHANGELOG.md">Änderungen</a></td>
+</tr>
+</table>

@@ -1,13 +1,38 @@
+import { ADDITIONAL_MESSAGES } from "./locales.js";
+
 export const DEFAULT_UI_LOCALE = "de";
-export const UI_LOCALES = ["de", "en"];
+// Stable order: the two original choices first, then the frequent-language group.
+export const UI_LANGUAGES = [
+  { locale: "de", code: "deu", flag: "🇩🇪", name: "Deutsch" },
+  { locale: "en", code: "eng", flag: "🇬🇧", name: "English" },
+  { locale: "tr", code: "tur", flag: "🇹🇷", name: "Türkçe" },
+  { locale: "ar", code: "arb", flag: "🇸🇦", name: "العربية" },
+  { locale: "ru", code: "rus", flag: "🇷🇺", name: "Русский" },
+  { locale: "uk", code: "ukr", flag: "🇺🇦", name: "Українська" },
+  { locale: "pl", code: "pol", flag: "🇵🇱", name: "Polski" },
+  { locale: "ro", code: "ron", flag: "🇷🇴", name: "Română" },
+  { locale: "it", code: "ita", flag: "🇮🇹", name: "Italiano" },
+  { locale: "bg", code: "bul", flag: "🇧🇬", name: "Български" },
+  { locale: "hr", code: "hrv", flag: "🇭🇷", name: "Hrvatski" },
+  { locale: "bs", code: "bos", flag: "🇧🇦", name: "Bosanski" },
+  { locale: "sr", code: "srp", flag: "🇷🇸", name: "Српски" },
+  { locale: "ckb", code: "ckb", flag: "🇮🇶", name: "کوردی" },
+  { locale: "fa", code: "pes", flag: "🇮🇷", name: "فارسی" },
+  { locale: "el", code: "ell", flag: "🇬🇷", name: "Ελληνικά" },
+  { locale: "fr", code: "fra", flag: "🇫🇷", name: "Français" },
+  { locale: "es", code: "spa", flag: "🇪🇸", name: "Español" },
+];
+export const UI_LOCALES = UI_LANGUAGES.map(({ locale }) => locale);
+export const isRtlLocale = (locale) => ["ar", "ckb", "fa"].includes(locale);
 
 export const MESSAGES = {
   de: {
     uiLanguage: "Oberflächensprache",
+    doctorLanguage: "Arzt-Sprache & Oberfläche",
     german: "Deutsch",
     english: "English",
     authEyebrow: "Lokaler Gesprächsübersetzer",
-    authIntro: "Mit dem Server-Passwort anmelden. Bei einer neuen Installation zuerst die Einrichtung am Server abschließen.",
+    authIntro: "Mit dem Server-Passwort anmelden.",
     password: "Passwort",
     login: "Anmelden",
     setup: "Ersteinrichtung öffnen",
@@ -21,16 +46,16 @@ export const MESSAGES = {
     bottomArea: "Untere Sprechfläche: zum Sprechen gedrückt halten",
     controls: "Sprachen und Sprachausgabe",
     topLanguage: "Sprache oben",
-    bottomLanguage: "Sprache unten",
+    bottomLanguage: "Arzt-Sprache (unten)",
     direction: "Übersetzung in beide Richtungen",
     ttsToggle: "Sprachausgabe umschalten",
     ttsOn: "Sprachausgabe ausschalten",
     ttsOff: "Sprachausgabe einschalten",
     preRollSetting: "Vorlauf einstellen",
     settings: "Einstellungen",
-    micEyebrow: "Einmalige Freigabe",
-    micTitle: "Mikrofon aktivieren",
-    micBody: "Das Mikrofon bleibt im Vordergrund geöffnet. Maximal drei Sekunden Ton liegen nur lokal im flüchtigen Vorlaufpuffer. Erst beim Loslassen einer Sprechfläche wird genau die Aufnahme an Ihren lokalen Server gesendet.",
+    micEyebrow: "Push to Talk",
+    micTitle: "Bereit zum Gespräch",
+    micBody: "Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.",
     micEnable: "Mikrofon aktivieren",
     settingsEyebrow: "Lokale Einstellungen",
     settingsTitle: "Gespräch",
@@ -42,7 +67,7 @@ export const MESSAGES = {
     logout: "Abmelden",
     resetSession: "Sitzung zurücksetzen",
     apply: "Übernehmen",
-    orientation: "Für das beste Gesprächserlebnis das iPad bitte hochkant drehen.",
+    orientation: "Für mehr Platz das Gerät bitte hochkant drehen.",
     commonGermany: "Häufig in Deutschland",
     otherLanguages: "Weitere Sprachen",
     modelUnloaded: "nicht geladen",
@@ -91,10 +116,11 @@ export const MESSAGES = {
   },
   en: {
     uiLanguage: "Interface language",
+    doctorLanguage: "Doctor’s language & interface",
     german: "Deutsch",
     english: "English",
     authEyebrow: "Local conversation translator",
-    authIntro: "Sign in with the server password. For a new installation, finish setup on the server first.",
+    authIntro: "Sign in with the server password.",
     password: "Password",
     login: "Sign in",
     setup: "Open initial setup",
@@ -108,16 +134,16 @@ export const MESSAGES = {
     bottomArea: "Bottom speaking area: hold to speak",
     controls: "Languages and speech output",
     topLanguage: "Top language",
-    bottomLanguage: "Bottom language",
+    bottomLanguage: "Doctor’s language (bottom)",
     direction: "Translation in both directions",
     ttsToggle: "Toggle speech output",
     ttsOn: "Turn off speech output",
     ttsOff: "Turn on speech output",
     preRollSetting: "Set pre-roll",
     settings: "Settings",
-    micEyebrow: "One-time permission",
-    micTitle: "Enable microphone",
-    micBody: "The microphone remains open while the app is in the foreground. Up to three seconds of audio stay only in the temporary local pre-roll buffer. The recording is sent to your local server only when you release a speaking area.",
+    micEyebrow: "Push to talk",
+    micTitle: "Ready to talk",
+    micBody: "Hold your area and speak. Release to translate.",
     micEnable: "Enable microphone",
     settingsEyebrow: "Local settings",
     settingsTitle: "Conversation",
@@ -129,7 +155,7 @@ export const MESSAGES = {
     logout: "Sign out",
     resetSession: "Reset session",
     apply: "Apply",
-    orientation: "For the best conversation experience, rotate the iPad to portrait orientation.",
+    orientation: "For more space, rotate your device to portrait.",
     commonGermany: "Common in Germany",
     otherLanguages: "Other languages",
     modelUnloaded: "not loaded",
@@ -176,12 +202,35 @@ export const MESSAGES = {
     networkInterrupted: "Network interrupted. Recording discarded.",
     noNetwork: "No network connection to the server.",
   },
+  ...ADDITIONAL_MESSAGES,
 };
 
-export const COMMON_IN_GERMANY = [
-  "deu", "eng", "tur", "arb", "rus", "ukr", "pol", "ron", "ita",
-  "bul", "hrv", "bos", "srp", "ckb", "pes", "ell", "fra", "spa",
-];
+export const COMMON_IN_GERMANY = UI_LANGUAGES.map(({ code }) => code);
+
+const LANGUAGE_REGIONS = {
+  afr: "ZA", amh: "ET", ary: "MA", arz: "EG", hye: "AM", asm: "IN", eus: "ES",
+  bel: "BY", ben: "BD", mya: "MM", yue: "HK", cat: "ES", ceb: "PH", cmn: "CN",
+  cmn_Hant: "TW", dan: "DK", est: "EE", fin: "FI", glg: "ES", lug: "UG", kat: "GE",
+  guj: "IN", khk: "MN", heb: "IL", hin: "IN", isl: "IS", ibo: "NG", ind: "ID",
+  gle: "IE", jpn: "JP", jav: "ID", kan: "IN", kaz: "KZ", khm: "KH", kor: "KR",
+  kir: "KG", lao: "LA", lvs: "LV", lit: "LT", luo: "KE", mkd: "MK", mai: "IN",
+  mal: "IN", mlt: "MT", mar: "IN", mni: "IN", npi: "NP", nld: "NL", fuv: "NG",
+  azj: "AZ", uzn: "UZ", nob: "NO", nno: "NO", nya: "MW", ory: "IN", por: "PT",
+  pan: "IN", swe: "SE", sna: "ZW", snd: "PK", slk: "SK", slv: "SI", som: "SO",
+  pbt: "AF", swh: "TZ", tgl: "PH", tgk: "TJ", tam: "IN", tel: "IN", tha: "TH",
+  ces: "CZ", hun: "HU", urd: "PK", vie: "VN", cym: "GB", gaz: "ET", yor: "NG", zul: "ZA",
+};
+
+export function languageFlag(code) {
+  const common = UI_LANGUAGES.find((language) => language.code === code);
+  if (common) return common.flag;
+  const region = LANGUAGE_REGIONS[code];
+  return region ? [...region].map((letter) => String.fromCodePoint(127397 + letter.charCodeAt(0))).join("") : "🌐";
+}
+
+export function interfaceChoice(locale) {
+  return UI_LANGUAGES.find((language) => language.locale === normalizeUiLocale(locale));
+}
 
 export const MODEL_TO_BCP47 = {
   afr: "af", amh: "am", arb: "ar", ary: "ar-MA", arz: "ar-EG", hye: "hy",
@@ -227,7 +276,7 @@ export function translate(locale, key, parameters = {}) {
 
 export function languageDisplayName(language, locale) {
   const normalized = normalizeUiLocale(locale);
-  const explicitFallback = NAME_FALLBACKS[normalized][language.code];
+  const explicitFallback = NAME_FALLBACKS[normalized]?.[language.code];
   if (explicitFallback) return explicitFallback;
   const languageTag = MODEL_TO_BCP47[language.code];
   if (languageTag && typeof Intl.DisplayNames === "function") {
@@ -238,7 +287,7 @@ export function languageDisplayName(language, locale) {
       // Fall through to the readable server-supplied name for uncommon codes.
     }
   }
-  return language.name || language.code;
+  return UI_LANGUAGES.find((item) => item.code === language.code)?.name || language.name || language.code;
 }
 
 export function groupLanguages(languages, locale) {

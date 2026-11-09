@@ -50,6 +50,14 @@ on release. Visible busy/error state without permanent footer. Existing results
 stay until a valid complete newer pair replaces them. Accessible contrast and
 large touch controls; no external fonts/CDNs/framework builds.
 
+Since v1.2, flag buttons select one of 18 common interface languages and also
+set the doctor's bottom translation language; the top selection is retained.
+The same flag grid appears at startup and in settings. Native language names
+accompany all flags. Native translation selects keep iOS picker behavior and
+show flag pictograms. RTL locales affect dialog reading direction, while the
+two speaking areas and control positions stay fixed. The start dialog only
+explains hold-to-talk and release-to-translate; pre-roll remains in settings.
+
 Continuous local AudioWorklet PCM ring buffer (max 3 s), pre-roll 0–3000 ms in
 250 ms steps, default 1000. No audio upload until release. Cancel/hidden stops
 and discards recording, clears old buffer. Multi-touch never starts another block.

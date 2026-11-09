@@ -32,13 +32,10 @@ header('X-Content-Type-Options: nosniff');
       <p class="eyebrow" data-i18n="authEyebrow">Lokaler Gesprächsübersetzer</p>
       <h1 id="login-title">kienzletranslate</h1>
       <p data-i18n="authIntro">Mit dem Server-Passwort anmelden. Bei einer neuen Installation zuerst die Einrichtung am Server abschließen.</p>
-      <label class="locale-control">
-        <span data-i18n="uiLanguage">Oberflächensprache</span>
-        <select data-ui-locale aria-label="Oberflächensprache" data-i18n-aria-label="uiLanguage">
-          <option value="de" data-i18n="german">Deutsch</option>
-          <option value="en" data-i18n="english">English</option>
-        </select>
-      </label>
+      <div class="locale-control">
+        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+      </div>
       <form id="login-form">
         <label for="password" data-i18n="password">Passwort</label>
         <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
@@ -54,13 +51,10 @@ header('X-Content-Type-Options: nosniff');
       <p class="eyebrow" data-i18n="offlineEyebrow">Keine Verbindung</p>
       <h1 id="offline-title" data-i18n="offlineTitle">Lokaler Server nicht erreichbar</h1>
       <p id="offline-message" data-i18n="offlineBody">Bitte WLAN und Serveradresse prüfen. Gesprächsdaten werden nicht offline gespeichert.</p>
-      <label class="locale-control">
-        <span data-i18n="uiLanguage">Oberflächensprache</span>
-        <select data-ui-locale aria-label="Oberflächensprache" data-i18n-aria-label="uiLanguage">
-          <option value="de" data-i18n="german">Deutsch</option>
-          <option value="en" data-i18n="english">English</option>
-        </select>
-      </label>
+      <div class="locale-control">
+        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+      </div>
       <button id="retry-bootstrap" class="primary-button" type="button" data-i18n="retry">Erneut versuchen</button>
     </section>
   </main>
@@ -72,7 +66,7 @@ header('X-Content-Type-Options: nosniff');
           <span class="pulse pulse--one"></span><span class="pulse pulse--two"></span>
           <svg viewBox="0 0 64 64"><path d="M32 39a9 9 0 0 0 9-9V15a9 9 0 0 0-18 0v15a9 9 0 0 0 9 9Zm-16-9a16 16 0 0 0 32 0M32 46v9m-9 0h18"/></svg>
         </div>
-        <p id="top-text" class="result-text">Oben gedrückt halten und sprechen</p>
+        <p id="top-text" class="result-text" dir="auto">Oben gedrückt halten und sprechen</p>
       </div>
     </section>
 
@@ -82,15 +76,15 @@ header('X-Content-Type-Options: nosniff');
           <span class="pulse pulse--one"></span><span class="pulse pulse--two"></span>
           <svg viewBox="0 0 64 64"><path d="M32 39a9 9 0 0 0 9-9V15a9 9 0 0 0-18 0v15a9 9 0 0 0 9 9Zm-16-9a16 16 0 0 0 32 0M32 46v9m-9 0h18"/></svg>
         </div>
-        <p id="bottom-text" class="result-text">Unten gedrückt halten und sprechen</p>
+        <p id="bottom-text" class="result-text" dir="auto">Unten gedrückt halten und sprechen</p>
       </div>
     </section>
 
-    <div class="control-deck" aria-label="Sprachen und Sprachausgabe" data-i18n-aria-label="controls">
+    <div class="control-deck" dir="ltr" aria-label="Sprachen und Sprachausgabe" data-i18n-aria-label="controls">
       <label class="language-control">
         <span class="sr-only" data-i18n="topLanguage">Sprache oben</span>
         <span aria-hidden="true">↑</span>
-        <select id="top-language" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></select>
+        <select id="top-language" dir="auto" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></select>
       </label>
       <div class="direction-symbol" aria-label="Übersetzung in beide Richtungen" data-i18n-aria-label="direction">
         <svg viewBox="0 0 64 64"><path d="M10 22h39l-9-9m14 29H15l9 9"/></svg>
@@ -101,7 +95,7 @@ header('X-Content-Type-Options: nosniff');
       </button>
       <label class="language-control">
         <span class="sr-only" data-i18n="bottomLanguage">Sprache unten</span>
-        <select id="bottom-language" aria-label="Sprache unten" data-i18n-aria-label="bottomLanguage"></select>
+        <select id="bottom-language" dir="auto" aria-label="Sprache unten" data-i18n-aria-label="bottomLanguage"></select>
         <span aria-hidden="true">↓</span>
       </label>
     </div>
@@ -115,20 +109,16 @@ header('X-Content-Type-Options: nosniff');
     </div>
   </main>
 
-  <dialog id="microphone-dialog" class="modal" aria-labelledby="microphone-title">
-    <div class="modal-icon" aria-hidden="true">
-      <svg viewBox="0 0 64 64"><path d="M32 39a9 9 0 0 0 9-9V15a9 9 0 0 0-18 0v15a9 9 0 0 0 9 9Zm-16-9a16 16 0 0 0 32 0M32 46v9m-9 0h18"/></svg>
+  <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
+    <div class="welcome-heading">
+      <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
+      <span class="app-version" dir="ltr">v1.2</span>
     </div>
-    <p class="eyebrow" data-i18n="micEyebrow">Einmalige Freigabe</p>
-    <h2 id="microphone-title" data-i18n="micTitle">Mikrofon aktivieren</h2>
-    <p data-i18n="micBody">Das Mikrofon bleibt im Vordergrund geöffnet. Maximal drei Sekunden Ton liegen nur lokal im flüchtigen Vorlaufpuffer. Erst beim Loslassen einer Sprechfläche wird genau die Aufnahme an Ihren lokalen Server gesendet.</p>
-    <label class="locale-control">
-      <span data-i18n="uiLanguage">Oberflächensprache</span>
-      <select data-ui-locale aria-label="Oberflächensprache" data-i18n-aria-label="uiLanguage">
-        <option value="de" data-i18n="german">Deutsch</option>
-        <option value="en" data-i18n="english">English</option>
-      </select>
-    </label>
+    <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
+    <div class="locale-control">
+      <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
+      <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+    </div>
     <button id="enable-microphone" class="primary-button" type="button" data-i18n="micEnable">Mikrofon aktivieren</button>
     <p id="microphone-error" class="form-error" role="alert"></p>
   </dialog>
@@ -137,19 +127,16 @@ header('X-Content-Type-Options: nosniff');
     <form method="dialog">
       <p class="eyebrow" data-i18n="settingsEyebrow">Lokale Einstellungen</p>
       <h2 id="settings-title" data-i18n="settingsTitle">Gespräch</h2>
-      <label class="locale-control">
-        <span data-i18n="uiLanguage">Oberflächensprache</span>
-        <select data-ui-locale aria-label="Oberflächensprache" data-i18n-aria-label="uiLanguage">
-          <option value="de" data-i18n="german">Deutsch</option>
-          <option value="en" data-i18n="english">English</option>
-        </select>
-      </label>
+      <div class="locale-control">
+        <p data-i18n="doctorLanguage">Arzt-Sprache &amp; Oberfläche</p>
+        <div class="language-grid" data-interface-choices role="group" aria-label="Arzt-Sprache &amp; Oberfläche" data-i18n-aria-label="doctorLanguage" dir="ltr"></div>
+      </div>
       <div class="setting-row">
         <label for="pre-roll" data-i18n="audioPreRoll">Audio-Vorlauf</label>
         <output id="pre-roll-value" for="pre-roll">1,0 s</output>
       </div>
-      <input id="pre-roll" type="range" min="0" max="3000" step="250" value="1000">
-      <div class="range-labels" aria-hidden="true"><span>0 s</span><span>3 s</span></div>
+      <input id="pre-roll" dir="ltr" type="range" min="0" max="3000" step="250" value="1000">
+      <div class="range-labels" dir="ltr" aria-hidden="true"><span>0 s</span><span>3 s</span></div>
       <hr>
       <div class="setting-row"><span data-i18n="model">Seamless-Modell</span><strong id="model-state">unbekannt</strong></div>
       <div class="button-row">

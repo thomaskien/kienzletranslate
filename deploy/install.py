@@ -18,7 +18,7 @@ import time
 
 CONFIG = Path('/etc/kienzletranslate/config.json')
 SOURCE = Path(__file__).resolve().parents[1]
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 
 
 def password_setting(old, answers):
@@ -283,7 +283,7 @@ def main():
     release.mkdir(parents=True)
     for folder in ('web','backend','deploy','scripts','docs'):
         shutil.copytree(SOURCE/folder, release/folder, ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    for name in ('README.md','LICENSE','install.sh'):
+    for name in ('README.md','LICENSE','install.sh','a_clean_modern_high_contrast_user_interface_desi.png'):
         if (SOURCE/name).exists(): shutil.copy2(SOURCE/name, release/name)
     # Worktrees/archives may use umask 077. Application source must be readable by
     # nginx and the dedicated PHP/model users; secrets live outside this tree.
