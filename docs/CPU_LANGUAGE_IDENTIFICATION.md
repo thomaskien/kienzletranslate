@@ -1,5 +1,7 @@
 # CPU-Sprachidentifizierung — 09.11.2026
 
+The consolidated English [development handoff](AUTOMATIC_LANGUAGE_IDENTIFICATION.md) connects these measurements with the later model comparisons, the exact acceptance policy, and the remaining integration decisions.
+
 Whisper **base auf der CPU** ist für einen ersten optionalen Automatikmodus geeignet. Eine frühe Entscheidung nach nur ein bis zwei Sekunden ist unzuverlässig. Die überprüfte vorsichtigere Regel entscheidet frühestens nach fünf Sekunden Audio ab Sprachbeginn und lässt unklare Fälle offen. Es erfolgte keine Integration in die laufende App und keine Änderung ihrer Python-Umgebung.
 
 ## Tatsächlich gemessene Leistung
