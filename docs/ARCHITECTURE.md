@@ -13,7 +13,10 @@ Fetch uses same-origin credentials. Mutating calls require `X-CSRF-Token`
 returned by bootstrap (except login). Binary recordings are mono PCM16 WAV,
 native sample rate, in a raw `audio/wav` request body (no multipart/temp files).
 
-- GET `bootstrap`: `{authenticated, csrf, session_id, languages, model, version}`.
+- GET `bootstrap`: `{authenticated, password_required, csrf, session_id, languages, model, version}`.
+  With password protection off (default), bootstrap creates an isolated signed
+  browser session automatically. Anonymous cookies cannot authenticate after
+  password protection is enabled. Existing protected installs retain their setting.
   languages: `[{code, name, speech_output}]`; model: `{state, error?}`.
 - POST `login`: JSON `{password}` → `{ok:true}`; call bootstrap again.
 - POST `logout`: clears authentication and session RAM.
@@ -63,7 +66,8 @@ CUDA primary; ffmpeg or scipy resampling is allowed. No extra trained model.
 Native Debian/Ubuntu: nginx + php-fpm + systemd + isolated Python venv. First
 installer question DE/EN, then full model-license notice requiring exact word
 AKZEPTIEREN / ACCEPT; abort before changes otherwise. Ask IP, optional DNS name,
-HTTP/HTTPS/model ports, password, path; updates preserve config and local CA.
+HTTP/HTTPS/model ports, optional password protection (default off), path; updates
+preserve config and local CA.
 Private CA generates leaf with exact IP/DNS SAN. HTTP setup page repeats license
 word acknowledgement before public CA download and explains iPad profile install
 plus full trust. Never serve private keys. Real application uses HTTPS.

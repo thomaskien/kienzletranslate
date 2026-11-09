@@ -30,8 +30,12 @@ Standardpfade:
 Modellservice: `127.0.0.1:8765` (konfigurierbar), Bearer-Token ausschließlich
 zwischen PHP und Python. Kein produktiver ungeschützter Modellport im LAN.
 App: HTTPS, Cookie mit HttpOnly/Secure/SameSite=Strict und CSRF-Schutz.
-Anmeldeversuche werden durch nginx begrenzt. Das gemeinsame Zugangspasswort ist
-für kleine vertrauenswürdige Nutzergruppen gedacht; keine Benutzerverwaltung.
+Passwortschutz ist bei neuen Installationen standardmäßig ausgeschaltet. Die App
+öffnet dann direkt und vergibt getrennte signierte Browsersitzungen. Der Installer
+kann den Schutz optional einschalten (`password_required: true`); bestehende
+Einstellungen bleiben bei Updates erhalten. Anonyme Sitzungen berechtigen nach
+späterem Einschalten des Passwortschutzes nicht zum Zugang. Anmeldeversuche werden
+durch nginx begrenzt. Es gibt keine Benutzer-/Rollenverwaltung.
 
 ## iPad-Zertifikat
 
@@ -42,7 +46,8 @@ für kleine vertrauenswürdige Nutzergruppen gedacht; keine Benutzerverwaltung.
 4. Einstellungen → Profil geladen → Installieren.
 5. Einstellungen → Allgemein → Info → Zertifikatsvertrauenseinstellungen →
    volles Vertrauen für „kienzletranslate Local CA“ einschalten.
-6. HTTPS-Adresse öffnen, anmelden, zum Home-Bildschirm hinzufügen.
+6. HTTPS-Adresse öffnen, nur bei aktiviertem Passwortschutz anmelden und zum
+   Home-Bildschirm hinzufügen.
 
 Nur das öffentliche Zertifikat wird bereitgestellt. Private Schlüssel dürfen
 nicht auf iPads oder ins Git-Repository kopiert werden. Updates behalten die CA.

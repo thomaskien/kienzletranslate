@@ -15,28 +15,33 @@ if ($method !== 'GET') {
 }
 
 if ($route === 'login' && $method === 'POST') {
+    if (!password_required()) api_error('Passwortschutz ist deaktiviert.', 409, 'password_disabled');
     $body = file_get_contents('php://input', false, null, 0, 4097);
     if (strlen($body) > 4096) api_error('Eingabe zu lang.', 413, 'size');
     $input = json_decode($body, true);
     $password = is_array($input) && is_string($input['password'] ?? null) ? $input['password'] : '';
-    if (strlen($password) > 1024 || !password_verify($password, $config['password_hash'])) {
+    if (strlen($password) > 1024 || !password_verify($password, $config['password_hash'] ?? '')) {
         usleep(300000);
         api_error('Zugangspasswort stimmt nicht.', 401, 'login_failed');
     }
-    set_auth_cookie(bin2hex(random_bytes(16)));
+    set_auth_cookie(bin2hex(random_bytes(16)), true);
     json_response(['ok' => true]);
 }
 
 if ($route === 'bootstrap' && $method === 'GET') {
-    if ($sid === null) json_response(['authenticated' => false, 'version' => '0.1.0']);
+    if ($sid === null && !password_required()) {
+        $sid = bin2hex(random_bytes(16));
+        set_auth_cookie($sid);
+    }
+    if ($sid === null) json_response(['authenticated' => false, 'password_required' => true, 'version' => $config['version'] ?? '1.1.0']);
     [$status, , $health] = backend_request('GET', '/health');
-    json_response(['authenticated' => true, 'csrf' => csrf_token($sid), 'session_id' => $sid,
+    json_response(['authenticated' => true, 'password_required' => password_required(), 'csrf' => csrf_token($sid), 'session_id' => $sid,
         'languages' => json_decode(file_get_contents(dirname(__DIR__).'/backend/languages.json'), true),
         'model' => $status === 200 ? json_decode($health, true) : ['state' => 'error', 'error' => 'Modellservice nicht erreichbar.'],
-        'version' => '0.1.0']);
+        'version' => $config['version'] ?? '1.1.0']);
 }
 
-if ($sid === null) api_error('Bitte anmelden.', 401, 'authentication_required');
+if ($sid === null) api_error(password_required() ? 'Bitte anmelden.' : 'Bitte App neu laden.', 401, 'authentication_required');
 if ($method !== 'GET' && !hash_equals(csrf_token($sid), $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '')) api_error('Sitzung bitte neu laden.', 403, 'csrf');
 
 if ($route === 'logout' && $method === 'POST') {

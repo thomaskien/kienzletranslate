@@ -18,7 +18,14 @@ import time
 
 CONFIG = Path('/etc/kienzletranslate/config.json')
 SOURCE = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0'
+VERSION = '1.1.0'
+
+
+def password_setting(old, answers):
+    value = answers.get('password_required', old.get('password_required', bool(old.get('password_hash'))))
+    if type(value) is not bool:
+        raise ValueError('password_required must be true or false')
+    return value
 
 
 def validate(values):
@@ -192,6 +199,17 @@ def main():
     host = config['server_name'] or config['server_ip']
     if ':' in host: host = '['+host+']'
     config['public_url'] = 'https://'+host+(':'+str(config['https_port']) if config['https_port'] != 443 else '')
+    try:
+        config['password_required'] = password_setting(old, answers)
+    except ValueError:
+        raise SystemExit(tr('password_required muss true oder false sein.', 'password_required must be true or false.'))
+    if not args.answers:
+        default = tr('ja', 'yes') if config['password_required'] else tr('nein', 'no')
+        choice = input(tr(f'Passwortschutz aktivieren? [ja/nein] ({default}): ', f'Enable password protection? [yes/no] ({default}): ')).strip().lower()
+        if choice:
+            if choice not in ('ja', 'j', 'yes', 'y', 'nein', 'n', 'no'):
+                raise SystemExit(tr('Bitte ja oder nein eingeben.', 'Please enter yes or no.'))
+            config['password_required'] = choice in ('ja', 'j', 'yes', 'y')
     if args.check:
         print(tr('Eingaben gültig. Keine Systemänderungen.', 'Inputs valid. No system changes.'))
         return
@@ -211,9 +229,11 @@ def main():
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try: sock.bind(('127.0.0.1' if key == 'model_port' else '0.0.0.0', port))
             except OSError: raise SystemExit(tr(f'Port {port} ist belegt. Bitte anderen Port wählen.', f'Port {port} is occupied. Choose a different port.'))
-    password = answers.get('password', '') if args.answers else getpass.getpass(tr('Zugangspasswort (leer: beibehalten oder sicher erzeugen): ', 'Access password (blank: keep existing or generate): '))
+    password = ''
+    if config['password_required']:
+        password = answers.get('password', '') if args.answers else getpass.getpass(tr('Zugangspasswort (leer: beibehalten oder sicher erzeugen): ', 'Access password (blank: keep existing or generate): '))
     generated = False
-    if not password and 'password_hash' not in old:
+    if config['password_required'] and not password and 'password_hash' not in old:
         password = secrets.token_urlsafe(18)
         generated = True
     if password and len(password) < 12:
@@ -369,9 +389,9 @@ WantedBy=timers.target
             run(['systemctl','reload','nginx'])
         raise
     info = {'url':config['public_url'], 'setup_url':'http://'+host+(':'+str(config['http_port']) if config['http_port']!=80 else ''),
-            'ca_fingerprint':config['ca_fingerprint'], 'version':VERSION}
+            'ca_fingerprint':config['ca_fingerprint'], 'version':VERSION, 'password_required':config['password_required']}
     if generated: info['initial_password'] = password
-    elif not password and Path('/root/kienzletranslate-access.json').exists():
+    elif config['password_required'] and not password and Path('/root/kienzletranslate-access.json').exists():
         prior_access = json.loads(Path('/root/kienzletranslate-access.json').read_text())
         if 'initial_password' in prior_access:
             info['initial_password'] = prior_access['initial_password']
@@ -380,6 +400,7 @@ WantedBy=timers.target
     print(tr('App: ', 'App: ')+info['url'])
     print(tr('iPad-Einrichtung: ', 'iPad setup: ')+info['setup_url'])
     print(config['ca_fingerprint'])
+    if not config['password_required']: print(tr('Passwortschutz deaktiviert: direkter Zugang zur App.', 'Password protection disabled: open the app directly.'))
     if generated: print(tr('Erzeugtes Zugangspasswort: /root/kienzletranslate-access.json', 'Generated access password: /root/kienzletranslate-access.json'))
     print(tr('Vorhandene GPU-Dienste wurden durch diesen Installer nicht umkonfiguriert.', 'Existing GPU services were not reconfigured by this installer.'))
 

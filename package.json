@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "/Applications/Codex.app/Contents/Resources/cua_node/bin/node --test tests/*.test.mjs"
-  }
+    "test": "node --test tests/*.test.mjs"
+  },
+  "version": "1.1.0"
 }

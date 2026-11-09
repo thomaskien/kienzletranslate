@@ -1,4 +1,25 @@
-# Prüfstand — 08.11.2026
+# Prüfstand — v1.1, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.1
+
+- 12 JavaScript-Tests und 5 Python/PHP-Grenztests bestanden: vorhandene
+  Aufnahme-/Frontendlogik, DE/EN-Wörterbücher, vollständige und alphabetische
+  Sprachgruppen, Installer-Eingaben und optionale Passwortsitzungen.
+- Passwortfreier Zugang am echten HTTPS-Server: getrennte und stabile Sitzungen
+  für zwei Browser, Secure/HttpOnly-Cookies und CSRF-Abweisung bestätigt.
+  Eine offene Sitzung wird beim Einschalten des Passwortschutzes ungültig.
+- Browserprüfung mit lokaler API-Fixture bei 744 × 1133 und 1133 × 744 Pixeln:
+  Texte mit rund 1500 Zeichen bleiben vollständig innerhalb der Flächen,
+  auch mit Aufnahmesymbol in der aktiven 45-Prozent-Fläche.
+- DE/EN-Wechsel übersetzt Dialog und beide Sprachgruppen, behält die
+  ausgewählten Übersetzungssprachen und Ergebnistexte bei und bleibt nach
+  erneutem Öffnen erhalten. Alle 96 Modellsprachen sind auswählbar.
+- Update auf dem Zielserver mit dem v1.1-Installer erfolgreich. Root-CA,
+  Ports, Servername, Sitzungs-/Backendgeheimnisse und deaktivierter Passwortschutz
+  blieben erhalten. Danach HTTPS, Sitzungsisolation, CSRF, ausgelieferte
+  Frontenddateien und Modellservice erneut geprüft; Modellstatus `ready`.
+- Die unveränderte Modellpipeline wurde für diese Oberfläche nicht erneut
+  durch den vollständigen GPU-Test geschickt; dessen Ergebnisse stehen unten.
 
 ## Zielsystem
 
@@ -8,7 +29,7 @@
   `5f8cc790b19fc3f67a61c105133b20b34e3dcb76`, FP16.
 - PHP 8.3-FPM, nginx, ein Uvicorn-Prozess; Modellport nur auf Loopback.
 
-## Bestanden
+## Grundversion: bestanden am 08.11.2026
 
 - 10 dependency-free JavaScript-Tests: Vorlaufgrenzen, Wrap-around,
   Abbruch/Release, Sample-Uhr, WAV-Samplerate, Generationsschutz, Sprachrichtung,

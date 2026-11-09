@@ -3,13 +3,20 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
-from deploy.install import validate, nginx_config
+from deploy.install import validate, nginx_config, password_setting
 
 BASE = dict(server_ip='10.0.83.140',server_name='',http_port=80,https_port=443,model_port=8765,
             install_path='/opt/kienzletranslate',model_path='/var/lib/kienzletranslate/model',public_url='https://10.0.83.140')
 
 
 class InstallerTests(unittest.TestCase):
+    def test_password_optional_default_and_update_preservation(self):
+        self.assertFalse(password_setting({}, {}))
+        self.assertTrue(password_setting({'password_hash':'old'}, {}))
+        self.assertFalse(password_setting({'password_hash':'old'}, {'password_required':False}))
+        self.assertFalse(password_setting({'password_hash':'old','password_required':False}, {}))
+        self.assertTrue(password_setting({}, {'password_required':True}))
+        with self.assertRaises(ValueError): password_setting({}, {'password_required':'false'})
     def test_confirmation_de_en_and_rejection(self):
         for language, word in [('de','AKZEPTIEREN'),('en','ACCEPT'),('de',''),('en','accept')]:
             result = subprocess.run([sys.executable,'deploy/install.py','--answers','-','--check'],

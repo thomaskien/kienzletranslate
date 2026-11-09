@@ -1,4 +1,4 @@
-# kienzletranslate
+# kienzletranslate v1.1
 
 Lokaler Gesprächsübersetzer für zwei gegenüber sitzende Personen mit einem
 iPad im Hochformat. PHP-Webapp und ein zentraler SeamlessM4T-v2-Large-Modellservice
@@ -25,9 +25,12 @@ sudo bash install.sh
 
 Erste Abfrage: Deutsch/English. Anschließend Lizenzbestätigung, Server-IP,
 optionaler DNS-Name, HTTP-/HTTPS-/Modellport, Installations- und Modellpfad sowie
-Zugangspasswort. Ein leerer Passwortwert erhält das bisherige Passwort oder
-erzeugt bei Neuinstallation ein sicheres Passwort. Die Zugangsdaten liegen dann
-auf dem Server in `/root/kienzletranslate-access.json` (nur für root lesbar).
+optionalen Passwortschutz (standardmäßig aus). Ohne Passwortschutz öffnet sich
+die App direkt. Wird der Schutz eingeschaltet, lässt sich ein Passwort festlegen;
+eine leere Eingabe erhält das bestehende oder erzeugt ein sicheres Passwort.
+Aufrufadressen und gegebenenfalls das erzeugte Passwort liegen auf dem Server in
+`/root/kienzletranslate-access.json` (nur für root lesbar). Updates erhalten die
+ausdrücklich gewählte Einstellung.
 
 Für Updates den neuen Quellstand holen und denselben Installer aufrufen.
 Konfiguration und lokale CA bleiben erhalten; vorheriger Stand wird gesichert.
@@ -40,12 +43,18 @@ Ausführliche Einrichtung: [INSTALLATION.md](docs/INSTALLATION.md).
 ## Bedienung
 
 - Zwei Sprachen auswählen, unten standardmäßig Deutsch, oben Ukrainisch.
+- Häufig in Deutschland verwendete Sprachen stehen in einer ersten alphabetischen
+  Gruppe, alle übrigen in einer zweiten alphabetischen Gruppe.
+- Die Oberfläche ist in den Einstellungen zwischen Deutsch und Englisch umschaltbar;
+  diese Wahl verändert die Übersetzungssprachen nicht und wird lokal gespeichert.
 - Mikrofon einmal aktivieren. Es bleibt im Vordergrund für den lokalen Vorlauf
   geöffnet. Im Leerlauf werden keine Audiodaten übertragen.
 - Eigene Hälfte gedrückt halten, sprechen, loslassen. Grün bedeutet Aufnahme;
   die Verarbeitung beginnt nach dem Loslassen.
 - Originaltext erscheint auf der Sprecherseite, Übersetzung gegenüber. Nur der
   obere Gesprächstext ist gedreht, alle Bedienelemente bleiben aufrecht.
+- Die Schriftgröße passt sich automatisch so an, dass der gesamte Text in die
+  jeweilige Hälfte passt. Lange Texte werden entsprechend kleiner dargestellt.
 - Lautsprecher schaltet die übersetzte Sprachausgabe ein/aus. Eine neue Aufnahme
   unterbricht laufende Wiedergabe.
 - Vorlauf: 0–3 s in 250-ms-Schritten, standardmäßig 1 s. Einstellungen ermöglichen
@@ -78,7 +87,12 @@ kienzletranslate is a local, two-person push-to-talk conversation translator.
 PHP serves the iPad PWA; a separate local TCP service runs one SeamlessM4T v2 Large
 checkpoint on the NVIDIA GPU. Run `sudo bash install.sh` and choose **English**.
 The installer supports both fresh installs and updates. It asks for your server
-address, optional DNS name, HTTP/HTTPS/model ports, directories and access password.
+address, optional DNS name, HTTP/HTTPS/model ports, directories and optional password
+protection (**off by default**). With protection off, the app opens directly and
+each browser still receives its own isolated session. The DE/EN interface language
+can be changed independently of translation languages. Text automatically shrinks
+to fit its display half; common languages in Germany appear in the first of two
+alphabetical groups.
 
 Model weights are licensed under **CC BY-NC 4.0, noncommercial use only**, separately
 from the MIT-licensed application. Explicitly enter **ACCEPT** in the installer

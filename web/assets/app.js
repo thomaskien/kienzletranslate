@@ -6,6 +6,11 @@ import {
   preRollSamples,
 } from "./audio-core.js";
 import { GenerationGate, languageDirection, secureUuid } from "./frontend-core.js";
+import {
+  groupLanguages,
+  normalizeUiLocale,
+  translate,
+} from "./i18n.js";
 
 const API = "/api.php?route=";
 const MAX_RECORDING_SECONDS = 60;
@@ -13,6 +18,8 @@ const state = {
   csrf: "",
   languages: [],
   model: { state: "unloaded" },
+  passwordRequired: true,
+  uiLocale: normalizeUiLocale(localStorage.getItem("uiLanguage")),
   preRollMs: readPreRoll(),
   tts: localStorage.getItem("tts") !== "0",
   activePointer: null,
@@ -23,7 +30,8 @@ const state = {
   activeDirection: null,
   activeTts: false,
   holdTimer: null,
-  gesture: null,
+  hasResult: false,
+  status: { key: "", kind: "", parameters: {} },
 };
 const gate = new GenerationGate();
 
@@ -31,6 +39,7 @@ const $ = (selector) => document.querySelector(selector);
 const ui = {
   auth: $("#auth-view"), app: $("#app-view"), authForm: $("#login-form"),
   password: $("#password"), authError: $("#auth-error"), offline: $("#offline-view"),
+  offlineMessage: $("#offline-message"),
   top: $("#top-side"), bottom: $("#bottom-side"), topText: $("#top-text"),
   bottomText: $("#bottom-text"), topLanguage: $("#top-language"),
   bottomLanguage: $("#bottom-language"), tts: $("#tts-toggle"),
@@ -42,6 +51,38 @@ const ui = {
   micDialog: $("#microphone-dialog"), micEnable: $("#enable-microphone"),
   micError: $("#microphone-error"), orientation: $("#orientation-hint"),
 };
+
+const SERVER_ERROR_KEYS = {
+  login_failed: "loginFailed",
+  authentication_required: "authenticationRequired",
+  csrf: "sessionReload",
+  origin: "accessDenied",
+  size: "inputTooLarge",
+  metadata: "invalidRecording",
+  not_found: "notFound",
+  https_required: "accessDenied",
+};
+
+function t(key, parameters = {}) {
+  return translate(state.uiLocale, key, parameters);
+}
+
+function localizedError(key, parameters = {}) {
+  const error = new Error(key);
+  error.i18nKey = key;
+  error.i18nParameters = parameters;
+  return error;
+}
+
+function errorText(error) {
+  return t(error?.i18nKey || "requestFailed", error?.i18nParameters || { status: "?" });
+}
+
+function setFormError(element, error = null) {
+  element.dataset.errorKey = error?.i18nKey || "";
+  element.dataset.errorParameters = JSON.stringify(error?.i18nParameters || {});
+  element.textContent = error ? errorText(error) : "";
+}
 
 class AudioCapture {
   constructor() {
@@ -62,11 +103,11 @@ class AudioCapture {
   async enable() {
     if (this.context && this.node && this.stream?.getAudioTracks().some((track) => track.readyState === "live")) {
       await this.context.resume();
-      if (this.context.state !== "running") throw new Error("Der Audiokontext konnte nicht gestartet werden.");
+      if (this.context.state !== "running") throw localizedError("audioContextStart");
       return;
     }
     if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode) {
-      throw new Error("Dieser Browser unterstützt die benötigte Audioaufnahme nicht.");
+      throw localizedError("audioUnsupported");
     }
     await this.disposeBrokenAudio();
     try {
@@ -97,13 +138,13 @@ class AudioCapture {
         this.resolveWaiters();
       };
       for (const track of this.stream.getAudioTracks()) {
-        track.addEventListener("ended", () => this.onFailure?.("Der Mikrofonzugriff wurde beendet."), { once: true });
+        track.addEventListener("ended", () => this.onFailure?.(localizedError("micAccessEnded")), { once: true });
       }
       await this.context.resume();
-      if (this.context.state !== "running") throw new Error("Der Audiokontext konnte nicht gestartet werden.");
+      if (this.context.state !== "running") throw localizedError("audioContextStart");
       this.context.addEventListener("statechange", () => {
         if (!this.disposing && !document.hidden && this.context?.state !== "running") {
-          this.onFailure?.("Audio wurde unterbrochen. Bitte Mikrofon erneut aktivieren.");
+          this.onFailure?.(localizedError("audioInterrupted"));
         }
       });
     } catch (error) {
@@ -136,7 +177,7 @@ class AudioCapture {
 
   begin(eventTime, preRollMs) {
     if (!this.context || this.context.state !== "running" || this.active) {
-      throw new Error("Das Mikrofon ist nicht bereit.");
+      throw localizedError("micNotReady");
     }
     const frame = Math.max(this.frameAt(eventTime), this.cleanFromFrame);
     const capture = new FrameCapture(this.ring, frame, preRollSamples(preRollMs, this.context.sampleRate));
@@ -152,7 +193,7 @@ class AudioCapture {
     if (endFrame - capture.windowStart > this.context.sampleRate * MAX_RECORDING_SECONDS) {
       capture.cancel();
       this.captures.delete(capture);
-      throw new Error("Die Aufnahme wurde verworfen, weil sie länger als 60 Sekunden war.");
+      throw localizedError("recordingTooLong");
     }
     try {
       await this.waitForFrame(endFrame, 500);
@@ -163,9 +204,9 @@ class AudioCapture {
       this.captures.delete(capture);
     }
     const samples = capture.finish(endFrame);
-    if (!samples?.length) throw new Error("Die Aufnahme war leer. Bitte erneut versuchen.");
+    if (!samples?.length) throw localizedError("emptyRecording");
     if (samples.length > this.context.sampleRate * MAX_RECORDING_SECONDS) {
-      throw new Error("Die Aufnahme wurde verworfen, weil sie länger als 60 Sekunden war.");
+      throw localizedError("recordingTooLong");
     }
     return { samples, sampleRate: this.context.sampleRate };
   }
@@ -198,7 +239,7 @@ class AudioCapture {
       const waiter = { frame, resolve, timer: 0 };
       waiter.timer = window.setTimeout(() => {
         this.waiters = this.waiters.filter((candidate) => candidate !== waiter);
-        reject(new Error("Audioaufnahme unterbrochen. Bitte erneut versuchen."));
+        reject(localizedError("recordingInterrupted"));
       }, timeoutMs);
       this.waiters.push(waiter);
     });
@@ -215,12 +256,12 @@ class AudioCapture {
 }
 
 const audioCapture = new AudioCapture();
-audioCapture.onFailure = (message) => {
+audioCapture.onFailure = (error) => {
   gate.next();
   stopPlayback();
   audioCapture.cancel();
   resetPressVisuals();
-  setStatus(message, "error");
+  setStatus(error?.i18nKey || "audioInterrupted", "error", error?.i18nParameters);
   if (!ui.micDialog.open) ui.micDialog.showModal();
   ui.micEnable.disabled = false;
 };
@@ -234,7 +275,7 @@ function readPreRoll() {
 }
 
 function formatSeconds(milliseconds) {
-  return `${(milliseconds / 1000).toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 2 })} s`;
+  return `${(milliseconds / 1000).toLocaleString(state.uiLocale === "de" ? "de-DE" : "en-US", { minimumFractionDigits: 1, maximumFractionDigits: 2 })} s`;
 }
 
 async function request(route, options = {}) {
@@ -249,11 +290,14 @@ async function request(route, options = {}) {
       cache: "no-store",
     });
   } catch {
-    throw new Error("Der lokale Server ist nicht erreichbar. Netzwerkverbindung prüfen.");
+    throw localizedError("networkUnavailable");
   }
   const contentType = response.headers.get("content-type") || "";
   const payload = contentType.includes("application/json") ? await response.json().catch(() => ({})) : null;
-  if (!response.ok) throw new Error(payload?.error || `Serverfehler (${response.status})`);
+  if (!response.ok) {
+    const key = SERVER_ERROR_KEYS[payload?.code] || "serverError";
+    throw localizedError(key, { status: response.status });
+  }
   return payload;
 }
 
@@ -268,10 +312,12 @@ async function bootstrap() {
     state.csrf = data.csrf;
     state.languages = Array.isArray(data.languages) ? data.languages : [];
     state.model = data.model || { state: "unloaded" };
+    state.passwordRequired = data.password_required !== false;
     showApplication();
   } catch (error) {
     showView("offline");
-    ui.offline.querySelector("p").textContent = error.message;
+    ui.offlineMessage.dataset.i18n = error.i18nKey || "networkUnavailable";
+    ui.offlineMessage.textContent = errorText(error);
   }
 }
 
@@ -286,22 +332,36 @@ function showApplication() {
   fillLanguages();
   ui.tts.setAttribute("aria-pressed", String(state.tts));
   ui.tts.classList.toggle("enabled", state.tts);
-  ui.tts.title = state.tts ? "Sprachausgabe ausschalten" : "Sprachausgabe einschalten";
+  updateTtsLabel();
   updatePreRoll();
   updateModelState();
+  updateLogoutLabel();
+  scheduleFit();
   if (["loading", "unloading"].includes(state.model.state)) setTimeout(refreshHealth, 1200);
   ui.micDialog.showModal();
 }
 
 function fillLanguages() {
+  const previousTop = ui.topLanguage.value || localStorage.getItem("topLanguage");
+  const previousBottom = ui.bottomLanguage.value || localStorage.getItem("bottomLanguage");
+  const groups = groupLanguages(state.languages, state.uiLocale);
   const makeOptions = (select) => {
-    select.replaceChildren(...state.languages.map((language) => {
-      const option = document.createElement("option");
-      option.value = language.code;
-      option.textContent = language.name;
-      option.dataset.speechOutput = String(Boolean(language.speech_output));
-      return option;
-    }));
+    const makeGroup = (label, languages) => {
+      const group = document.createElement("optgroup");
+      group.label = label;
+      group.replaceChildren(...languages.map((language) => {
+        const option = document.createElement("option");
+        option.value = language.code;
+        option.textContent = language.displayName;
+        option.dataset.speechOutput = String(Boolean(language.speech_output));
+        return option;
+      }));
+      return group;
+    };
+    select.replaceChildren(
+      makeGroup(t("commonGermany"), groups.common),
+      makeGroup(t("otherLanguages"), groups.other),
+    );
   };
   makeOptions(ui.topLanguage);
   makeOptions(ui.bottomLanguage);
@@ -309,13 +369,104 @@ function fillLanguages() {
   const first = state.languages[0]?.code || "";
   const topFallback = codes.has("ukr") ? "ukr" : state.languages.find(({ code }) => code !== "deu")?.code || first;
   const bottomFallback = codes.has("deu") ? "deu" : first;
-  ui.topLanguage.value = codes.has(localStorage.getItem("topLanguage")) ? localStorage.getItem("topLanguage") : topFallback;
-  ui.bottomLanguage.value = codes.has(localStorage.getItem("bottomLanguage")) ? localStorage.getItem("bottomLanguage") : bottomFallback;
+  ui.topLanguage.value = codes.has(previousTop) ? previousTop : topFallback;
+  ui.bottomLanguage.value = codes.has(previousBottom) ? previousBottom : bottomFallback;
 }
 
-function setStatus(message = "", kind = "") {
-  ui.status.textContent = message;
+function setStatus(key = "", kind = "", parameters = {}) {
+  state.status = { key, kind, parameters: parameters || {} };
+  ui.status.textContent = key ? t(key, parameters) : "";
   ui.status.dataset.kind = kind;
+}
+
+function updateTtsLabel() {
+  ui.tts.title = t(state.tts ? "ttsOn" : "ttsOff");
+}
+
+function updateLogoutLabel() {
+  ui.logout.textContent = t(state.passwordRequired ? "logout" : "resetSession");
+}
+
+function applyLocale(locale) {
+  state.uiLocale = normalizeUiLocale(locale);
+  localStorage.setItem("uiLanguage", state.uiLocale);
+  document.documentElement.lang = state.uiLocale;
+  for (const element of document.querySelectorAll("[data-i18n]")) {
+    element.textContent = t(element.dataset.i18n);
+  }
+  for (const element of document.querySelectorAll("[data-i18n-aria-label]")) {
+    element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+  }
+  for (const select of document.querySelectorAll("[data-ui-locale]")) select.value = state.uiLocale;
+  if (!state.hasResult) {
+    ui.topText.textContent = t("topPrompt");
+    ui.bottomText.textContent = t("bottomPrompt");
+  }
+  if (state.languages.length) fillLanguages();
+  updateTtsLabel();
+  updateLogoutLabel();
+  updatePreRoll();
+  updateModelState();
+  if (state.status.key) setStatus(state.status.key, state.status.kind, state.status.parameters);
+  for (const element of [ui.authError, ui.micError]) {
+    if (element.dataset.errorKey) {
+      element.textContent = t(element.dataset.errorKey, JSON.parse(element.dataset.errorParameters || "{}"));
+    }
+  }
+  scheduleFit();
+}
+
+let fitFrame = 0;
+let fitTransitionTimer = 0;
+
+function fitConversationText(element) {
+  const content = element.closest(".talk-content");
+  if (!content || content.clientWidth === 0 || content.clientHeight === 0) return;
+  element.style.fontSize = "";
+  element.style.width = "";
+  element.style.maxHeight = "";
+  const contentStyle = getComputedStyle(content);
+  const availableWidth = Math.max(0, content.clientWidth - parseFloat(contentStyle.paddingLeft) - parseFloat(contentStyle.paddingRight));
+  let availableHeight = Math.max(0, content.clientHeight - parseFloat(contentStyle.paddingTop) - parseFloat(contentStyle.paddingBottom));
+  const icon = content.querySelector(".recording-symbol");
+  if (icon && getComputedStyle(icon).display !== "none") {
+    const iconStyle = getComputedStyle(icon);
+    availableHeight -= icon.getBoundingClientRect().height + parseFloat(iconStyle.marginTop) + parseFloat(iconStyle.marginBottom);
+  }
+  availableHeight = Math.max(0, availableHeight);
+  const maximumFontSize = parseFloat(getComputedStyle(element).fontSize) || 16;
+  element.style.width = `${availableWidth}px`;
+  element.style.maxHeight = `${availableHeight}px`;
+
+  const fits = (fontSize) => {
+    element.style.fontSize = `${fontSize}px`;
+    return element.scrollWidth <= availableWidth + 0.5 && element.scrollHeight <= availableHeight + 0.5;
+  };
+  if (fits(maximumFontSize)) return;
+  let lower = 0;
+  let upper = maximumFontSize;
+  for (let step = 0; step < 18; step += 1) {
+    const middle = (lower + upper) / 2;
+    if (fits(middle)) lower = middle;
+    else upper = middle;
+  }
+  fits(lower);
+}
+
+function fitConversationTexts() {
+  fitConversationText(ui.topText);
+  fitConversationText(ui.bottomText);
+}
+
+function scheduleFit({ afterTransition = false } = {}) {
+  cancelAnimationFrame(fitFrame);
+  fitFrame = requestAnimationFrame(() => {
+    fitFrame = requestAnimationFrame(fitConversationTexts);
+  });
+  if (afterTransition) {
+    clearTimeout(fitTransitionTimer);
+    fitTransitionTimer = window.setTimeout(fitConversationTexts, 180);
+  }
 }
 
 function updatePreRoll() {
@@ -325,13 +476,15 @@ function updatePreRoll() {
 }
 
 function updateModelState() {
-  const labels = { unloaded: "nicht geladen", loading: "wird geladen", ready: "bereit", unloading: "wird entladen", error: "Fehler" };
-  ui.modelState.textContent = labels[state.model.state] || state.model.state || "unbekannt";
+  const labels = { unloaded: "modelUnloaded", loading: "modelLoadingState", ready: "modelReadyState", unloading: "modelUnloadingState", error: "modelErrorState" };
+  ui.modelState.textContent = t(labels[state.model.state] || "modelUnknown");
   ui.modelState.dataset.state = state.model.state;
   ui.loadModel.disabled = ["ready", "loading", "unloading"].includes(state.model.state);
   ui.unloadModel.disabled = state.model.state !== "ready";
-  if (state.model.state === "error") setStatus(state.model.error || "Das Modell meldet einen Fehler.", "error");
-  else if (["ready", "unloaded"].includes(state.model.state) && ui.status.dataset.kind === "busy") setStatus("");
+  if (state.model.state === "error") setStatus("modelError", "error");
+  else if (["ready", "unloaded"].includes(state.model.state)
+    && ui.status.dataset.kind === "busy"
+    && !["modelLoading", "modelUnloading"].includes(state.status.key)) setStatus("");
 }
 
 function stopPlayback() {
@@ -358,12 +511,10 @@ function startPress(event, side) {
     // Echo-tainted pre-roll is intentionally excluded when this press interrupts playback.
     audioCapture.begin(event.timeStamp, effectivePreRoll);
   } catch (error) {
-    setStatus(error.message, "error");
+    setStatus(error.i18nKey || "micNotReady", "error", error.i18nParameters);
     return;
   }
   state.activePointer = event.pointerId;
-  state.gesture = { pointer: event.pointerId, y: event.clientY, lastY: event.clientY, scrolling: false,
-    text: side === "top" ? ui.topText : ui.bottomText, side };
   state.activeSide = side;
   state.activeGeneration = generation;
   state.activeUtteranceId = utteranceId;
@@ -372,16 +523,13 @@ function startPress(event, side) {
   state.activeTts = state.tts;
   event.currentTarget.setPointerCapture(event.pointerId);
   ui.app.dataset.active = side;
-  setStatus("Aufnahme läuft …", "recording");
+  setStatus("recording", "recording");
+  scheduleFit({ afterTransition: true });
   const maximumHold = Math.max(0, MAX_RECORDING_SECONDS * 1000 - effectivePreRoll);
-  state.holdTimer = window.setTimeout(() => abortPress("Die Aufnahme wurde nach 60 Sekunden verworfen."), maximumHold);
+  state.holdTimer = window.setTimeout(() => abortPress("recordingTimedOut"), maximumHold);
 }
 
 async function releasePress(event) {
-  if (state.gesture?.pointer === event.pointerId && state.gesture.scrolling) {
-    state.gesture = null;
-    return;
-  }
   if (event.pointerId !== state.activePointer) return;
   event.preventDefault();
   const side = state.activeSide;
@@ -391,28 +539,27 @@ async function releasePress(event) {
   const direction = state.activeDirection;
   const tts = state.activeTts;
   resetPressVisuals();
-  setStatus("Wird übertragen …", "busy");
+  setStatus("uploading", "busy");
   try {
     const recording = await audioCapture.end(event.timeStamp);
     if (!recording || !gate.accepts(generation)) return;
     const wav = encodePcm16Wav(recording.samples, recording.sampleRate);
     await submitUtterance(wav, side, generation, utteranceId, direction, tts, order);
   } catch (error) {
-    if (gate.accepts(generation)) setStatus(error.message, "error");
+    if (gate.accepts(generation)) setStatus(error.i18nKey || "requestFailed", "error", error.i18nParameters || { status: "?" });
   }
 }
 
 function cancelPress(event) {
-  if (event?.pointerId === state.gesture?.pointer) state.gesture = null;
   if (event && event.pointerId !== state.activePointer) return;
-  abortPress("Aufnahme abgebrochen.");
+  abortPress("recordingCancelled");
 }
 
-function abortPress(message) {
+function abortPress(messageKey) {
   if (state.activePointer === null) return;
   audioCapture.cancel();
   resetPressVisuals();
-  setStatus(message, "error");
+  if (messageKey) setStatus(messageKey, "error");
 }
 
 function resetPressVisuals() {
@@ -425,6 +572,7 @@ function resetPressVisuals() {
   state.activeDirection = null;
   state.activeTts = false;
   delete ui.app.dataset.active;
+  scheduleFit({ afterTransition: true });
 }
 
 async function submitUtterance(wav, side, generation, id, direction, tts, order) {
@@ -435,7 +583,7 @@ async function submitUtterance(wav, side, generation, id, direction, tts, order)
   await request(`utterances&${params}`, {
     method: "POST", body: wav, headers: { "Content-Type": "audio/wav" },
   });
-  if (gate.accepts(generation)) setStatus("Verarbeitung läuft …", "busy");
+  if (gate.accepts(generation)) setStatus("processing", "busy");
   await pollUtterance(id, side, generation);
 }
 
@@ -446,12 +594,12 @@ async function pollUtterance(id, side, generation) {
     if (!gate.accepts(generation)) return;
     if (result.status === "complete") {
       showResult(result, side);
-      if (result.text_only_reason) setStatus(`Nur Text: ${result.text_only_reason}`, "notice");
+      if (result.text_only_reason) setStatus("textOnly", "notice");
       else setStatus("");
       if (state.tts && result.audio_available) await playResult(id, generation);
       return;
     }
-    if (result.status === "error") throw new Error(result.error || "Die Übersetzung ist fehlgeschlagen.");
+    if (result.status === "error") throw localizedError("translationFailed");
     await new Promise((resolve) => setTimeout(resolve, 750));
   }
 }
@@ -466,6 +614,8 @@ function showResult(result, side) {
     ui.bottomText.textContent = original;
     ui.topText.textContent = translated;
   }
+  state.hasResult = true;
+  scheduleFit();
 }
 
 async function playResult(id, generation) {
@@ -474,7 +624,7 @@ async function playResult(id, generation) {
   const data = await response.arrayBuffer();
   if (!gate.accepts(generation)) return;
   if (audioCapture.context?.state !== "running") {
-    setStatus("Bitte Mikrofon aktivieren, um Audio wiederzugeben.", "notice");
+    setStatus("playbackNeedsMic", "notice");
     return;
   }
   // Use the AudioContext unlocked by the microphone activation touch. A new
@@ -497,12 +647,12 @@ async function playResult(id, generation) {
 }
 
 async function changeModel(action) {
-  setStatus(action === "load" ? "Modell wird geladen …" : "Modell wird entladen …", "busy");
+  setStatus(action === "load" ? "modelLoading" : "modelUnloading", "busy");
   try {
     await request(`model/${action}`, { method: "POST" });
     await refreshHealth();
   } catch (error) {
-    setStatus(error.message, "error");
+    setStatus(error.i18nKey || "requestFailed", "error", error.i18nParameters || { status: "?" });
   }
 }
 
@@ -511,23 +661,24 @@ async function refreshHealth() {
     state.model = await request("health", { method: "GET", mutating: false });
     updateModelState();
     if (["loading", "unloading"].includes(state.model.state)) setTimeout(refreshHealth, 1200);
-    else if (ui.status.textContent.startsWith("Modell wird")) {
-      setStatus(state.model.state === "ready" ? "Modell bereit." : state.model.state === "unloaded" ? "Modell entladen." : (state.model.error || "Modellfehler."), state.model.state === "error" ? "error" : "notice");
+    else if (["modelLoading", "modelUnloading"].includes(state.status.key)) {
+      const key = state.model.state === "ready" ? "modelReady" : state.model.state === "unloaded" ? "modelUnloadedNotice" : "modelError";
+      setStatus(key, state.model.state === "error" ? "error" : "notice");
     }
   } catch (error) {
-    setStatus(error.message, "error");
+    setStatus(error.i18nKey || "requestFailed", "error", error.i18nParameters || { status: "?" });
   }
 }
 
 ui.authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  ui.authError.textContent = "";
+  setFormError(ui.authError);
   try {
     await request("login", { method: "POST", json: { password: ui.password.value } });
     ui.password.value = "";
     await bootstrap();
   } catch (error) {
-    ui.authError.textContent = error.message;
+    setFormError(ui.authError, error);
   }
 });
 
@@ -536,19 +687,6 @@ ui.micDialog.addEventListener("cancel", (event) => event.preventDefault());
 
 for (const [element, side] of [[ui.top, "top"], [ui.bottom, "bottom"]]) {
   element.addEventListener("pointerdown", (event) => startPress(event, side));
-  element.addEventListener("pointermove", (event) => {
-    const gesture = state.gesture;
-    if (!gesture || gesture.pointer !== event.pointerId) return;
-    if (!gesture.scrolling && gesture.text.scrollHeight > gesture.text.clientHeight + 4 && Math.abs(event.clientY - gesture.y) > 14) {
-      gesture.scrolling = true;
-      abortPress("");
-    }
-    if (gesture.scrolling) {
-      event.preventDefault();
-      gesture.text.scrollTop += (event.clientY - gesture.lastY) * (side === "top" ? 1 : -1);
-    }
-    gesture.lastY = event.clientY;
-  });
   element.addEventListener("pointerup", releasePress);
   element.addEventListener("pointercancel", cancelPress);
   element.addEventListener("lostpointercapture", (event) => {
@@ -559,14 +697,14 @@ for (const [element, side] of [[ui.top, "top"], [ui.bottom, "bottom"]]) {
 
 ui.micEnable.addEventListener("click", async () => {
   ui.micEnable.disabled = true;
-  ui.micError.textContent = "";
+  setFormError(ui.micError);
   try {
     await audioCapture.enable();
     ui.micDialog.close();
-    setStatus("Mikrofon bereit.", "notice");
-    setTimeout(() => { if (ui.status.textContent === "Mikrofon bereit.") setStatus(""); }, 1800);
+    setStatus("micReady", "notice");
+    setTimeout(() => { if (state.status.key === "micReady") setStatus(""); }, 1800);
   } catch (error) {
-    ui.micError.textContent = error.message;
+    setFormError(ui.micError, error?.i18nKey ? error : localizedError("micEnableFailed"));
     ui.micEnable.disabled = false;
   }
 });
@@ -576,7 +714,7 @@ ui.tts.addEventListener("click", () => {
   localStorage.setItem("tts", state.tts ? "1" : "0");
   ui.tts.setAttribute("aria-pressed", String(state.tts));
   ui.tts.classList.toggle("enabled", state.tts);
-  ui.tts.title = state.tts ? "Sprachausgabe ausschalten" : "Sprachausgabe einschalten";
+  updateTtsLabel();
   if (!state.tts) stopPlayback();
 });
 
@@ -584,6 +722,10 @@ for (const select of [ui.topLanguage, ui.bottomLanguage]) {
   select.addEventListener("change", () => {
     localStorage.setItem(select === ui.topLanguage ? "topLanguage" : "bottomLanguage", select.value);
   });
+}
+
+for (const select of document.querySelectorAll("[data-ui-locale]")) {
+  select.addEventListener("change", () => applyLocale(select.value));
 }
 
 function openSettings() { ui.settings.showModal(); refreshHealth(); }
@@ -606,11 +748,11 @@ ui.logout.addEventListener("click", async () => {
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     gate.next();
-    if (state.activePointer !== null) abortPress("Aufnahme wegen App-Wechsel abgebrochen.");
+    if (state.activePointer !== null) abortPress("appSwitchCancelled");
     stopPlayback();
     audioCapture.suspend().catch(() => {});
   } else if (audioCapture.context?.state === "suspended") {
-    setStatus("Zum Fortfahren Mikrofon erneut aktivieren.", "notice");
+    setStatus("resumeMic", "notice");
     ui.micDialog.showModal();
     ui.micEnable.disabled = false;
   }
@@ -624,11 +766,20 @@ window.addEventListener("pagehide", () => {
 
 window.addEventListener("offline", () => {
   gate.next();
-  abortPress("Netzwerk unterbrochen. Aufnahme verworfen.");
+  abortPress("networkInterrupted");
   audioCapture.cancel();
   stopPlayback();
-  setStatus("Keine Netzwerkverbindung zum Server.", "error");
+  setStatus("noNetwork", "error");
 });
 
+window.addEventListener("resize", scheduleFit);
+window.addEventListener("orientationchange", () => scheduleFit({ afterTransition: true }));
+if ("ResizeObserver" in window) {
+  const conversationResizeObserver = new ResizeObserver(() => scheduleFit());
+  conversationResizeObserver.observe(ui.top);
+  conversationResizeObserver.observe(ui.bottom);
+}
+
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+applyLocale(state.uiLocale);
 bootstrap();

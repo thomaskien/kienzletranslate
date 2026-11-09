@@ -42,14 +42,20 @@ def main():
     assert status==200 and b'kienzletranslate' in body
     checks.append('HTTPS chain and IP SAN verified')
     assert api('health')[0]==401
-    assert json.loads(api('bootstrap')[2])['authenticated'] is False
-    status,headers,body=api('login','POST',json.dumps({'password':access['initial_password']}).encode(),{'Content-Type':'application/json'})
-    assert status==200,body
+    status,headers,body=api('bootstrap')
+    bootstrap=json.loads(body)
+    protected=config.get('password_required',bool(config.get('password_hash')))
+    if protected:
+        assert bootstrap['authenticated'] is False
+        status,headers,body=api('login','POST',json.dumps({'password':access['initial_password']}).encode(),{'Content-Type':'application/json'})
+        assert status==200,body
+    else:
+        assert bootstrap['authenticated'] is True and bootstrap['password_required'] is False
     cookie_header=headers.get('Set-Cookie','').lower()
     assert 'httponly' in cookie_header and 'secure' in cookie_header
     bootstrap=json.loads(api('bootstrap')[2])
     assert bootstrap['authenticated'] and len(bootstrap['languages'])==96
-    checks.append('Login, secure cookie, 96 languages')
+    checks.append(('Login' if protected else 'Password-free bootstrap')+', secure cookie, 96 languages')
     assert api('model/load','POST')[0]==403
     headers={'X-CSRF-Token':bootstrap['csrf']}
     assert api('model/load','POST',headers=headers)[0]==200

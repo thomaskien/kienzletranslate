@@ -31,23 +31,35 @@ function api_error(string $message, int $status, string $code): never {
     json_response(['error' => $message, 'code' => $code], $status);
 }
 
+function password_required(): bool {
+    $config = configuration();
+    // Retain an older installation's explicit password until it is switched off.
+    return (bool)($config['password_required'] ?? isset($config['password_hash']));
+}
+
 function session_identity(): ?string {
     $cookie = $_COOKIE['kt_session'] ?? '';
     $parts = explode('.', $cookie);
-    if (count($parts) !== 3 || !preg_match('/^[a-f0-9]{32}$/D', $parts[0]) || !ctype_digit($parts[1])) return null;
+    if (count($parts) !== 4 || !preg_match('/^[a-f0-9]{32}$/D', $parts[0]) || !ctype_digit($parts[1])) return null;
     if ((int)$parts[1] < time() || (int)$parts[1] > time() + 31 * 86400) return null;
-    $signature = hash_hmac('sha256', $parts[0].'.'.$parts[1], configuration()['session_secret']);
-    return hash_equals($signature, $parts[2]) ? $parts[0] : null;
+    if (!in_array($parts[2], ['open', 'password'], true)) return null;
+    if (password_required() && $parts[2] !== 'password') return null;
+    $signature = hash_hmac('sha256', implode('.', array_slice($parts, 0, 3)), configuration()['session_secret']);
+    return hash_equals($signature, $parts[3]) ? $parts[0] : null;
 }
 
 function csrf_token(string $sid): string {
     return hash_hmac('sha256', 'csrf:'.$sid, configuration()['session_secret']);
 }
 
-function set_auth_cookie(?string $sid): void {
+function session_cookie_value(string $sid, bool $password_authenticated): string {
+    $value = $sid.'.'.(time() + 30 * 86400).'.'.($password_authenticated ? 'password' : 'open');
+    return $value.'.'.hash_hmac('sha256', $value, configuration()['session_secret']);
+}
+
+function set_auth_cookie(?string $sid, bool $password_authenticated = false): void {
     $expires = $sid === null ? time() - 3600 : time() + 30 * 86400;
-    $value = $sid === null ? '' : $sid.'.'.$expires;
-    if ($sid !== null) $value .= '.'.hash_hmac('sha256', $value, configuration()['session_secret']);
+    $value = $sid === null ? '' : session_cookie_value($sid, $password_authenticated);
     setcookie('kt_session', $value, ['expires' => $expires, 'path' => '/', 'secure' => true,
         'httponly' => true, 'samesite' => 'Strict']);
 }

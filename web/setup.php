@@ -39,7 +39,7 @@ $url = $config['public_url'];
 <section><h2><?= $en ? 'Next steps on the iPad' : 'Danach auf dem iPad' ?></h2>
 <ol><li><?= $en ? 'Settings → Profile Downloaded → Install.' : 'Einstellungen → Profil geladen → Installieren.' ?></li>
 <li><?= $en ? 'Settings → General → About → Certificate Trust Settings: enable full trust for kienzletranslate Local CA.' : 'Einstellungen → Allgemein → Info → Zertifikatsvertrauenseinstellungen: volles Vertrauen für kienzletranslate Local CA aktivieren.' ?></li>
-<li><a href="<?= e($url) ?>"><?= e($url) ?></a> <?= $en ? 'open and sign in with the installation password.' : 'öffnen und mit dem Zugangspasswort anmelden.' ?></li>
+<li><a href="<?= e($url) ?>"><?= e($url) ?></a> <?= password_required() ? ($en ? 'open and sign in with the installation password.' : 'öffnen und mit dem Zugangspasswort anmelden.') : ($en ? 'open — no password required.' : 'öffnen — kein Passwort erforderlich.') ?></li>
 <li><?= $en ? 'Safari → Share → Add to Home Screen.' : 'Safari → Teilen → Zum Home-Bildschirm.' ?></li></ol>
 <p class="muted"><?= $en ? 'Verify the SHA-256 fingerprint against the installer output before trusting this CA. HTTP does not authenticate the certificate download.' : 'Vor dem Vertrauen den SHA-256-Fingerabdruck mit der Ausgabe des Installers vergleichen. HTTP schützt den Zertifikatsdownload nicht vor Austausch.' ?></p>
 <code><?= e($config['ca_fingerprint'] ?? '') ?></code></section>

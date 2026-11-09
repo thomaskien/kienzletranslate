@@ -23,5 +23,6 @@
   Swap, Crashdumps und administratives Debugging sind gesonderte Host-Themen.
 - Kein automatischer Wechselbetrieb mit anderen GPU-Diensten. Das Modell startet
   nach einem Serverneustart ungeladen; konkurrierende Dienste können VRAM belegen.
-- Geteiltes Zugangspasswort, keine Rollen/Rechteverwaltung. Passwortwechsel sollte
+- Standardmäßig direkter Zugang ohne Passwort; optional gemeinsames Zugangspasswort,
+  keine Rollen/Rechteverwaltung. Passwortwechsel sollte
   mit Austausch von `session_secret` verbunden werden, um alte Sitzungen abzumelden.
