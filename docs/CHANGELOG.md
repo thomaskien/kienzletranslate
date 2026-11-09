@@ -1,5 +1,14 @@
 # Änderungen
 
+## v1.7 — 10.11.2026
+
+- Die erste Automatic-Aufnahme wird auch bei unsicherer, zu kurzer oder fehlgeschlagener
+  Sprachbestimmung zu Ihrer Sprache übersetzt und bei aktivierter Sprachausgabe gesprochen.
+- Fahnenwahl ist anschließend nur für die Antwortsprache nötig. Übersetzung und
+  laufende Sprachausgabe bleiben bei der Auswahl erhalten; kein erneutes Einsprechen.
+- Ohne sichere Ausgangssprache entfällt nur das zusätzliche Originaltranskript.
+  2×2-Schaltfläche und einmaliger Erkennungsversuch bis zum Refresh bleiben erhalten.
+
 ## v1.6.1 — 10.11.2026
 
 - „Automatic“ belegt jetzt zwei Spalten und zwei Reihen statt einer ganzen Reihe;

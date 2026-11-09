@@ -1,11 +1,29 @@
 import unittest
 import uuid
+from types import SimpleNamespace
 from fastapi.testclient import TestClient
 from backend.app import create_app
 from backend.tests.test_core import FakeModel, wav
 
 
 class ApiTests(unittest.TestCase):
+    def test_automatic_abstention_returns_translation_and_audio(self):
+        app=create_app({'backend_token':'t'*64},FakeModel())
+        app.state.service.detector=SimpleNamespace(detect=lambda data: {'accepted':False,'reason':'uncertain'},close=lambda:None)
+        with TestClient(app) as client:
+            client.headers['Authorization']='Bearer '+'t'*64
+            uid=str(uuid.uuid4())
+            path='/sessions/'+'a'*32+'/utterances'
+            params=dict(utterance_id=uid,source_lang='auto',target_lang='deu',speaker_side='top',tts=True)
+            self.assertEqual(client.post(path,params=params,content=wav()).status_code,202)
+            app.state.service.queue.join()
+            result=client.get(path+'/'+uid).json()
+            self.assertEqual(result['status'],'complete')
+            self.assertEqual(result['translated_text'],'deu')
+            self.assertTrue(result['reply_language_required'])
+            self.assertTrue(result['audio_available'])
+            self.assertEqual(client.get('/sessions/'+'a'*32+'/audio/'+uid).content,b'audio')
+
     def test_auth_validation_and_isolation(self):
         app = create_app({'backend_token':'t'*64}, FakeModel())
         with TestClient(app) as client:

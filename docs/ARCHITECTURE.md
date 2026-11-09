@@ -116,6 +116,10 @@ are 90 seconds disconnected and 300 seconds without interaction; both are config
 
 Only patient-side utterances accept source_lang=auto. One bounded VAD/Whisper base
 detection attempt runs before translation. Successful detection is returned with the
-result; abstention returns status=language_required. The UI generation gate discards
+result. Since v1.7, abstention still returns status=complete with translated text/audio
+and reply_language_required=true. Model.translate receives source=None and skips only
+the optional original-language transcript; direct audio translation uses tgt_lang only.
+The UI preserves the translation and playback while offering flags for the reply language.
+Detector errors also take this path. The UI generation gate discards
 late results after manual selection or refresh. Automatic is consumed when selected,
 kept consumed across a page reload in sessionStorage, and restored only by refresh.

@@ -1,5 +1,6 @@
 import unittest
 import uuid
+from unittest.mock import patch
 from backend.lid import accepted_language, LANGUAGE_CODES
 from backend.lid_worker import identify
 from backend.process_model import ProcessModel, ModelOperationError
@@ -77,14 +78,35 @@ class ResourceTests(unittest.TestCase):
         result=self.service.result('a',uid)
         self.assertEqual(result['detection']['language'],'fra')
         self.assertEqual(result['status'],'complete')
+        self.assertFalse(result['reply_language_required'])
         self.assertEqual(self.detector.calls,1)
         with self.assertRaises(ServiceError):self.service.result('b',uid)
         self.detector.result={'accepted':False,'reason':'uncertain'}
         other=str(uuid.uuid4())
-        self.service.submit('b',other,wav(),'auto','deu',False)
-        self.service.queue.join()
-        self.assertEqual(self.service.result('b',other)['status'],'language_required')
-        self.assertEqual(self.model.calls,1)
+        recording=wav()
+        with patch.object(self.model,'translate',wraps=self.model.translate) as translate:
+            self.service.submit('b',other,recording,'auto','deu',True)
+            self.service.queue.join()
+            translate.assert_called_once_with(recording,None,'deu',True)
+        result=self.service.result('b',other)
+        self.assertEqual(result['status'],'complete')
+        self.assertEqual(result['translated_text'],'deu')
+        self.assertTrue(result['reply_language_required'])
+        self.assertEqual(self.service.result('b',other,audio=True),b'audio')
+        self.assertEqual(self.model.calls,2)
+        with self.assertRaises(ServiceError):self.service.result('a',other)
+    def test_detector_failure_does_not_block_translation_or_audio(self):
+        for detector in (None,self.detector):
+            with self.subTest(detector_available=detector is not None):
+                self.service.detector=detector
+                uid=str(uuid.uuid4())
+                with patch.object(self.detector,'detect',side_effect=RuntimeError('test')):
+                    self.service.submit('a',uid,wav(),'auto','deu',True)
+                    self.service.queue.join()
+                result=self.service.result('a',uid)
+                self.assertEqual(result['status'],'complete')
+                self.assertTrue(result['reply_language_required'])
+                self.assertEqual(self.service.result('a',uid,audio=True),b'audio')
     def test_insufficient_vram_never_starts_gpu_child(self):
         model=ProcessModel('/unused',8192,memory_reader=lambda:4096)
         with self.assertRaises(ModelOperationError) as cm:model.load()

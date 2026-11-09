@@ -13,6 +13,8 @@ iPad-Durchlauf. Wiederholungen nur bei betroffenen Fehlerkorrekturen.
 - v1.6: einmalige Automatic-Auswahl, manueller Rückfall, Refresh, neuer Vorlaufstandard;
   Heartbeat mehrerer Geräte, versteckte Seiten, Inaktivität, Aufnahme-/Queue-Schutz,
   Speichervorprüfung, Detektor-Schwellen und Uninstaller-Pfadsicherheit.
+- v1.7: Übersetzung und Audio trotz unsicherer/fehlgeschlagener LID, Antwortsprache
+  separat wählen; Ergebnis und Wiedergabe bei der Fahnenwahl erhalten.
 - PHP-/Python-/JavaScript-Syntax und gezielter Diff-Review.
 
 ## Auf dem Zielserver
@@ -27,6 +29,8 @@ iPad-Durchlauf. Wiederholungen nur bei betroffenen Fehlerkorrekturen.
   einschließlich Sprachausgabe; Stille/Kurzaufnahme zurückweisen. Echte 90-Sekunden-
   Entladefrist, Wiederladen durch Aktivität und vollständige GPU-Prozessfreigabe.
   Uninstaller ausschließlich im unverändernden Prüfmodus.
+- v1.7: eine bisher unsicher erkannte Aufnahme trotzdem vollständig zu Deutsch
+  übersetzen und WAV-Ausgabe prüfen; sichere Erkennung als kurzer Vergleich.
 - Mehrclient-/Race-Verhalten im kleinen automatisierten Test; kein Dauerlasttest.
 
 ## Auf dem echten iPad — manuell

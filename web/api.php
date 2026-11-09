@@ -33,12 +33,12 @@ if ($route === 'bootstrap' && $method === 'GET') {
         $sid = bin2hex(random_bytes(16));
         set_auth_cookie($sid);
     }
-    if ($sid === null) json_response(['authenticated' => false, 'password_required' => true, 'version' => $config['version'] ?? '1.6.1']);
+    if ($sid === null) json_response(['authenticated' => false, 'password_required' => true, 'version' => $config['version'] ?? '1.7.0']);
     [$status, , $health] = backend_request('GET', '/health');
     json_response(['authenticated' => true, 'password_required' => password_required(), 'csrf' => csrf_token($sid), 'session_id' => $sid,
         'languages' => json_decode(file_get_contents(dirname(__DIR__).'/backend/languages.json'), true),
         'model' => $status === 200 ? json_decode($health, true) : ['state' => 'error', 'error' => 'Modellservice nicht erreichbar.'],
-        'version' => $config['version'] ?? '1.6.1']);
+        'version' => $config['version'] ?? '1.7.0']);
 }
 
 if ($sid === null) api_error(password_required() ? 'Bitte anmelden.' : 'Bitte App neu laden.', 401, 'authentication_required');

@@ -177,20 +177,24 @@ class Service:
                     queued_seconds = time.monotonic() - job["created"]
                     detection = None
                     if job["source"] == "auto":
-                        detection = self.detector.detect(job["input"]) if self.detector else {"accepted": False, "reason": "unavailable"}
+                        try:
+                            detection = self.detector.detect(job["input"]) if self.detector else {"accepted": False, "reason": "unavailable"}
+                        except Exception as exc:
+                            LOG.warning("operation=detect error_type=%s", type(exc).__name__)
+                            detection = {"accepted": False, "reason": "detector_unavailable"}
                         with self.lock:
                             if self.jobs.get(key) is not job:
                                 continue
                             job["detection"] = detection
-                            if not detection.get("accepted"):
-                                job.update(status="language_required", error_code="language_required")
-                                continue
-                        source = detection["language"]
+                        # Uncertainty concerns the language for the reply, not
+                        # audio-to-target translation. Never guess a source label.
+                        source = detection["language"] if detection.get("accepted") else None
                     else:
                         source = job["source"]
                     result, audio = self.model.translate(job["input"], source, job["target"], job["tts"])
                     if detection:
                         result["detection"] = detection
+                        result["reply_language_required"] = not detection.get("accepted", False)
                     result.setdefault("metrics", {})["queue_seconds"] = round(queued_seconds, 3)
                     with self.lock:
                         if self.jobs.get(key) is job:

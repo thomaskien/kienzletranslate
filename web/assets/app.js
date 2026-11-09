@@ -44,6 +44,7 @@ const state = {
   activeTts: false,
   holdTimer: null,
   topLanguagePending: true,
+  replyLanguagePending: false,
   hasResult: false,
   status: { key: "", kind: "", parameters: {} },
 };
@@ -413,7 +414,7 @@ function renderTopLanguageChoices(container, groups) {
       button.className = "model-language-choice";
       button.dataset.topLanguage = language.code;
       button.setAttribute("aria-label", nativeLanguageName(language));
-      button.setAttribute("aria-pressed", String(language.code === ui.topLanguage.value));
+      button.setAttribute("aria-pressed", String(!state.replyLanguagePending && language.code === ui.topLanguage.value));
       const flag = document.createElement("span");
       flag.className = "model-language-flag";
       flag.setAttribute("aria-hidden", "true");
@@ -446,6 +447,12 @@ function renderTopLanguageChoices(container, groups) {
 }
 
 function updateTopLanguageSelection() {
+  if (state.replyLanguagePending) {
+    ui.topLanguageFlag.textContent = "🌐";
+    ui.topLanguageCaption.textContent = t("topLanguage");
+    ui.topLanguageCaption.removeAttribute("lang");
+    return;
+  }
   if (state.automatic.armed || state.automatic.pending) {
     ui.topLanguageFlag.textContent = "🌐";
     ui.topLanguageCaption.textContent = "Automatic";
@@ -470,6 +477,8 @@ function selectTopLanguage(code) {
   const wasAutomatic = state.automatic.armed || state.automatic.pending;
   state.automatic.finish();
   const wasPending = state.topLanguagePending;
+  const wasReplyPending = state.replyLanguagePending;
+  state.replyLanguagePending = false;
   const changed = ui.topLanguage.value !== code;
   ui.topLanguage.value = code;
   localStorage.setItem("topLanguage", code);
@@ -487,6 +496,7 @@ function selectTopLanguage(code) {
 
   markActivity();
   state.topLanguagePending = false;
+  if (wasReplyPending) setStatus("");
   const inlineWasOpen = !ui.topLanguagePicker.hidden;
   ui.topLanguagePicker.hidden = true;
   ui.top.classList.remove("language-picker-open");
@@ -511,6 +521,7 @@ function selectAutomaticLanguage() {
   gate.next();
   stopPlayback();
   state.topLanguagePending = false;
+  state.replyLanguagePending = false;
   state.hasResult = false;
   ui.topLanguagePicker.hidden = true;
   ui.top.classList.remove("language-picker-open");
@@ -523,19 +534,22 @@ function selectAutomaticLanguage() {
   markActivity();
 }
 
-function automaticFallback() {
+function automaticFallback(preserveResult = false) {
   state.automatic.finish();
   state.topLanguagePending = true;
-  state.hasResult = false;
-  ui.topText.textContent = t("topPrompt");
-  ui.bottomText.textContent = t("bottomPrompt");
+  state.replyLanguagePending = preserveResult;
+  if (!preserveResult) {
+    state.hasResult = false;
+    ui.topText.textContent = t("topPrompt");
+    ui.bottomText.textContent = t("bottomPrompt");
+  }
   scheduleFit();
   renderPatientChoices();
   ui.topLanguagePicker.hidden = false;
   ui.top.classList.add("language-picker-open");
   ui.topLanguageInlineGrid.scrollTop = 0;
   ui.topLanguageInlineGrid.querySelector("button")?.focus({ preventScroll: true });
-  setStatus("automaticFailed", "notice");
+  setStatus(preserveResult ? "automaticReplyLanguage" : "automaticFailed", "notice");
 }
 
 function markActivity() {
@@ -820,7 +834,8 @@ async function pollUtterance(id, side, generation) {
     }
     if (result.status === "complete") {
       showResult(result, side);
-      if (result.text_only_reason) setStatus("textOnly", "notice");
+      if (result.reply_language_required) automaticFallback(true);
+      else if (result.text_only_reason) setStatus("textOnly", "notice");
       else setStatus("");
       if (state.tts && result.audio_available) await playResult(id, generation);
       return;
@@ -938,6 +953,7 @@ ui.restartTopLanguage.addEventListener("click", () => {
   state.automatic.restart();
   sessionStorage.removeItem("automaticConsumed");
   state.topLanguagePending = true;
+  state.replyLanguagePending = false;
   state.hasResult = false;
   ui.topText.textContent = t("topPrompt");
   ui.bottomText.textContent = t("bottomPrompt");

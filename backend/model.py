@@ -54,10 +54,14 @@ class Model:
         inputs = {k: v.to(device="cuda", dtype=torch.float16 if v.is_floating_point() else v.dtype)
                   for k, v in features.items()}
         with torch.inference_mode():
-            original = self.model.generate(**inputs, tgt_lang=source, generate_speech=False,
-                                           max_new_tokens=256, num_beams=1)
-            original_ids = original.sequences if hasattr(original, "sequences") else original
-            original_text = self.processor.batch_decode(original_ids, skip_special_tokens=True)[0]
+            # Audio translation needs only a target language. A source label is
+            # needed solely to request the additional original-language transcript.
+            original_text = ""
+            if source is not None:
+                original = self.model.generate(**inputs, tgt_lang=source, generate_speech=False,
+                                               max_new_tokens=256, num_beams=1)
+                original_ids = original.sequences if hasattr(original, "sequences") else original
+                original_text = self.processor.batch_decode(original_ids, skip_special_tokens=True)[0]
             asr_done = time.monotonic()
             speech_codes = set(self.model.generation_config.t2u_lang_code_to_id) & set(self.model.generation_config.vocoder_lang_code_to_id)
             make_speech = bool(tts and target in speech_codes)

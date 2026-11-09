@@ -1,10 +1,14 @@
 # Automatic language identification: evidence and development handoff
 
-Status on 9 November 2026: **integrated in v1.6 as a single optional patient-side attempt.**
+Status on 10 November 2026: **integrated since v1.6; translation is independent of confident identification since v1.7.**
 Since v1.6.1, the Automatic tile spans two columns and two rows under the common-language heading; flags fill the two columns beside it. The next
 patient-side push-to-talk recording is examined once after release. Success fixes the
-language and translates the original complete recording; uncertainty, short/no speech,
-unsupported language or a detector failure restores manual flags without Automatic.
+language and translates the original complete recording. Uncertainty, short/no speech,
+unsupported language or a detector failure no longer prevents translation to your language:
+the complete audio still goes to Seamless for target text and optional speech output.
+Only the additional original-language transcript is omitted without a source label.
+Manual flags without Automatic then set the reply language; the translated text and
+playback are retained. No repeat recording is needed.
 Only operator refresh restores the offer. Your language and microphone permission persist.
 
 The CPU worker uses the measured 3/5/8-second prefix policy, plus production VAD gating:
@@ -17,7 +21,7 @@ GPU child process that exits on idle to release its CUDA context. See
 [installation settings](INSTALLATION.md) and [release checks](VERIFICATION.md).
 
 The sections below preserve the original research findings and pre-integration design notes;
-where they describe unresolved choices, the v1.6 behavior above now takes precedence.
+where they describe unresolved choices, the current behavior above now takes precedence.
 
 ## Evidence-based starting point
 

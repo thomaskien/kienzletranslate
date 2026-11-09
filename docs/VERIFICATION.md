@@ -1,4 +1,30 @@
-# Prüfstand — v1.6.1, 10.11.2026
+# Prüfstand — v1.7, 10.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.7
+
+- Neun gezielte Backendprüfungen bestanden, einschließlich Übersetzung der gleichen
+  Aufnahme mit source=None bei Abstention, fehlendem/werfendem Detektor, verfügbarer
+  Sprachausgabe und Sitzungstrennung. Vier i18n-Tests für alle 18 Oberflächensprachen
+  sowie Syntax-/Diffprüfungen bestanden. Separates Sol-Review ohne konkrete Findings.
+- Browser-Fixture bei 320 × 568 und 744 × 1133: Übersetzung unten sichtbar, Fahnen
+  oben ohne Automatic und ohne alte Vorauswahl. Wiedergabe startet trotz unsicherer
+  Erkennung. Manuelle Wahl (Französisch/Ukrainisch) erhält Text und laufende Ausgabe;
+  eigene Sprache bleibt Deutsch. Vor der Wahl wird keine Antwortaufnahme gestartet.
+- Kein horizontaler Überlauf, Übersetzung vollständig sichtbar. Refresh stellt
+  Automatic wieder her. Mikrofonaufnahme und Modellresultat simuliert; der Browser
+  startet tatsächlich einen synthetischen WAV-Puffer über den normalen Web-Audio-Pfad.
+
+- Drei API-Integrationstests auf dem Zielserver bestanden, einschließlich kompletter
+  Antwort mit Text und abrufbarem Audio bei Abstention.
+- Echte HTTPS-Prüfung mit denselben zwei öffentlichen FLEURS-Aufnahmen wie zuvor:
+  Ukrainisch blieb bei der LID unsicher, lieferte jetzt trotzdem deutschen Text und
+  7,98 s gültige WAV-Ausgabe; Antwortsprache separat erforderlich, Originaltranskript
+  leer. Gesamtdauer 9,688 s einschließlich kaltem GPU-/CPU-Modellstart.
+  Französisch sicher erkannt, Originaltext/Übersetzung und 9,94 s WAV-Ausgabe vorhanden;
+  Gesamtdauer 2,295 s. Funktionsnachweis, keine neue Bewertung der Übersetzungsqualität.
+- v1.7 aktiviert, HTTPS-Dateien und Version abgeglichen; Einstellungen, deaktivierter
+  Passwortschutz und CA erhalten. Nur der eigene Backenddienst neu gestartet.
+  Die eigene Testsitzung anschließend gelöscht; keine fremden Sitzungen verändert.
 
 ## Gezielte Prüfung der Änderungen in v1.6.1
 

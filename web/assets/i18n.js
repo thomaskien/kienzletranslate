@@ -324,6 +324,31 @@ for (const [locale, [automaticPrompt, automaticFailed, gpuMemoryBusy, modelNotRe
 }
 
 
+const REPLY_LANGUAGE_MESSAGES = {
+  "de": "Übersetzt. Für Ihre Antwort bitte eine Fahne wählen.",
+  "en": "Translated. Choose a flag for your reply.",
+  "fr": "Traduction effectuée. Choisissez un drapeau pour votre réponse.",
+  "it": "Traduzione completata. Scegli una bandiera per la tua risposta.",
+  "es": "Traducción realizada. Elija una bandera para su respuesta.",
+  "pl": "Przetłumaczono. Wybierz flagę dla swojej odpowiedzi.",
+  "ro": "Traducere efectuată. Alegeți un steag pentru răspunsul dumneavoastră.",
+  "tr": "Çevrildi. Yanıtınız için bir bayrak seçin.",
+  "ar": "تمت الترجمة. اختر علمًا لتحديد لغة ردّك.",
+  "ru": "Перевод готов. Выберите флаг для своего ответа.",
+  "uk": "Переклад готовий. Виберіть прапорець для своєї відповіді.",
+  "bg": "Преводът е готов. Изберете флаг за своя отговор.",
+  "hr": "Prijevod je spreman. Odaberite zastavu za svoj odgovor.",
+  "bs": "Prijevod je spreman. Odaberite zastavu za svoj odgovor.",
+  "sr": "Превод је спреман. Изаберите заставу за свој одговор.",
+  "ckb": "وەرگێڕان تەواو بوو. بۆ وەڵامەکەت ئاڵایەک هەڵبژێرە.",
+  "fa": "ترجمه انجام شد. برای پاسخ خود یک پرچم انتخاب کنید.",
+  "el": "Η μετάφραση ολοκληρώθηκε. Επιλέξτε σημαία για την απάντησή σας."
+};
+for (const [locale, automaticReplyLanguage] of Object.entries(REPLY_LANGUAGE_MESSAGES)) {
+  MESSAGES[locale].automaticReplyLanguage = automaticReplyLanguage;
+}
+
+
 export const COMMON_IN_GERMANY = UI_LANGUAGES.map(({ code }) => code);
 
 const LANGUAGE_REGIONS = {

@@ -3,8 +3,11 @@
 - Kein medizinisch validiertes Produkt; keine Zusage klinisch ausreichender
   Übersetzungsqualität. Ausschließlich nichtkommerzieller technischer Prototyp.
 - Zwei Gesprächssprachen; optional genau ein Erkennungsversuch für die Patientenseite.
-  Automatic benötigt mindestens fünf Sekunden ab Sprachbeginn und ausreichend Sprache.
-  Kurze, unsichere oder nicht unterstützte Ergebnisse erfordern manuelle Auswahl.
+  Eine sichere automatische Sprachzuordnung benötigt mindestens fünf Sekunden ab
+  Sprachbeginn und ausreichend Sprache. Die Übersetzung zur bekannten eigenen Sprache
+  erfolgt seit v1.7 auch ohne sichere Zuordnung. Manuelle Auswahl ist dann nur für die
+  Antwortsprache nötig; das zusätzliche Originaltranskript entfällt. Stille/Geräusche
+  können wie bei manueller Sprachwahl zu unzuverlässigen Modellausgaben führen.
   Modell-Scores garantieren keine korrekte Sprachzuordnung; eine erkannte Sprache
   kann über das linke Menü korrigiert werden. Nur Refresh gibt einen neuen Versuch frei.
 - GPU-Inferenz seriell. Bis zu acht wartende Aufträge; neue Äußerung ersetzt
