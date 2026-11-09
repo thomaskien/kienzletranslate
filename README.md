@@ -4,6 +4,12 @@ Lokaler Gesprächsübersetzer für zwei gegenüber sitzende Personen mit einem
 iPad im Hochformat. PHP-Webapp und ein zentraler SeamlessM4T-v2-Large-Modellservice
 laufen auf einem Linux-Rechner mit NVIDIA-GPU. Native Installation ohne Docker.
 
+<p align="center">
+  <img src="a_clean_modern_high_contrast_user_interface_desi.png" width="640" alt="kienzletranslate auf dem iPad: zwei gegenüberliegende Sprechflächen, Sprachauswahl Deutsch/Ukrainisch und grüne Aufnahmefläche">
+  <br>
+  <em>Oberflächenentwurf · Gegenübersitzen, gedrückt halten, sprechen und übersetzen.</em>
+</p>
+
 **Modelllizenz: CC BY-NC 4.0 — nur nichtkommerzielle Nutzung.** Die Lizenz der
 Anwendung (MIT) erlaubt keine darüber hinausgehende Nutzung der Modellgewichte.
 Der Installer und die iPad-Zertifikatsseite verlangen eine ausdrückliche
