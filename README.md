@@ -109,24 +109,36 @@ sudo bash install.sh</code></pre></td>
 <table>
 <tr><th width="50%">Operation and compact tests</th><th width="50%">Betrieb und kompakte Tests</th></tr>
 <tr>
-<td><pre><code>sudo systemctl status kienzletranslate
-sudo systemctl restart kienzletranslate
-sudo journalctl -u kienzletranslate --since today
+<td><pre><code>sudo systemctl status \
+  kienzletranslate
+sudo systemctl restart \
+  kienzletranslate
+sudo journalctl \
+  -u kienzletranslate \
+  --since today
 python3 -m unittest discover \
   -s tests -p 'test_*.py'
-python3 -m unittest backend.tests.test_core
+python3 -m unittest \
+  backend.tests.test_core
 node --test tests/*.test.mjs
-# With Python dependencies installed:
-python3 -m unittest backend.tests.test_api</code></pre></td>
-<td><pre><code>sudo systemctl status kienzletranslate
-sudo systemctl restart kienzletranslate
-sudo journalctl -u kienzletranslate --since today
+# Python dependencies required:
+python3 -m unittest \
+  backend.tests.test_api</code></pre></td>
+<td><pre><code>sudo systemctl status \
+  kienzletranslate
+sudo systemctl restart \
+  kienzletranslate
+sudo journalctl \
+  -u kienzletranslate \
+  --since today
 python3 -m unittest discover \
   -s tests -p 'test_*.py'
-python3 -m unittest backend.tests.test_core
+python3 -m unittest \
+  backend.tests.test_core
 node --test tests/*.test.mjs
-# Mit installierten Python-Abhängigkeiten:
-python3 -m unittest backend.tests.test_api</code></pre></td>
+# Python-Abhängigkeiten nötig:
+python3 -m unittest \
+  backend.tests.test_api</code></pre></td>
 </tr>
 <tr>
 <td><a href="docs/TESTPLAN.md">Test plan</a> · <a href="docs/VERIFICATION.md">Verification</a> · <a href="docs/LIMITATIONS.md">Limitations</a> · <a href="docs/ARCHITECTURE.md">Architecture</a> · <a href="docs/CHANGELOG.md">Changes</a></td>
