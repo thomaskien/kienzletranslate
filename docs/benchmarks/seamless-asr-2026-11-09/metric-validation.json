@@ -1,0 +1,24 @@
+{
+  "validator": "JiWER",
+  "version": "4.0.0",
+  "input_sha256": "64506a0cfd49a6dfbb4fc2c59150bfd3bd7808218c0bfce3e297e632366c0cfb",
+  "script_sha256": "f57f1ca40fb45845f9717bd569b5fa1aacd996aea671a5ab5ac492e517f7354e",
+  "samples": 240,
+  "comparisons": 720,
+  "mismatches": 0,
+  "scope": "Independent edit-distance calculation on the same normalized text; does not validate normalization policy or reference correctness.",
+  "totals": {
+    "wer": {
+      "errors": 466,
+      "reference_units": 5709
+    },
+    "cer": {
+      "errors": 1310,
+      "reference_units": 30111
+    },
+    "strict_wer": {
+      "errors": 1117,
+      "reference_units": 5649
+    }
+  }
+}

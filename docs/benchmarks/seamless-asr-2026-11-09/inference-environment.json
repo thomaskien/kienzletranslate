@@ -1,0 +1,10 @@
+{
+  "python": "3.12.3",
+  "cpu": "AMD Ryzen 9 5900X 12-Core Processor",
+  "packages": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.46.3",
+    "sentencepiece": "0.2.0",
+    "numpy": "2.1.3"
+  }
+}
