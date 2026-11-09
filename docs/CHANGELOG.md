@@ -1,5 +1,12 @@
 # Änderungen
 
+## v1.5 — 09.11.2026
+
+- Startreihenfolge korrigiert: zuerst „Ihre Sprache“ und Mikrofonfreigabe,
+  danach die gegenüberliegende Sprachwahl, anschließend sofort gesprächsbereit.
+- Bei fehlender Mikrofonfreigabe bleibt der erste Dialog geöffnet. Refresh
+  und spätere Sprachänderungen erfordern weiterhin keine erneute Freigabe.
+
 ## v1.4 — 09.11.2026
 
 - Zuerst Sprachauswahl auf der gegenüberliegenden Hälfte: gedrehte, scrollbare

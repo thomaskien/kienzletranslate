@@ -54,8 +54,10 @@ Since v1.2, flag buttons select one of 18 common interface languages and also
 set your bottom translation language; the top selection is retained.
 The same flag grid appears at startup and in settings. Native language names
 accompany all flags. The bottom translation select keeps iOS picker behavior and shows flags.
-Since v1.4, a rotated four-column scrollable flag grid in the upper half is the
-first step on each opening, before the microphone/own-language dialog. The left
+Since v1.5, the microphone/own-language dialog comes first on each opening.
+After successful microphone activation, a rotated four-column scrollable flag
+grid in the upper half selects the opposite person’s language. Selection closes
+the grid and immediately enables conversation, without a second prompt. The left
 language capsule reopens identical choices in an upright dialog. A refresh button
 on the bottom side restarts the opposite-facing grid without changing own-language
 preferences. Both forms share all 96 choices, common languages first, native names

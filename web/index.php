@@ -125,7 +125,7 @@ header('X-Content-Type-Options: nosniff');
   <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
     <div class="welcome-heading">
       <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
-      <span class="app-version" dir="ltr">v1.4</span>
+      <span class="app-version" dir="ltr">v1.5</span>
     </div>
     <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
     <div class="locale-control">

@@ -1,4 +1,22 @@
-# Prüfstand — v1.4, 09.11.2026
+# Prüfstand — v1.5, 09.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.5
+
+- 14 JavaScript-Tests bestanden; PHP-/JavaScript-Syntax und Diff geprüft.
+- Startablauf bei 320 × 568 und 744 × 1133 Pixeln im Browser geprüft: zuerst
+  „Ihre Sprache“ und Mikrofon, dann das gedrehte Patientenraster mit vier Spalten.
+  Nach der Sprachwahl schließen alle Auswahldialoge ohne weitere Bestätigung.
+- Simulierte fehlgeschlagene Mikrofonfreigabe hält den ersten Dialog geöffnet;
+  die Patientenwahl erscheint erst nach erfolgreicher Aktivierung.
+- Refresh öffnet ausschließlich die Patientenwahl. Eigene Sprache und Oberfläche
+  Englisch bleiben erhalten; Wechsel von Französisch zu Polnisch führt direkt
+  zurück zur Gesprächsoberfläche ohne erneuten Mikrofondialog.
+- Lokale UI-Fixture: Mikrofonaktivierung simuliert, keine tatsächliche Aufnahme.
+  Audio-Core und Modellcode unverändert; kein erneuter vollständiger GPU-Test.
+
+- v1.5 auf dem Zielserver aktiviert und über HTTPS geprüft. Frontend-Dateien
+  stimmen mit dem Release überein; Modellprozess weiterhin `ready` mit PID 178770.
+  Konfiguration und CA unverändert, Passwortschutz weiterhin ausgeschaltet.
 
 ## Gezielte Prüfung der Änderungen in v1.4
 

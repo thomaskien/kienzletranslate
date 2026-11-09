@@ -18,7 +18,7 @@ import time
 
 CONFIG = Path('/etc/kienzletranslate/config.json')
 SOURCE = Path(__file__).resolve().parents[1]
-VERSION = '1.4.0'
+VERSION = '1.5.0'
 
 
 def password_setting(old, answers):

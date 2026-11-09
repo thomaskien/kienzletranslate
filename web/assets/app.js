@@ -343,8 +343,8 @@ function showApplication() {
   showView("app");
   fillLanguages();
   state.topLanguagePending = true;
-  ui.topLanguagePicker.hidden = false;
-  ui.top.classList.add("language-picker-open");
+  ui.topLanguagePicker.hidden = true;
+  ui.top.classList.remove("language-picker-open");
   ui.tts.setAttribute("aria-pressed", String(state.tts));
   ui.tts.classList.toggle("enabled", state.tts);
   updateTtsLabel();
@@ -353,6 +353,8 @@ function showApplication() {
   updateLogoutLabel();
   scheduleFit();
   if (["loading", "unloading"].includes(state.model.state)) setTimeout(refreshHealth, 1200);
+  ui.micEnable.disabled = false;
+  ui.micDialog.showModal();
 }
 
 function fillLanguages() {
@@ -440,7 +442,6 @@ function updateTopLanguageSelection() {
 }
 
 let topLanguageDialogOpener = null;
-let openMicrophoneAfterLanguageDialog = false;
 
 function selectTopLanguage(code) {
   if (!state.languages.some((language) => language.code === code)) return;
@@ -466,10 +467,7 @@ function selectTopLanguage(code) {
   ui.top.classList.remove("language-picker-open");
 
   if (ui.topLanguageDialog.open) {
-    openMicrophoneAfterLanguageDialog = wasPending;
     ui.topLanguageDialog.close();
-  } else if (wasPending && !ui.micDialog.open) {
-    ui.micDialog.showModal();
   } else if (inlineWasOpen) {
     ui.restartTopLanguage.focus({ preventScroll: true });
   }
@@ -823,12 +821,7 @@ ui.restartTopLanguage.addEventListener("click", () => {
   ui.topLanguageInlineGrid.querySelector("button")?.focus({ preventScroll: true });
 });
 ui.topLanguageDialog.addEventListener("close", () => {
-  if (openMicrophoneAfterLanguageDialog) {
-    openMicrophoneAfterLanguageDialog = false;
-    if (!ui.micDialog.open) ui.micDialog.showModal();
-  } else {
-    topLanguageDialogOpener?.focus();
-  }
+  topLanguageDialogOpener?.focus();
   topLanguageDialogOpener = null;
 });
 
@@ -838,8 +831,16 @@ ui.micEnable.addEventListener("click", async () => {
   try {
     await audioCapture.enable();
     ui.micDialog.close();
-    setStatus("micReady", "notice");
-    setTimeout(() => { if (state.status.key === "micReady") setStatus(""); }, 1800);
+    if (state.topLanguagePending) {
+      ui.topLanguagePicker.hidden = false;
+      ui.top.classList.add("language-picker-open");
+      ui.topLanguageInlineGrid.scrollTop = 0;
+      ui.topLanguageInlineGrid.querySelector("button")?.focus({ preventScroll: true });
+      setStatus("");
+    } else {
+      setStatus("micReady", "notice");
+      setTimeout(() => { if (state.status.key === "micReady") setStatus(""); }, 1800);
+    }
   } catch (error) {
     setFormError(ui.micError, error?.i18nKey ? error : localizedError("micEnableFailed"));
     ui.micEnable.disabled = false;
