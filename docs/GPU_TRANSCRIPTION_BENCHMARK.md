@@ -4,6 +4,8 @@ Measured on 9 November 2026 using the installed kienzletranslate service on `10.
 
 The saved translation outputs have since received a separate [translation quality evaluation](TRANSLATION_QUALITY_BENCHMARK.md), with no additional GPU inference.
 
+A subsequent [Whisper large-v3 comparison](WHISPER_LARGE_V3_COMPARISON.md) uses the same recordings and scoring rules.
+
 All **240 recordings across 12 languages** completed successfully. The corpus contains **51 minutes 42 seconds of audio**. Overall normalized word error rate (WER) was **8.16%** and character error rate (CER) was **4.35%**. Median transcription computation took **0.77 seconds per recording** on the RTX 3090.
 
 These results support further practical testing of the current transcription pipeline. They do not establish reliability for spontaneous conversations, noisy iPad recordings, specialist terminology, or every supported language.

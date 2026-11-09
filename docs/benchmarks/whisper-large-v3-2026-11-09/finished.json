@@ -1,0 +1,21 @@
+{
+  "event": "finished",
+  "phases": {
+    "transcribe": {
+      "samples": 240,
+      "failures": 0,
+      "elapsed_seconds": 90.80850130399631,
+      "gpu_total_used_mib_peak_sampled": 4697.0
+    },
+    "translate": {
+      "samples": 220,
+      "failures": 0,
+      "elapsed_seconds": 59.27851946800365,
+      "gpu_total_used_mib_peak_sampled": 4697.0
+    }
+  },
+  "elapsed_inference_loop_seconds": 150.08722599399334,
+  "gpu_total_used_mib_peak_sampled": 4697.0,
+  "gpu_before_unload": "NVIDIA GeForce RTX 3090, 24576 MiB, 4441 MiB, 92 %, 580.178.04",
+  "compute_processes_before_unload": "178770, /opt/kienzletranslate/venv/bin/python, 344 MiB\n907010, /opt/kienzletranslate-bench/venv/bin/python, 4018 MiB"
+}

@@ -1,0 +1,16 @@
+{
+  "before": {
+    "state": "ready",
+    "error": null,
+    "busy": false,
+    "queued": 0
+  },
+  "restore_ready": true,
+  "gpu_after_whisper_exit": "418 MiB, 0 %",
+  "after": {
+    "state": "ready",
+    "error": null,
+    "busy": false,
+    "queued": 0
+  }
+}

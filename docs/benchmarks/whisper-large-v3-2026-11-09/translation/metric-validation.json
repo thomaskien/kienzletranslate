@@ -1,0 +1,25 @@
+{
+  "method": "SacreBLEU 2.5.1 CLI versus Python API; same implementation, checks exported data and grouping.",
+  "input_sha256": "da880306abe8f4f14da853d32d48b71d86472a2115a77863ee7b06fdeb278780",
+  "checks": [
+    {
+      "metric": "bleu",
+      "python_api": 26.027068917594278,
+      "cli": 26.027068917594,
+      "matched": true
+    },
+    {
+      "metric": "chrfpp",
+      "python_api": 53.36597791204479,
+      "cli": 53.365977912045,
+      "matched": true
+    },
+    {
+      "metric": "ter",
+      "python_api": 62.73972602739726,
+      "cli": 62.739726027397,
+      "matched": true
+    }
+  ],
+  "mismatches": 0
+}

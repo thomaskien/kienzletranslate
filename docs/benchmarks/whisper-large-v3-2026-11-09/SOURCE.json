@@ -1,0 +1,31 @@
+{
+  "dataset": "google/fleurs",
+  "revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "url": "https://huggingface.co/datasets/google/fleurs",
+  "paper": "https://arxiv.org/abs/2205.12446",
+  "attribution": "FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech, Conneau et al., Google, 2022.",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "split": "test",
+  "recordings": 240,
+  "languages": [
+    "de_de",
+    "en_us",
+    "fr_fr",
+    "es_419",
+    "it_it",
+    "pl_pl",
+    "ro_ro",
+    "tr_tr",
+    "ar_eg",
+    "ru_ru",
+    "uk_ua",
+    "fa_ir"
+  ],
+  "selection": "First 20 eligible archive members per language; distinct sentence IDs; duration >= 8s. Not a random or representative population sample.",
+  "audio_changes": "Exactly the PCM16 WAV bytes used in the baseline, verified by SHA-256 per task; decoded to float32 for faster-whisper. Full duration, no VAD/trimming. Long recordings processed in 30-second windows.",
+  "benchmark_subset": "All 240 original recordings for ASR; the same 220 non-English recordings for translation to English.",
+  "vad": "Not used for this GPU benchmark.",
+  "parallel_reference_note": "reference_translations joins original FLEURS test transcriptions across languages by sentence ID. Selected audio need not contain every sentence in every language; reference text availability is explicit per entry.",
+  "text_changes": "Whisper output and original references retained, with identical ASR and translation scoring normalization to the saved Seamless baseline."
+}

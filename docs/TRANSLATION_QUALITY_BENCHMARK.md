@@ -91,15 +91,15 @@ runtime/translation-eval-venv/bin/python -m sacrebleu \
 
 Repeat the last command with `deu` filenames for the German target group. No server credentials or audio files are required for scoring saved texts.
 
-## Next step: Whisper large-v3 comparison
+## Follow-up: Whisper large-v3 comparison
 
-**Status: planned; GPU execution awaits the user's explicit release of the occupied GPU.** No Whisper model has been loaded or downloaded for this comparison, and no automatic start is scheduled.
+**Status: completed on 9 November 2026 after explicit GPU authorization.** See the [Whisper large-v3 comparison](WHISPER_LARGE_V3_COMPARISON.md) for the actual results. The scope below records the predeclared comparison plan.
 
-After that authorization, the compact comparison will use the same full recordings and references:
+The authorized comparison used the same full recordings and references:
 
 1. **ASR: all 240 recordings.** Whisper large-v3, known source language, FP16, serial processing. Use the same WER/CER evaluator and unchanged normalization as the Seamless baseline. Preserve complete recordings, including those longer than 30 seconds; record chunking and decoding settings.
 2. **Speech translation: 220 non-English recordings → English.** Score the exact same target references with the evaluator above. Whisper's translation task targets English; it cannot directly supply the English → German comparison. That limitation is documented in the [official Whisper usage guide](https://github.com/openai/whisper#command-line-usage). Adding a separate German translation model would be a different system comparison.
 3. **Performance:** report transcription and translation times separately, median/P95 latency, model load time, allocated/reserved/total GPU memory, and errors. Use the full large-v3 model, with the runtime version and checkpoint pinned and recorded. Hardware and decoding differences must accompany any speed claim.
 4. **Execution:** one complete pass per task, one model resident at a time, no interference with other GPU tests. Compare paired per-recording results; investigate only actual failures or a small set of disagreements. Publish the results in English.
 
-The current baseline is complete. No claim about Whisper's relative quality or speed can be made until that authorized run has finished.
+The baseline above is retained unchanged; the separate comparison report documents the measured quality, speed, memory and final restored service state.

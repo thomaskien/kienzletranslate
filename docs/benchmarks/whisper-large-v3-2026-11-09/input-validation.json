@@ -1,0 +1,70 @@
+{
+  "asr_samples": 240,
+  "translation_samples": 220,
+  "sha256_matches": 460,
+  "duration_checks": 460,
+  "failures": 0,
+  "long_recordings": [
+    {
+      "sample_id": "de_de/10171859810965764480.wav",
+      "task": "transcribe",
+      "audio_seconds": 43.38,
+      "segments": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          30.0,
+          43.38
+        ]
+      ]
+    },
+    {
+      "sample_id": "de_de/10376367261184486277.wav",
+      "task": "transcribe",
+      "audio_seconds": 46.5,
+      "segments": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          30.0,
+          46.5
+        ]
+      ]
+    },
+    {
+      "sample_id": "de_de/10171859810965764480.wav",
+      "task": "translate",
+      "audio_seconds": 43.38,
+      "segments": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          30.0,
+          43.38
+        ]
+      ]
+    },
+    {
+      "sample_id": "de_de/10376367261184486277.wav",
+      "task": "translate",
+      "audio_seconds": 46.5,
+      "segments": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          30.0,
+          46.5
+        ]
+      ]
+    }
+  ],
+  "baseline_sha256": "3a0a50287d34f3eb8a18887b4c46e741063a599ca40c274afd9c6cfd94c752dd"
+}

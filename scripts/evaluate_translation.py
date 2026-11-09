@@ -78,7 +78,7 @@ def write_csv(path, rows):
         writer.writerows(rows)
 
 
-def evaluate(path, output):
+def evaluate(path, output, title='SeamlessM4T saved translation quality evaluation'):
     started = time.perf_counter()
     rows = read_records(path)
     pairs, targets = defaultdict(list), defaultdict(list)
@@ -100,7 +100,7 @@ def evaluate(path, output):
             'scoring_hypothesis': row['scoring_hypothesis'],
         })
     summary = {
-        'title': 'SeamlessM4T saved translation quality evaluation',
+        'title': title,
         'samples': len(rows), 'failed_requests': sum(r['status'] != 'complete' for r in rows),
         'input_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
         'evaluator_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -133,8 +133,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', required=True, type=Path)
     parser.add_argument('--output-dir', required=True, type=Path)
+    parser.add_argument('--title', default='SeamlessM4T saved translation quality evaluation')
     args = parser.parse_args()
-    summary = evaluate(args.input, args.output_dir)
+    summary = evaluate(args.input, args.output_dir, args.title)
     print(json.dumps({'samples': summary['samples'], 'by_target': summary['by_target']}, indent=2))
 
 

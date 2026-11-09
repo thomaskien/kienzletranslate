@@ -1,0 +1,8 @@
+{
+  "source": "Existing production venv library directories; no package changes",
+  "versions": {
+    "nvidia-cublas-cu12": "12.4.5.8",
+    "nvidia-cudnn-cu12": "9.1.0.70",
+    "nvidia-cuda-runtime-cu12": "12.4.127"
+  }
+}

@@ -1,0 +1,901 @@
+{
+  "metadata": {
+    "sources": {
+      "baseline_asr": {
+        "directory_basename": "seamless-asr-2026-11-09",
+        "files": {
+          "summary.json": {
+            "sha256": "51d1b97506410fd0fc0ddbafd8e54c69110662df07cc9eebffc41564289df44a"
+          },
+          "per-sample.csv": {
+            "sha256": "64506a0cfd49a6dfbb4fc2c59150bfd3bd7808218c0bfce3e297e632366c0cfb"
+          }
+        }
+      },
+      "candidate_asr": {
+        "directory_basename": "asr",
+        "files": {
+          "summary.json": {
+            "sha256": "8bfb02ae8e3d484314bab8f5e3ddd717a2dd7d41ab5d0207599d6ba5c3159846"
+          },
+          "per-sample.csv": {
+            "sha256": "4e182d330204f21905f4c93a0ed8405d96709c0a0e34b474078571c94649fd65"
+          }
+        }
+      },
+      "baseline_translation": {
+        "directory_basename": "seamless-translation-2026-11-09",
+        "files": {
+          "summary.json": {
+            "sha256": "15473a5148889aad9620b92bb2f6a09cc7a3c3ffa4103a01a78bfdbc8cb2fabe"
+          },
+          "per-sample.csv": {
+            "sha256": "ff01653b703418fec25a589ada617a3302a579e31d0051293ccc2c551bec0919"
+          }
+        }
+      },
+      "candidate_translation": {
+        "directory_basename": "translation",
+        "files": {
+          "summary.json": {
+            "sha256": "362f1f9abcef9e036acbdacc42335b9374df22a5586b1a2f0e3e1f8a5e377dde"
+          },
+          "per-sample.csv": {
+            "sha256": "0a6b8e22ef3bc5910a8353d4c1835135c316ab3e91b8496455659bf767c9690b"
+          }
+        }
+      }
+    },
+    "metric_directions": {
+      "wer": "lower is better",
+      "cer": "lower is better",
+      "bleu": "higher is better",
+      "chrfpp": "higher is better",
+      "ter": "lower is better"
+    },
+    "pairing": "Exact sample IDs after restricting translation to target eng."
+  },
+  "asr": {
+    "paired_samples": 240,
+    "outcomes": {
+      "better": 85,
+      "tie": 93,
+      "worse": 62
+    },
+    "statuses": {
+      "baseline": {
+        "complete": 240,
+        "error": 0
+      },
+      "candidate": {
+        "complete": 240,
+        "error": 0
+      }
+    },
+    "baseline": {
+      "wer": 0.0816255035908215,
+      "cer": 0.04350569559297267
+    },
+    "candidate": {
+      "wer": 0.07181643019793309,
+      "cer": 0.023014845073229054
+    },
+    "difference_points": {
+      "wer": -0.9809073392888418,
+      "cer": -2.0490850519743615
+    },
+    "timing_median_seconds": {
+      "baseline_asr": 0.77,
+      "candidate_asr": 0.3593009225005517
+    },
+    "by_language": {
+      "ar": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 4,
+          "tie": 7,
+          "worse": 9
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.1372093023255814,
+          "cer": 0.048464491362763915
+        },
+        "candidate": {
+          "wer": 0.14883720930232558,
+          "cer": 0.045105566218809984
+        },
+        "difference_points": {
+          "wer": 1.162790697674418,
+          "cer": -0.3358925143953931
+        }
+      },
+      "de": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 7,
+          "tie": 11,
+          "worse": 2
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.05465587044534413,
+          "cer": 0.04274108089014483
+        },
+        "candidate": {
+          "wer": 0.03643724696356275,
+          "cer": 0.012363122571529495
+        },
+        "difference_points": {
+          "wer": -1.8218623481781382,
+          "cer": -3.037795831861533
+        }
+      },
+      "en": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 8,
+          "tie": 10,
+          "worse": 2
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.07392197125256673,
+          "cer": 0.04712041884816754
+        },
+        "candidate": {
+          "wer": 0.0513347022587269,
+          "cer": 0.02530541012216405
+        },
+        "difference_points": {
+          "wer": -2.2587268993839835,
+          "cer": -2.181500872600349
+        }
+      },
+      "es": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 6,
+          "tie": 12,
+          "worse": 2
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.033582089552238806,
+          "cer": 0.021705426356589147
+        },
+        "candidate": {
+          "wer": 0.020522388059701493,
+          "cer": 0.006201550387596899
+        },
+        "difference_points": {
+          "wer": -1.3059701492537312,
+          "cer": -1.550387596899225
+        }
+      },
+      "fa": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 5,
+          "tie": 1,
+          "worse": 14
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.1062618595825427,
+          "cer": 0.04208924949290061
+        },
+        "candidate": {
+          "wer": 0.17836812144212524,
+          "cer": 0.0603448275862069
+        },
+        "difference_points": {
+          "wer": 7.2106261859582546,
+          "cer": 1.8255578093306288
+        }
+      },
+      "fr": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 8,
+          "tie": 5,
+          "worse": 7
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.07717569786535304,
+          "cer": 0.03691045796308954
+        },
+        "candidate": {
+          "wer": 0.0722495894909688,
+          "cer": 0.027682843472317156
+        },
+        "difference_points": {
+          "wer": -0.49261083743842443,
+          "cer": -0.9227614490772383
+        }
+      },
+      "it": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 6,
+          "tie": 10,
+          "worse": 4
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.056112224448897796,
+          "cer": 0.0368282600526118
+        },
+        "candidate": {
+          "wer": 0.026052104208416832,
+          "cer": 0.007140172867343104
+        },
+        "difference_points": {
+          "wer": -3.0060120240480965,
+          "cer": -2.9688087185268697
+        }
+      },
+      "pl": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 12,
+          "tie": 6,
+          "worse": 2
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.11137440758293839,
+          "cer": 0.0732842186894145
+        },
+        "candidate": {
+          "wer": 0.04265402843601896,
+          "cer": 0.017836370686312525
+        },
+        "difference_points": {
+          "wer": -6.872037914691942,
+          "cer": -5.544784800310197
+        }
+      },
+      "ro": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 5,
+          "tie": 6,
+          "worse": 9
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.07809523809523809,
+          "cer": 0.047857142857142855
+        },
+        "candidate": {
+          "wer": 0.09523809523809523,
+          "cer": 0.039285714285714285
+        },
+        "difference_points": {
+          "wer": 1.714285714285714,
+          "cer": -0.857142857142857
+        }
+      },
+      "ru": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 8,
+          "tie": 8,
+          "worse": 4
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.08706467661691543,
+          "cer": 0.03420843277645187
+        },
+        "candidate": {
+          "wer": 0.06467661691542288,
+          "cer": 0.012330946698488464
+        },
+        "difference_points": {
+          "wer": -2.2388059701492544,
+          "cer": -2.187748607796341
+        }
+      },
+      "tr": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 8,
+          "tie": 9,
+          "worse": 3
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.11253196930946291,
+          "cer": 0.04132553606237817
+        },
+        "candidate": {
+          "wer": 0.0639386189258312,
+          "cer": 0.016374269005847954
+        },
+        "difference_points": {
+          "wer": -4.85933503836317,
+          "cer": -2.4951267056530213
+        }
+      },
+      "uk": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 8,
+          "tie": 8,
+          "worse": 4
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "wer": 0.07235142118863049,
+          "cer": 0.05201560468140442
+        },
+        "candidate": {
+          "wer": 0.056847545219638244,
+          "cer": 0.018205461638491547
+        },
+        "difference_points": {
+          "wer": -1.550387596899224,
+          "cer": -3.381014304291287
+        }
+      }
+    }
+  },
+  "translation": {
+    "target_language": "eng",
+    "paired_samples": 220,
+    "outcomes": {
+      "better": 67,
+      "tie": 3,
+      "worse": 150
+    },
+    "statuses": {
+      "baseline": {
+        "complete": 220,
+        "error": 0
+      },
+      "candidate": {
+        "complete": 220,
+        "error": 0
+      }
+    },
+    "baseline": {
+      "bleu": 31.801812164723092,
+      "chrfpp": 57.94906382348988,
+      "ter": 56.08610567514677
+    },
+    "candidate": {
+      "bleu": 26.027068917594278,
+      "chrfpp": 53.36597791204479,
+      "ter": 62.73972602739726
+    },
+    "difference_points": {
+      "bleu": -5.774743247128814,
+      "chrfpp": -4.583085911445089,
+      "ter": 6.653620352250492
+    },
+    "timing_median_seconds": {
+      "baseline_translation": 0.642,
+      "candidate_translation": 0.2577325425008894
+    },
+    "by_source_language": {
+      "ar": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 6,
+          "tie": 0,
+          "worse": 14
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 33.80250675209641,
+          "chrfpp": 59.35773317051007,
+          "ter": 52.54582484725051
+        },
+        "candidate": {
+          "bleu": 26.61113244591843,
+          "chrfpp": 51.19559945177568,
+          "ter": 62.93279022403259
+        },
+        "difference_points": {
+          "bleu": -7.191374306177984,
+          "chrfpp": -8.162133718734395,
+          "ter": 10.38696537678208
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6835,
+          "candidate": 0.2673377885002992
+        }
+      },
+      "de": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 10,
+          "tie": 0,
+          "worse": 10
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 38.67265651694098,
+          "chrfpp": 62.33894721109861,
+          "ter": 48.109243697478995
+        },
+        "candidate": {
+          "bleu": 34.876982880597936,
+          "chrfpp": 57.925334925961906,
+          "ter": 53.57142857142857
+        },
+        "difference_points": {
+          "bleu": -3.7956736363430466,
+          "chrfpp": -4.413612285136708,
+          "ter": 5.462184873949575
+        },
+        "timing_median_seconds": {
+          "baseline": 0.639,
+          "candidate": 0.24348109150014352
+        }
+      },
+      "es": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 4,
+          "tie": 2,
+          "worse": 14
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 25.557274086893486,
+          "chrfpp": 53.24541776689259,
+          "ter": 63.718820861678005
+        },
+        "candidate": {
+          "bleu": 21.39143460499637,
+          "chrfpp": 51.13652181129626,
+          "ter": 67.3469387755102
+        },
+        "difference_points": {
+          "bleu": -4.165839481897116,
+          "chrfpp": -2.1088959555963243,
+          "ter": 3.6281179138321917
+        },
+        "timing_median_seconds": {
+          "baseline": 0.623,
+          "candidate": 0.25524981349735754
+        }
+      },
+      "fa": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 1,
+          "tie": 0,
+          "worse": 19
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 29.529148347239513,
+          "chrfpp": 55.60747839624707,
+          "ter": 54.15778251599147
+        },
+        "candidate": {
+          "bleu": 16.44213666786509,
+          "chrfpp": 43.97955840828554,
+          "ter": 69.08315565031982
+        },
+        "difference_points": {
+          "bleu": -13.087011679374424,
+          "chrfpp": -11.627919987961526,
+          "ter": 14.925373134328353
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6185,
+          "candidate": 0.24266909900325118
+        }
+      },
+      "fr": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 5,
+          "tie": 0,
+          "worse": 15
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 31.847401351383425,
+          "chrfpp": 59.943154524775444,
+          "ter": 56.13305613305614
+        },
+        "candidate": {
+          "bleu": 25.70786498492414,
+          "chrfpp": 56.19143986069103,
+          "ter": 60.91476091476091
+        },
+        "difference_points": {
+          "bleu": -6.139536366459286,
+          "chrfpp": -3.7517146640844174,
+          "ter": 4.781704781704775
+        },
+        "timing_median_seconds": {
+          "baseline": 0.643,
+          "candidate": 0.25153150449477835
+        }
+      },
+      "it": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 9,
+          "tie": 1,
+          "worse": 10
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 23.226570306096637,
+          "chrfpp": 52.92722126461307,
+          "ter": 70.76566125290023
+        },
+        "candidate": {
+          "bleu": 23.038257403967755,
+          "chrfpp": 52.67955144703945,
+          "ter": 71.46171693735499
+        },
+        "difference_points": {
+          "bleu": -0.18831290212888163,
+          "chrfpp": -0.24766981757361606,
+          "ter": 0.6960556844547625
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6495,
+          "candidate": 0.26406924249749864
+        }
+      },
+      "pl": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 9,
+          "tie": 0,
+          "worse": 11
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 22.29599082564507,
+          "chrfpp": 48.11371247778452,
+          "ter": 66.39676113360325
+        },
+        "candidate": {
+          "bleu": 19.64010283992979,
+          "chrfpp": 45.96475122001729,
+          "ter": 65.58704453441295
+        },
+        "difference_points": {
+          "bleu": -2.6558879857152817,
+          "chrfpp": -2.148961257767226,
+          "ter": -0.8097165991902955
+        },
+        "timing_median_seconds": {
+          "baseline": 0.667,
+          "candidate": 0.2592722599947592
+        }
+      },
+      "ro": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 2,
+          "tie": 0,
+          "worse": 18
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 42.43394587370265,
+          "chrfpp": 67.56614622168532,
+          "ter": 42.637362637362635
+        },
+        "candidate": {
+          "bleu": 31.083872735004633,
+          "chrfpp": 59.520594555178896,
+          "ter": 56.043956043956044
+        },
+        "difference_points": {
+          "bleu": -11.350073138698015,
+          "chrfpp": -8.04555166650642,
+          "ter": 13.406593406593409
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6665000000000001,
+          "candidate": 0.2699823639995884
+        }
+      },
+      "ru": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 5,
+          "tie": 0,
+          "worse": 15
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 35.484463089060384,
+          "chrfpp": 60.754972082724,
+          "ter": 53.24384787472036
+        },
+        "candidate": {
+          "bleu": 26.725507328330632,
+          "chrfpp": 54.844424247546385,
+          "ter": 64.42953020134227
+        },
+        "difference_points": {
+          "bleu": -8.758955760729751,
+          "chrfpp": -5.910547835177617,
+          "ter": 11.185682326621915
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6285000000000001,
+          "candidate": 0.26289707799151074
+        }
+      },
+      "tr": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 6,
+          "tie": 0,
+          "worse": 14
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 30.094320231942813,
+          "chrfpp": 56.18760695723215,
+          "ter": 55.87044534412956
+        },
+        "candidate": {
+          "bleu": 23.411903727933343,
+          "chrfpp": 52.88720871255168,
+          "ter": 61.943319838056674
+        },
+        "difference_points": {
+          "bleu": -6.6824165040094705,
+          "chrfpp": -3.3003982446804656,
+          "ter": 6.072874493927117
+        },
+        "timing_median_seconds": {
+          "baseline": 0.613,
+          "candidate": 0.2579968695063144
+        }
+      },
+      "uk": {
+        "paired_samples": 20,
+        "outcomes": {
+          "better": 10,
+          "tie": 0,
+          "worse": 10
+        },
+        "statuses": {
+          "baseline": {
+            "complete": 20,
+            "error": 0
+          },
+          "candidate": {
+            "complete": 20,
+            "error": 0
+          }
+        },
+        "baseline": {
+          "bleu": 34.33839372126636,
+          "chrfpp": 61.198727009659784,
+          "ter": 54.060324825986086
+        },
+        "candidate": {
+          "bleu": 33.95897876632006,
+          "chrfpp": 60.808961694275595,
+          "ter": 57.30858468677494
+        },
+        "difference_points": {
+          "bleu": -0.3794149549462986,
+          "chrfpp": -0.3897653153841887,
+          "ter": 3.248259860788856
+        },
+        "timing_median_seconds": {
+          "baseline": 0.6234999999999999,
+          "candidate": 0.249968086995068
+        }
+      }
+    }
+  }
+}

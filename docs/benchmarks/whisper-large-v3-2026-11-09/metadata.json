@@ -1,0 +1,81 @@
+{
+  "event": "metadata",
+  "date": "2026-11-09",
+  "model": "Whisper large-v3",
+  "checkpoint": "Systran/faster-whisper-large-v3",
+  "checkpoint_revision": "edaa852ec7e145841d8ffdb056a99866b5f0a478",
+  "model_source": {
+    "repository": "Systran/faster-whisper-large-v3",
+    "revision": "edaa852ec7e145841d8ffdb056a99866b5f0a478",
+    "source_model": "openai/whisper-large-v3",
+    "format": "CTranslate2 FP16 conversion",
+    "license": "MIT",
+    "download_seconds": 99.0118582270079
+  },
+  "model_files_sha256": {
+    "model.bin": "69f74147e3334731bc3a76048724833325d2ec74642fb52620eda87352e3d4f1",
+    "config.json": "a9306624f5ec14270a014b647e5c316b6e03a662c369758d1b90697a7b0655b9",
+    "preprocessor_config.json": "7ccc62c6f2765af1f3b46c00c9b5894426835a05021c8b9c01eecb6dfb542711",
+    "tokenizer.json": "6d8cbd7cd0d8d5815e478dac67b85a26bbe77c1f5e0c6d76d1ce2abc0e5f21ca",
+    "vocabulary.json": "c69260f2ab26d659b7c398f9a2b2b48ed0df16c3b47d7326782fd9cba71690c1"
+  },
+  "manifest_sha256": "dfaeeedcc866cca59d61b25b3a1ae1f2eb804eca581f78a1c7d3a7185d819d43",
+  "baseline_sha256": "3a0a50287d34f3eb8a18887b4c46e741063a599ca40c274afd9c6cfd94c752dd",
+  "script_sha256": "70708305d449d0be4ad1c53005ca98d09ccc1d84586f5582d1e57d6c8c4a2ac2",
+  "samples": 240,
+  "dataset": "google/fleurs",
+  "dataset_revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "dataset_license": "CC-BY-4.0",
+  "source_language": "Known dataset label, no automatic language identification",
+  "audio": "Full original 16 kHz recordings converted to the exact PCM16 WAV bytes used by Seamless, then decoded to float32; no trimming or VAD.",
+  "decoding": {
+    "beam_size": 1,
+    "best_of": 1,
+    "temperature": 0.0,
+    "condition_on_previous_text": false,
+    "vad_filter": false,
+    "without_timestamps": true,
+    "word_timestamps": false,
+    "chunk_length": 30,
+    "max_new_tokens": null,
+    "compression_ratio_threshold": 2.4,
+    "log_prob_threshold": -1.0,
+    "no_speech_threshold": 0.6,
+    "initial_prompt": null,
+    "prefix": null,
+    "suppress_blank": true,
+    "suppress_tokens": [
+      -1
+    ]
+  },
+  "compute_type": "float16",
+  "cpu_threads": 8,
+  "num_workers": 1,
+  "runtime": {
+    "faster-whisper": "1.2.1",
+    "ctranslate2": "4.8.5",
+    "numpy": "2.5.4",
+    "soundfile": "0.14.0",
+    "tokenizers": "0.23.3",
+    "av": "19.0.2"
+  },
+  "python": "3.12.3",
+  "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+  "gpu_before_load": "NVIDIA GeForce RTX 3090, 24576 MiB, 418 MiB, 0 %, 580.178.04",
+  "pid": 907010,
+  "memory_note": "nvidia-smi total device memory sampled every 100 ms. Not PyTorch allocated or reserved memory; these are unavailable for this CTranslate2 run.",
+  "timing_note": "Wall time covers feature extraction, full lazy segment iteration and text decoding. Audio file/PCM conversion, model load, API/HTTP overhead excluded. No extra warmup pass; first measured request includes first-use overhead.",
+  "load_seconds": 1.985128996995627,
+  "actual_compute_type": "float16",
+  "model_max_length": 448,
+  "gpu_after_load": "NVIDIA GeForce RTX 3090, 24576 MiB, 4295 MiB, 0 %, 580.178.04",
+  "supported_compute_types": [
+    "bfloat16",
+    "float16",
+    "float32",
+    "int8",
+    "int8_bfloat16",
+    "int8_float16",
+    "int8_float32"
+  ]
+}
