@@ -16,6 +16,12 @@ Der Installer und die iPad-Zertifikatsseite verlangen eine ausdrückliche
 Bestätigung durch `AKZEPTIEREN` oder `ACCEPT`. [Lizenzdetails](docs/LICENSES.md).
 Technischer Prototyp; keine medizinische Validierung. Testdaten verwenden.
 
+<p align="center">
+  <img src="docs/images/kienzletranslate-rtx-3090.png" width="900" alt="GPU-Monitor mit kienzletranslate auf einer NVIDIA GeForce RTX 3090: Auslastungsverlauf und Grafikspeicherbelegung">
+  <br>
+  <em>Lokaler GPU-Betrieb · Momentaufnahme auf einer NVIDIA GeForce RTX 3090 mit 24 GB Grafikspeicher.</em>
+</p>
+
 ## Installation / Update
 
 Getestetes Ziel: Ubuntu 24.04, Python 3.12, NVIDIA RTX 3090 (24 GB), vorhandener
