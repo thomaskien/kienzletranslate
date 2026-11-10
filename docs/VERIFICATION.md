@@ -1,4 +1,20 @@
-# Prüfstand — v1.7, 10.11.2026
+# Prüfstand — v1.8, 10.11.2026
+
+## Gezielte Prüfung der Änderungen in v1.8
+
+- Vier i18n-Tests bestanden: vollständige Wörterbücher aller 18 Oberflächensprachen
+  einschließlich neuem Patientenhinweis. PHP-/JavaScript-/Python-Syntax und Diff geprüft.
+- Browser-Fixture bei 320 × 568 und 744 × 1133: alle 18 Hinweise vollständig sichtbar,
+  mit Sternchen getrennt und um 180° gedreht. Arabisch, Sorani und Persisch sind
+  separat als RTL ausgezeichnet. Kein horizontaler Überlauf; Schrift passt sich an.
+- Nach Automatic erscheint der Hinweis; manuelle Sprachwahl blendet ihn aus.
+  Halten/Loslassen führt weiterhin zur Übersetzung. Bei simulierter unsicherer Sprache
+  erscheinen Fahnen ohne Automatic, deutscher Text und gestartete WAV-Wiedergabe.
+  Eigene Sprache und Mikrofonfreigabe bleiben erhalten; Refresh erlaubt den Hinweis erneut.
+- Mikrofon/Modell in der UI-Fixture simuliert. Backend unverändert, daher kein
+  erneuter GPU- oder Benchmarklauf. Die neuen Texte sind nicht muttersprachlich lektoriert.
+- v1.8 auf dem Zielserver aktiviert. HTTPS-Assets, sichtbare/API-Version und
+  unveränderte Backend-PID geprüft; Zugangseinstellungen und Root-CA erhalten.
 
 ## Gezielte Prüfung der Änderungen in v1.7
 

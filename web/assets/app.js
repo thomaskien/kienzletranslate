@@ -57,6 +57,7 @@ const ui = {
   offlineMessage: $("#offline-message"),
   top: $("#top-side"), bottom: $("#bottom-side"), topText: $("#top-text"),
   bottomText: $("#bottom-text"), topLanguage: $("#top-language"),
+  patientInstructions: $("#patient-instructions"),
   topLanguageButton: $("#top-language-button"), topLanguageFlag: $("#top-language-flag"),
   topLanguageCaption: $("#top-language-caption"), topLanguagePicker: $("#top-language-picker"),
   topLanguageInlineGrid: $("#top-language-inline-grid"), topLanguageDialog: $("#top-language-dialog"),
@@ -529,7 +530,7 @@ function selectAutomaticLanguage() {
   renderPatientChoices();
   ui.topText.textContent = t("automaticPrompt");
   ui.bottomText.textContent = t("bottomPrompt");
-  setStatus("automaticPrompt", "notice");
+  setStatus("");
   scheduleFit();
   markActivity();
 }
@@ -666,11 +667,15 @@ function fitConversationText(element) {
 }
 
 function fitConversationTexts() {
-  fitConversationText(ui.topText);
+  fitConversationText(ui.patientInstructions.hidden ? ui.topText : ui.patientInstructions);
   fitConversationText(ui.bottomText);
 }
 
 function scheduleFit({ afterTransition = false } = {}) {
+  const unknownLanguage = (state.automatic.armed || state.automatic.pending) && !state.hasResult;
+  ui.patientInstructions.hidden = !unknownLanguage;
+  ui.topText.hidden = unknownLanguage;
+  ui.top.classList.toggle("multilingual-prompt", unknownLanguage);
   cancelAnimationFrame(fitFrame);
   fitFrame = requestAnimationFrame(() => {
     fitFrame = requestAnimationFrame(fitConversationTexts);
@@ -1100,5 +1105,18 @@ if ("ResizeObserver" in window) {
 }
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+for (const [index, language] of UI_LANGUAGES.entries()) {
+  if (index) {
+    const separator = document.createElement("span");
+    separator.textContent = " * ";
+    separator.setAttribute("aria-hidden", "true");
+    ui.patientInstructions.append(separator);
+  }
+  const instruction = document.createElement("bdi");
+  instruction.lang = language.locale;
+  instruction.dir = isRtlLocale(language.locale) ? "rtl" : "ltr";
+  instruction.textContent = translate(language.locale, "patientInstruction");
+  ui.patientInstructions.append(instruction);
+}
 applyLocale(state.uiLocale);
 bootstrap();

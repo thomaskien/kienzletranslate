@@ -67,6 +67,7 @@ header('X-Content-Type-Options: nosniff');
           <svg viewBox="0 0 64 64"><path d="M32 39a9 9 0 0 0 9-9V15a9 9 0 0 0-18 0v15a9 9 0 0 0 9 9Zm-16-9a16 16 0 0 0 32 0M32 46v9m-9 0h18"/></svg>
         </div>
         <p id="top-text" class="result-text" dir="auto">Oben gedrückt halten und sprechen</p>
+        <p id="patient-instructions" class="result-text patient-instructions" dir="ltr" hidden></p>
       </div>
       <div id="top-language-picker" class="top-language-picker" hidden>
         <div id="top-language-inline-grid" class="model-language-scroll" role="group" aria-label="Sprache oben" data-i18n-aria-label="topLanguage"></div>
@@ -125,7 +126,7 @@ header('X-Content-Type-Options: nosniff');
   <dialog id="microphone-dialog" class="modal welcome-modal" aria-labelledby="microphone-title">
     <div class="welcome-heading">
       <h2 id="microphone-title" data-i18n="micTitle">Bereit zum Gespräch</h2>
-      <span class="app-version" dir="ltr">v1.7</span>
+      <span class="app-version" dir="ltr">v1.8</span>
     </div>
     <p class="ptt-hint" data-i18n="micBody">Eigene Fläche gedrückt halten und sprechen. Zum Übersetzen loslassen.</p>
     <div class="locale-control">

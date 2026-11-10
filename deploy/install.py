@@ -18,7 +18,7 @@ import time
 
 CONFIG = Path('/etc/kienzletranslate/config.json')
 SOURCE = Path(__file__).resolve().parents[1]
-VERSION = '1.7.0'
+VERSION = '1.8.0'
 
 GIB = 1024 ** 3
 MAIN_MODEL_BUDGET = 16 * GIB

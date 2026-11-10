@@ -349,6 +349,31 @@ for (const [locale, automaticReplyLanguage] of Object.entries(REPLY_LANGUAGE_MES
 }
 
 
+const PATIENT_INSTRUCTION_MESSAGES = {
+  "de": "Bitte gedrückt halten und sprechen zur Übersetzung.",
+  "en": "Please press and hold, and speak for translation.",
+  "tr": "Çeviri için lütfen basılı tutun ve konuşun.",
+  "ar": "يرجى الضغط باستمرار والتحدث للترجمة.",
+  "ru": "Для перевода нажмите, удерживайте и говорите.",
+  "uk": "Для перекладу натисніть, утримуйте та говоріть.",
+  "pl": "Aby przetłumaczyć, przytrzymaj i mów.",
+  "ro": "Pentru traducere, țineți apăsat și vorbiți.",
+  "it": "Per tradurre, tieni premuto e parla.",
+  "bg": "За превод натиснете, задръжте и говорете.",
+  "hr": "Za prijevod pritisnite, držite i govorite.",
+  "bs": "Za prijevod pritisnite, držite i govorite.",
+  "sr": "За превод притисните, држите и говорите.",
+  "ckb": "بۆ وەرگێڕان، تکایە پەنجەت ڕابگرە و قسە بکە.",
+  "fa": "برای ترجمه، لطفاً فشار دهید، نگه دارید و صحبت کنید.",
+  "el": "Για μετάφραση, κρατήστε πατημένο και μιλήστε.",
+  "fr": "Pour traduire, maintenez appuyé et parlez.",
+  "es": "Para traducir, mantenga pulsado y hable."
+};
+for (const [locale, patientInstruction] of Object.entries(PATIENT_INSTRUCTION_MESSAGES)) {
+  MESSAGES[locale].patientInstruction = patientInstruction;
+}
+
+
 export const COMMON_IN_GERMANY = UI_LANGUAGES.map(({ code }) => code);
 
 const LANGUAGE_REGIONS = {

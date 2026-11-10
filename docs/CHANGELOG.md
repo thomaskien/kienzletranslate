@@ -1,5 +1,13 @@
 # Änderungen
 
+## v1.8 — 10.11.2026
+
+- Vor der ersten Automatic-Aufnahme erscheint die Anleitung zum Gedrückthalten und
+  Sprechen auf der Patientenseite in allen 18 häufigen Sprachen, mit Sternchen getrennt.
+  Die Texte sind gedreht, passen sich der Fläche an und behalten ihre Schreibrichtung.
+- Sprachwahl und Übersetzung ersetzen den Hinweis wieder; die eigene Oberfläche
+  und der in v1.7 korrigierte Übersetzungsablauf bleiben erhalten.
+
 ## v1.7 — 10.11.2026
 
 - Die erste Automatic-Aufnahme wird auch bei unsicherer, zu kurzer oder fehlgeschlagener

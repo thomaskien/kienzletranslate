@@ -1,4 +1,4 @@
-const CACHE_NAME = "kienzle-frontend-v1.7.0-1";
+const CACHE_NAME = "kienzle-frontend-v1.8.0-1";
 const PUBLIC_ASSETS = [
   "/assets/app.js",
   "/assets/audio-core.js",
